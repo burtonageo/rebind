@@ -128,7 +128,7 @@ impl<A: Action> KeyMap<A> {
 
     fn with_mapping(mut self, button: Button, action: A) -> Self {
         self.add_mapping(button, action);
-        self // TODO implement
+        self
     }
 
     fn get_bindings_for_action(&self, action: A) -> Option<ButtonTuple> {
