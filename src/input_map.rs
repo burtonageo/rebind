@@ -52,7 +52,7 @@ impl<A: Action> InputMap<A> {
     }
 
     pub fn add_binding(&mut self, but: Button, act: A) {
-        // TODO implement
+        self.keymap.add_mapping(but, act);
     }
 
     pub fn get_bindings_for_action(&self, act: A) -> ButtonTuple {
@@ -121,10 +121,13 @@ impl<A: Action> KeyMap<A> {
     }
 
     fn add_mapping(&mut self, button: Button, action: A) {
-        // TODO implement
+        let mut bt = self.get_bindings_for_action(action).unwrap_or(ButtonTuple::new());
+        let bt = if bt.insert_inplace(button) {bt} else {ButtonTuple::new()};
+        self.btn_map.insert(bt, action);
     }
 
-    fn with_mapping(self, button: Button, action: A) -> Self {
+    fn with_mapping(mut self, button: Button, action: A) -> Self {
+        self.add_mapping(button, action);
         self // TODO implement
     }
 
