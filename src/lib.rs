@@ -1,9 +1,13 @@
 #![allow(dead_code)]
 
-use piston::input::{Input, Button, Motion};
-use piston::window::Size;
-use viewport::Viewport;
+extern crate input;
+extern crate piston_window;
+extern crate viewport;
+
+use input::{Input, Button, Motion};
+use piston_window::Size;
 use std::collections::HashMap;
+use viewport::Viewport;
 
 pub trait Action: Copy + PartialEq + Eq { }
 
