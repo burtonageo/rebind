@@ -1,4 +1,4 @@
-#![allow(dead_code, unused_variables)]
+#![allow(dead_code)]
 
 use piston::input::{Input, Button, Motion};
 use piston::window::Size;
@@ -45,7 +45,7 @@ impl<A: Action> InputMap<A> {
         }
     }
 
-    pub fn rebind_button(&mut self, but: Button, act: A) {
+    pub fn rebind_button(&mut self, _but: Button, _act: A) {
         // TODO implement
     }
 
@@ -53,7 +53,7 @@ impl<A: Action> InputMap<A> {
         self.keymap.add_mapping(but, act);
     }
 
-    pub fn get_bindings_for_action(&self, act: A) -> ButtonTuple {
+    pub fn get_bindings_for_action(&self, _act: A) -> ButtonTuple {
         ButtonTuple(None, None, None) // TODO implement
     }
 
@@ -89,7 +89,7 @@ impl MouseTranslator {
     fn translate(&self, motion: Motion) -> Motion {
         match motion {
             Motion::MouseCursor(x, y) => {
-                let (sw, sh) = {
+                let (_sw, _sh) = {
                     let Size {width, height} = self.viewport_size;
                     (width as f64, height as f64)
                 };
