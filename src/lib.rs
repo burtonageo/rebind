@@ -1,5 +1,6 @@
 extern crate input;
 extern crate piston_window;
+extern crate rustc_serialize;
 extern crate viewport;
 
 use input::{Input, Button, Motion};
@@ -16,7 +17,13 @@ pub trait Action: Copy + PartialEq + Eq { }
 pub enum Translated<A: Action> {
     /// A keypress event which was bound to an action
     Press(A),
+
+    /// A key release event which was bound to an action
     Release(A),
+
+    /// A translated mouse motion. The logical origin of a translated MouseCursor event
+    /// is in the top left corner of the window, and the logical scroll is non-natural.
+    /// Relative events are unchanged for now.
     Move(Motion)
 }
 
