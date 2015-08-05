@@ -27,6 +27,7 @@ pub enum Translated<A: Action> {
     Move(Motion)
 }
 
+/// An object which translates piston::input::Input events into input_map::Translated<A> events
 #[derive(Clone)]
 pub struct InputMap<A: Action> {
     keymap: KeyMap<A>,
@@ -34,6 +35,8 @@ pub struct InputMap<A: Action> {
 }
 
 impl<A: Action> InputMap<A> {
+
+    /// Creates an empty InputMap.
     pub fn new(size: Size) -> Self {
         InputMap {
             keymap: KeyMap::new(),
@@ -41,6 +44,7 @@ impl<A: Action> InputMap<A> {
         }
     }
 
+    /// Translate an Input into a Translated<A> event
     pub fn translate(&self, input: &Input) -> Option<Translated<A>> {
         macro_rules! translate_button(($but_state:ident, $but_var:ident) => (
             match self.keymap.translate($but_var) {
@@ -66,14 +70,17 @@ impl<A: Action> InputMap<A> {
         self.keymap.add_mapping(but, act);
     }
 
+    /// Get all the bindings for an action
     pub fn get_bindings_for_action(&self, _act: A) -> ButtonTuple {
         ButtonTuple(None, None, None) // TODO implement
     }
 
+    /// Re-set the mouse bounds size used for calculating mouse events
     pub fn set_size(&mut self, size: Size) {
         self.mouse_translator.viewport_size = size
     }
 
+    /// Re-set the mouse bounds size from a viewport
     pub fn set_size_from_viewport(&mut self, vp: Viewport) {
         self.set_size(Size::from(vp.draw_size));
     }
@@ -151,6 +158,7 @@ impl<A: Action> KeyMap<A> {
     }
 }
 
+/// A three-element tuple of Option<Button>. Used as the key of an InputMap
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub struct ButtonTuple(Option<Button>, Option<Button>, Option<Button>);
 
