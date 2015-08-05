@@ -1,3 +1,5 @@
+#[deny(missing_docs)]
+
 extern crate input;
 extern crate piston_window;
 extern crate rustc_serialize;
