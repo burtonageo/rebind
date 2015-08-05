@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 extern crate input;
 extern crate piston_window;
 extern crate viewport;
@@ -128,7 +126,7 @@ impl<A: Action> KeyMap<A> {
         self.btn_map.insert(bt, action);
     }
 
-    fn with_mapping(mut self, button: Button, action: A) -> Self {
+    fn _with_mapping(mut self, button: Button, action: A) -> Self {
         self.add_mapping(button, action);
         self
     }
@@ -155,14 +153,14 @@ impl ButtonTuple {
         self.0 == sbtn || self.1 == sbtn || self.2 == sbtn
     }
 
-    fn remove_inplace(&mut self, btn: Button) {
+    fn _remove_inplace(&mut self, btn: Button) {
         let sbtn = Some(btn);
         if self.0 == sbtn {self.0 = None}
         if self.1 == sbtn {self.1 = None}
         if self.2 == sbtn {self.2 = None}
     }
 
-    fn replace_inplace(&mut self, btn_idx: u32, btn: Button) -> bool {
+    fn _replace_inplace(&mut self, btn_idx: u32, btn: Button) -> bool {
         match btn_idx {
             0 => {self.0 = Some(btn); true},
             1 => {self.1 = Some(btn); true},
