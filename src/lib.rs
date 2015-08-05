@@ -7,10 +7,14 @@ use piston_window::Size;
 use std::collections::HashMap;
 use viewport::Viewport;
 
+/// Represents a logical action to be bound to a particular button press, e.g.
+/// jump, attack, or move forward
 pub trait Action: Copy + PartialEq + Eq { }
 
+/// A translated action.
 #[derive(Debug, Copy, Clone)]
 pub enum Translated<A: Action> {
+    /// A keypress event which was bound to an action
     Press(A),
     Release(A),
     Move(Motion)
