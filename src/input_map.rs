@@ -29,13 +29,11 @@ impl<A: Action> InputMap<A> {
     }
 
     pub fn translate(&self, input: &Input) -> Option<Translated<A>> {
-        macro_rules! translate_button(
-            ($but_state:ident, $but_var:ident) => (
-                match self.keymap.translate($but_var) {
-                    Some(act) => Some(Translated::$but_state(act)),
-                    None => None
-                }
-            );
+        macro_rules! translate_button(($but_state:ident, $but_var:ident) => (
+            match self.keymap.translate($but_var) {
+                Some(act) => Some(Translated::$but_state(act)),
+                None => None
+            });
         );
 
         match input {
