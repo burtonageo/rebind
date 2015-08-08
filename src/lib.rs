@@ -5,10 +5,14 @@ extern crate piston_window;
 extern crate rustc_serialize;
 extern crate viewport;
 
+mod builder;
+
 use input::{Input, Button, Motion};
 use piston_window::Size;
 use std::collections::HashMap;
 use viewport::Viewport;
+
+pub use builder::InputMapBuilder<A>;
 
 /// Represents a logical action to be bound to a particular button press, e.g.
 /// jump, attack, or move forward
