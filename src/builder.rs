@@ -1,6 +1,8 @@
 use Action;
 use input::Button;
 use piston_window::Size;
+use std::convert::Into;
+use std::default::Default;
 
 pub struct InputMapBuilder<A: Action> {
     input_remappings: Vec<(Button, A)>,
@@ -53,7 +55,7 @@ impl<A: Action> Default for InputMapBuilder<A> {
     }
 }
 
-impl<A> Into<InputMap<A>> for InputMapBuilder<A> {
+impl<A: Action> Into<InputMap<A>> for InputMapBuilder<A> {
     fn into(self) -> InputMap<A> {
         InputMap::new() // TODO implement
     }
