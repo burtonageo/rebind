@@ -116,12 +116,15 @@ impl MouseTranslator {
     fn translate(&self, motion: Motion) -> Motion {
         match motion {
             Motion::MouseCursor(x, y) => {
-                let (_sw, _sh) = {
+                let (sw, sh) = {
                     let Size {width, height} = self.viewport_size;
                     (width as f64, height as f64)
                 };
 
-                Motion::MouseCursor(x, y) // TODO implement
+                let cx = if self.x_axis_motion_inverted { sw - x } else { x };
+                let cy = if self.y_axis_motion_inverted { sh - y } else { y };
+
+                Motion::MouseCursor(cx, cy)
             },
             Motion::MouseScroll(x, y) => {
                 let mx = if self.x_axis_scroll_inverted { -1.0f64 } else { 1.0 };
