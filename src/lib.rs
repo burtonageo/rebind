@@ -12,7 +12,7 @@ use piston_window::Size;
 use std::collections::HashMap;
 use viewport::Viewport;
 
-pub use builder::InputMapBuilder<A>;
+pub use builder::InputMapBuilder;
 
 /// Represents a logical action to be bound to a particular button press, e.g.
 /// jump, attack, or move forward
@@ -94,8 +94,8 @@ impl<A: Action> InputMap<A> {
 
 #[derive(Clone)]
 struct MouseTranslator {
-    pub x_axis_movement_inverted: bool,
-    pub y_axis_movement_inverted: bool,
+    pub x_axis_motion_inverted: bool,
+    pub y_axis_motion_inverted: bool,
     pub x_axis_scroll_inverted: bool,
     pub y_axis_scroll_inverted: bool,
     pub viewport_size: Size
@@ -104,8 +104,8 @@ struct MouseTranslator {
 impl MouseTranslator {
     fn new(size: Size) -> Self {
         MouseTranslator {
-            x_axis_movement_inverted: false,
-            y_axis_movement_inverted: false,
+            x_axis_motion_inverted: false,
+            y_axis_motion_inverted: false,
             x_axis_scroll_inverted: false,
             y_axis_scroll_inverted: false,
             viewport_size: size
