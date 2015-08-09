@@ -166,7 +166,7 @@ impl<A: Action> KeyMap<A> {
 
 /// A three-element tuple of Option<Button>. Used as the key of an InputMap
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
-pub struct ButtonTuple(Option<Button>, Option<Button>, Option<Button>);
+pub struct ButtonTuple(pub Option<Button>, pub Option<Button>, pub Option<Button>);
 
 impl ButtonTuple {
     fn new() -> Self {
