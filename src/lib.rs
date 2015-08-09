@@ -10,6 +10,7 @@ mod builder;
 use input::{Input, Button, Motion};
 use piston_window::Size;
 use std::collections::HashMap;
+use std::default::Default;
 use viewport::Viewport;
 
 pub use builder::InputMapBuilder;
@@ -207,4 +208,8 @@ impl ButtonTuple {
         }
         true
     }
+}
+
+impl Default for ButtonTuple {
+    fn default() -> Self {ButtonTuple(None, None, None)}
 }
