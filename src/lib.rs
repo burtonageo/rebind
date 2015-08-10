@@ -182,9 +182,7 @@ impl<A: Action> KeyMap<A> {
 pub struct ButtonTuple(pub Option<Button>, pub Option<Button>, pub Option<Button>);
 
 impl ButtonTuple {
-    fn new() -> Self {
-        ButtonTuple(None, None, None)
-    }
+    fn new() -> Self { Default::default() }
 
     fn contains(&self, btn: Button) -> bool {
         let sbtn = Some(btn);
