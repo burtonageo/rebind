@@ -221,5 +221,5 @@ impl ButtonTuple {
 }
 
 impl Default for ButtonTuple {
-    fn default() -> Self {ButtonTuple(None, None, None)}
+    fn default() -> Self { ButtonTuple(None, None, None) }
 }
