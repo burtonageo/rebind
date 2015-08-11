@@ -13,7 +13,7 @@ use std::collections::HashMap;
 use std::default::Default;
 use viewport::Viewport;
 
-pub use builder::InputMapBuilder;
+pub use builder::InputTranslatorBuilder;
 
 /// Represents a logical action to be bound to a particular button press, e.g.
 /// jump, attack, or move forward
@@ -36,16 +36,16 @@ pub enum Translated<A: Action> {
 
 /// An object which translates piston::input::Input events into input_map::Translated<A> events
 #[derive(Clone)]
-pub struct InputMap<A: Action> {
+pub struct InputTranslator<A: Action> {
     keymap: KeyMap<A>,
     mouse_translator: MouseTranslator
 }
 
-impl<A: Action> InputMap<A> {
+impl<A: Action> InputTranslator<A> {
 
-    /// Creates an empty InputMap.
+    /// Creates an empty InputTranslator.
     pub fn new(size: Size) -> Self {
-        InputMap {
+        InputTranslator {
             keymap: KeyMap::new(),
             mouse_translator: MouseTranslator::new(size)
         }
@@ -173,7 +173,7 @@ impl<A: Action> KeyMap<A> {
     }
 }
 
-/// A three-element tuple of Option<Button>. Used as the key of an InputMap
+/// A three-element tuple of Option<Button>. Used as the key of an InputTranslator
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub struct ButtonTuple(pub Option<Button>, pub Option<Button>, pub Option<Button>);
 
