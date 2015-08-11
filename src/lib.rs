@@ -40,7 +40,7 @@ pub enum Translated<A: Action> {
 /// An object which translates piston::input::Input events into input_map::Translated<A> events
 #[derive(Clone)]
 pub struct InputTranslator<A: Action> {
-    keymap: KeyMap<A>,
+    keymap: KeyTranslator<A>,
     mouse_translator: MouseTranslator
 }
 
@@ -49,7 +49,7 @@ impl<A: Action> InputTranslator<A> {
     /// Creates an empty InputTranslator.
     pub fn new(size: Size) -> Self {
         InputTranslator {
-            keymap: KeyMap::new(),
+            keymap: KeyTranslator::new(),
             mouse_translator: MouseTranslator::new(size)
         }
     }
@@ -131,13 +131,13 @@ impl MouseTranslator {
 }
 
 #[derive(Clone, Debug)]
-struct KeyMap<A: Action> {
+struct KeyTranslator<A: Action> {
     btn_map: HashMap<ButtonTuple, A>
 }
 
-impl<A: Action> KeyMap<A> {
+impl<A: Action> KeyTranslator<A> {
     fn new() -> Self {
-        KeyMap {
+        KeyTranslator {
             btn_map: HashMap::new()
         }
     }
