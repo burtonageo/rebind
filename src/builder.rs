@@ -63,6 +63,8 @@ impl<A: Action> InputMapBuilder<A> {
         self.input_remappings.push((but, act));
         self
     }
+
+    pub fn build(self) -> InputMap<A> {self.into()}
 }
 
 impl<A: Action> Default for InputMapBuilder<A> {
@@ -80,17 +82,18 @@ impl<A: Action> Default for InputMapBuilder<A> {
 
 impl<A: Action> Into<InputMap<A>> for InputMapBuilder<A> {
     fn into(self) -> InputMap<A> {
-        let mut imap = InputMap::new(self.viewport_size);
+        let mut input_map = InputMap::new(self.viewport_size);
 
-        imap.mouse_translator.x_axis_motion_inverted = self.x_axis_motion_inverted;
-        imap.mouse_translator.y_axis_motion_inverted = self.y_axis_motion_inverted;
-        imap.mouse_translator.x_axis_scroll_inverted = self.x_axis_scroll_inverted;
-        imap.mouse_translator.y_axis_scroll_inverted = self.y_axis_scroll_inverted;
+        input_map.mouse_translator.x_axis_motion_inverted = self.x_axis_motion_inverted;
+        input_map.mouse_translator.y_axis_motion_inverted = self.y_axis_motion_inverted;
+        input_map.mouse_translator.x_axis_scroll_inverted = self.x_axis_scroll_inverted;
+        input_map.mouse_translator.y_axis_scroll_inverted = self.y_axis_scroll_inverted;
 
         //TODO: set key remappings
-        imap.keymap.btn_map.reserve(self.input_remappings.len());
+        input_map.keymap.btn_map.reserve(self.input_remappings.len());
+        
 
-        imap
+        input_map
     }
 }
 
