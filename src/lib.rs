@@ -154,11 +154,6 @@ impl<A: Action> KeyMap<A> {
         self.btn_map.insert(bt, action);
     }
 
-    fn _with_mapping(mut self, button: Button, action: A) -> Self {
-        self.add_mapping(button, action);
-        self
-    }
-
     fn get_bindings_for_action(&self, action: A) -> Option<ButtonTuple> {
         self.btn_map.iter().find(|&(_, &a)| a == action).map(|(&bt, _)| bt)
     }
