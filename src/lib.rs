@@ -78,7 +78,7 @@ impl<A: Action> InputTranslator<A> {
 
     /// Re-set the mouse bounds size used for calculating mouse events
     pub fn set_size(&mut self, size: Size) {
-        self.mouse_translator.viewport_size = size
+        self.mouse_translator.data.viewport_size = size
     }
 
     /// Re-set the mouse bounds size from a viewport
@@ -88,7 +88,7 @@ impl<A: Action> InputTranslator<A> {
 }
 
 #[derive(Clone)]
-struct MouseTranslator {
+struct MouseTranslationData {
     pub x_axis_motion_inverted: bool,
     pub y_axis_motion_inverted: bool,
     pub x_axis_scroll_inverted: bool,
@@ -96,9 +96,9 @@ struct MouseTranslator {
     pub viewport_size: Size
 }
 
-impl MouseTranslator {
+impl MouseTranslationData {
     fn new(size: Size) -> Self {
-        MouseTranslator {
+        MouseTranslationData {
             x_axis_motion_inverted: false,
             y_axis_motion_inverted: false,
             x_axis_scroll_inverted: false,
@@ -106,23 +106,36 @@ impl MouseTranslator {
             viewport_size: size
         }
     }
+}
+
+#[derive(Clone)]
+struct MouseTranslator {
+    data: MouseTranslationData
+}
+
+impl MouseTranslator {
+    fn new(size: Size) -> Self {
+        MouseTranslator {
+            data: MouseTranslationData::new(size)
+        }
+    }
 
     fn translate(&self, motion: Motion) -> Motion {
         match motion {
             Motion::MouseCursor(x, y) => {
                 let (sw, sh) = {
-                    let Size {width, height} = self.viewport_size;
+                    let Size {width, height} = self.data.viewport_size;
                     (width as f64, height as f64)
                 };
 
-                let cx = if self.x_axis_motion_inverted { sw - x } else { x };
-                let cy = if self.y_axis_motion_inverted { sh - y } else { y };
+                let cx = if self.data.x_axis_motion_inverted { sw - x } else { x };
+                let cy = if self.data.y_axis_motion_inverted { sh - y } else { y };
 
                 Motion::MouseCursor(cx, cy)
             },
             Motion::MouseScroll(x, y) => {
-                let mx = if self.x_axis_scroll_inverted { -1.0f64 } else { 1.0 };
-                let my = if self.y_axis_scroll_inverted { -1.0f64 } else { 1.0 };
+                let mx = if self.data.x_axis_scroll_inverted { -1.0f64 } else { 1.0 };
+                let my = if self.data.y_axis_scroll_inverted { -1.0f64 } else { 1.0 };
                 Motion::MouseScroll(x * mx, y * my)
             },
             relative => relative

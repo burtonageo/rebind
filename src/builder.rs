@@ -84,10 +84,10 @@ impl<A: Action> Into<InputTranslator<A>> for InputTranslatorBuilder<A> {
     fn into(self) -> InputTranslator<A> {
         let mut input_map = InputTranslator::new(self.viewport_size);
 
-        input_map.mouse_translator.x_axis_motion_inverted = self.x_axis_motion_inverted;
-        input_map.mouse_translator.y_axis_motion_inverted = self.y_axis_motion_inverted;
-        input_map.mouse_translator.x_axis_scroll_inverted = self.x_axis_scroll_inverted;
-        input_map.mouse_translator.y_axis_scroll_inverted = self.y_axis_scroll_inverted;
+        input_map.mouse_translator.data.x_axis_motion_inverted = self.x_axis_motion_inverted;
+        input_map.mouse_translator.data.y_axis_motion_inverted = self.y_axis_motion_inverted;
+        input_map.mouse_translator.data.x_axis_scroll_inverted = self.x_axis_scroll_inverted;
+        input_map.mouse_translator.data.y_axis_scroll_inverted = self.y_axis_scroll_inverted;
 
         //TODO: set key remappings
         input_map.keymap.btn_map.reserve(self.input_remappings.len());
