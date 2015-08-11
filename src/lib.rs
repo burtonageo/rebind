@@ -175,23 +175,21 @@ impl<A: Action> KeyTranslator<A> {
 pub struct ButtonTuple(pub Option<Button>, pub Option<Button>, pub Option<Button>);
 
 impl ButtonTuple {
-    fn new() -> Self { Default::default() }
+    pub fn new() -> Self { Default::default() }
 
-    fn contains(&self, btn: Button) -> bool {
+    pub fn contains(&self, btn: Button) -> bool {
         let sbtn = Some(btn);
         self.0 == sbtn || self.1 == sbtn || self.2 == sbtn
     }
 
-    #[allow(dead_code)]
-    fn remove_inplace(&mut self, btn: Button) {
+    pub fn remove_inplace(&mut self, btn: Button) {
         let sbtn = Some(btn);
         if self.0 == sbtn {self.0 = None}
         if self.1 == sbtn {self.1 = None}
         if self.2 == sbtn {self.2 = None}
     }
 
-    #[allow(dead_code)]
-    fn replace_inplace(&mut self, btn_idx: u32, btn: Button) -> bool {
+    pub fn replace_inplace(&mut self, btn_idx: u32, btn: Button) -> bool {
         match btn_idx {
             0 => {self.0 = Some(btn); true},
             1 => {self.1 = Some(btn); true},
@@ -200,7 +198,7 @@ impl ButtonTuple {
         }
     }
 
-    fn insert_inplace(&mut self, btn: Button) -> bool {
+    pub fn insert_inplace(&mut self, btn: Button) -> bool {
         match self {
             &mut ButtonTuple(a, b, c) if a.is_none() => {*self = ButtonTuple(Some(btn), b, c); true},
             &mut ButtonTuple(a, b, c) if b.is_none() => {*self = ButtonTuple(a, Some(btn), c); true},
