@@ -158,12 +158,13 @@ impl<A: Action> KeyMap<A> {
         self.btn_map.iter().find(|&(_, &a)| a == action).map(|(&bt, _)| bt)
     }
 
-    fn _get_ref_bindings_for_action(&self, action: A) -> Option<&ButtonTuple> {
+    #[allow(dead_code)]
+    fn get_ref_bindings_for_action(&self, action: A) -> Option<&ButtonTuple> {
         self.btn_map.iter().find(|&(_, &a)| a == action).map(|(bt, _)| bt)
     }
 
-    #[cfg(_false)] // This gives a compile error
-    fn _get_ref_bindings_for_action_mut(&mut self, action: A) -> Option<&mut ButtonTuple> {
+    #[cfg(unimplemented)] // This gives a compile error
+    fn get_ref_bindings_for_action_mut(&mut self, action: A) -> Option<&mut ButtonTuple> {
         self.btn_map.iter_mut().find(|&(_, &mut a)| a == action).as_mut().map(|&mut (bt, _)| bt)
     }
 
@@ -184,14 +185,16 @@ impl ButtonTuple {
         self.0 == sbtn || self.1 == sbtn || self.2 == sbtn
     }
 
-    fn _remove_inplace(&mut self, btn: Button) {
+    #[allow(dead_code)]
+    fn remove_inplace(&mut self, btn: Button) {
         let sbtn = Some(btn);
         if self.0 == sbtn {self.0 = None}
         if self.1 == sbtn {self.1 = None}
         if self.2 == sbtn {self.2 = None}
     }
 
-    fn _replace_inplace(&mut self, btn_idx: u32, btn: Button) -> bool {
+    #[allow(dead_code)]
+    fn replace_inplace(&mut self, btn_idx: u32, btn: Button) -> bool {
         match btn_idx {
             0 => {self.0 = Some(btn); true},
             1 => {self.1 = Some(btn); true},
