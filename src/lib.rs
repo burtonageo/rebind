@@ -6,6 +6,7 @@ extern crate rustc_serialize;
 extern crate viewport;
 
 mod builder;
+mod rebind;
 
 use input::{Input, Button, Motion};
 use piston_window::Size;
@@ -13,6 +14,7 @@ use std::collections::HashMap;
 use std::default::Default;
 use viewport::Viewport;
 
+pub use rebind::InputRebind;
 pub use builder::InputTranslatorBuilder;
 
 /// Represents a logical action to be bound to a particular button press, e.g.
