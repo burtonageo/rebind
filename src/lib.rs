@@ -12,6 +12,7 @@ use input::{Input, Button, Motion};
 use piston_window::Size;
 use std::collections::HashMap;
 use std::default::Default;
+use std::hash::Hash;
 use viewport::Viewport;
 
 pub use rebind::InputRebind;
@@ -19,7 +20,7 @@ pub use builder::InputTranslatorBuilder;
 
 /// Represents a logical action to be bound to a particular button press, e.g.
 /// jump, attack, or move forward
-pub trait Action: Copy + PartialEq + Eq { }
+pub trait Action: Copy + PartialEq + Eq + Hash { }
 
 /// A translated action.
 #[derive(Debug, Copy, Clone)]
