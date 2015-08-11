@@ -69,17 +69,8 @@ impl<A: Action> InputTranslator<A> {
         }
     }
 
-    pub fn rebind_button(&mut self, _but: Button, _act: A) {
-        // TODO implement
-    }
-
     pub fn add_binding(&mut self, but: Button, act: A) {
         self.keymap.add_mapping(but, act);
-    }
-
-    /// Get all the bindings for an action
-    pub fn get_bindings_for_action(&self, _act: A) -> ButtonTuple {
-        ButtonTuple(None, None, None) // TODO implement
     }
 
     /// Re-set the mouse bounds size used for calculating mouse events
