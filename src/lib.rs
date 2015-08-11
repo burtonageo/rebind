@@ -152,16 +152,6 @@ impl<A: Action> KeyTranslator<A> {
         self.btn_map.iter().find(|&(_, &a)| a == action).map(|(&bt, _)| bt)
     }
 
-    #[allow(dead_code)]
-    fn get_ref_bindings_for_action(&self, action: A) -> Option<&ButtonTuple> {
-        self.btn_map.iter().find(|&(_, &a)| a == action).map(|(bt, _)| bt)
-    }
-
-    #[cfg(unimplemented)] // This gives a compile error
-    fn get_ref_bindings_for_action_mut(&mut self, action: A) -> Option<&mut ButtonTuple> {
-        self.btn_map.iter_mut().find(|&(_, &mut a)| a == action).as_mut().map(|&mut (bt, _)| bt)
-    }
-
     fn translate(&self, button: Button) -> Option<A> {
         self.btn_map.iter().find(|&(&bt, _)| bt.contains(button)).map(|(_, &a)| a)
     }
