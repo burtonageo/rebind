@@ -1,11 +1,11 @@
-use {Action, InputMap};
+use {Action, InputTranslator};
 use input::Button;
 use piston_window::Size;
 use std::convert::Into;
 use std::default::Default;
 
 /// Convenience object for constructing an InputMap
-pub struct InputMapBuilder<A: Action> {
+pub struct InputTranslatorBuilder<A: Action> {
     input_remappings: Vec<(Button, A)>,
     x_axis_motion_inverted: bool,
     y_axis_motion_inverted: bool,
@@ -14,7 +14,7 @@ pub struct InputMapBuilder<A: Action> {
     viewport_size: Size
 }
 
-impl<A: Action> InputMapBuilder<A> {
+impl<A: Action> InputTranslatorBuilder<A> {
     pub fn new() -> Self { Default::default() }
 
     pub fn x_scroll_inverted(mut self, invert: bool) -> Self {
@@ -64,12 +64,12 @@ impl<A: Action> InputMapBuilder<A> {
         self
     }
 
-    pub fn build(self) -> InputMap<A> {self.into()}
+    pub fn build(self) -> InputTranslator<A> {self.into()}
 }
 
-impl<A: Action> Default for InputMapBuilder<A> {
+impl<A: Action> Default for InputTranslatorBuilder<A> {
     fn default() -> Self {
-        InputMapBuilder {
+        InputTranslatorBuilder {
             input_remappings: vec![],
             x_axis_motion_inverted: false,
             y_axis_motion_inverted: false,
@@ -80,9 +80,9 @@ impl<A: Action> Default for InputMapBuilder<A> {
     }
 }
 
-impl<A: Action> Into<InputMap<A>> for InputMapBuilder<A> {
-    fn into(self) -> InputMap<A> {
-        let mut input_map = InputMap::new(self.viewport_size);
+impl<A: Action> Into<InputTranslator<A>> for InputTranslatorBuilder<A> {
+    fn into(self) -> InputTranslator<A> {
+        let mut input_map = InputTranslator::new(self.viewport_size);
 
         input_map.mouse_translator.x_axis_motion_inverted = self.x_axis_motion_inverted;
         input_map.mouse_translator.y_axis_motion_inverted = self.y_axis_motion_inverted;
