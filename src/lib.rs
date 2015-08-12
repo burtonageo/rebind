@@ -43,13 +43,16 @@ pub enum Translated<A: Action> {
 pub struct ButtonTuple(pub Option<Button>, pub Option<Button>, pub Option<Button>);
 
 impl ButtonTuple {
+    /// Creates a new tuple with no buttons in it
     pub fn new() -> Self { Default::default() }
 
-    pub fn contains(&self, btn: Button) -> bool {
-        let sbtn = Some(btn);
+    /// Check if the button is in the tuple.
+    pub fn contains(&self, button: Button) -> bool {
+        let sbtn = Some(button);
         self.0 == sbtn || self.1 == sbtn || self.2 == sbtn
     }
 
+    #[allow(missing_docs)]
     pub fn remove_inplace(&mut self, btn: Button) {
         let sbtn = Some(btn);
         if self.0 == sbtn {self.0 = None}
@@ -57,6 +60,7 @@ impl ButtonTuple {
         if self.2 == sbtn {self.2 = None}
     }
 
+    #[allow(missing_docs)]
     pub fn replace_inplace(&mut self, btn_idx: u32, btn: Button) -> bool {
         match btn_idx {
             0 => {self.0 = Some(btn); true},
@@ -66,6 +70,7 @@ impl ButtonTuple {
         }
     }
 
+    #[allow(missing_docs)]
     pub fn insert_inplace(&mut self, btn: Button) -> bool {
         match self {
             &mut ButtonTuple(a, b, c) if a.is_none() => {*self = ButtonTuple(Some(btn), b, c); true},
@@ -77,6 +82,7 @@ impl ButtonTuple {
 }
 
 impl Default for ButtonTuple {
+    #[allow(missing_docs)]
     fn default() -> Self { ButtonTuple(None, None, None) }
 }
 
