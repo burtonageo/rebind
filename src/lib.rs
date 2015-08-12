@@ -38,6 +38,48 @@ pub enum Translated<A: Action> {
     Move(Motion)
 }
 
+/// A three-element tuple of Option<Button>. Used as the key of an InputTranslator
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+pub struct ButtonTuple(pub Option<Button>, pub Option<Button>, pub Option<Button>);
+
+impl ButtonTuple {
+    pub fn new() -> Self { Default::default() }
+
+    pub fn contains(&self, btn: Button) -> bool {
+        let sbtn = Some(btn);
+        self.0 == sbtn || self.1 == sbtn || self.2 == sbtn
+    }
+
+    pub fn remove_inplace(&mut self, btn: Button) {
+        let sbtn = Some(btn);
+        if self.0 == sbtn {self.0 = None}
+        if self.1 == sbtn {self.1 = None}
+        if self.2 == sbtn {self.2 = None}
+    }
+
+    pub fn replace_inplace(&mut self, btn_idx: u32, btn: Button) -> bool {
+        match btn_idx {
+            0 => {self.0 = Some(btn); true},
+            1 => {self.1 = Some(btn); true},
+            2 => {self.2 = Some(btn); true},
+            _ => false
+        }
+    }
+
+    pub fn insert_inplace(&mut self, btn: Button) -> bool {
+        match self {
+            &mut ButtonTuple(a, b, c) if a.is_none() => {*self = ButtonTuple(Some(btn), b, c); true},
+            &mut ButtonTuple(a, b, c) if b.is_none() => {*self = ButtonTuple(a, Some(btn), c); true},
+            &mut ButtonTuple(a, b, c) if c.is_none() => {*self = ButtonTuple(a, b, Some(btn)); true}
+            _ => false
+        }
+    }
+}
+
+impl Default for ButtonTuple {
+    fn default() -> Self { ButtonTuple(None, None, None) }
+}
+
 /// An object which translates piston::input::Input events into input_map::Translated<A> events
 #[derive(Clone)]
 pub struct InputTranslator<A: Action> {
@@ -159,46 +201,4 @@ impl<A: Action> KeyTranslator<A> {
     fn translate(&self, button: Button) -> Option<A> {
         self.btn_map.iter().find(|&(&bt, _)| bt.contains(button)).map(|(_, &a)| a)
     }
-}
-
-/// A three-element tuple of Option<Button>. Used as the key of an InputTranslator
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
-pub struct ButtonTuple(pub Option<Button>, pub Option<Button>, pub Option<Button>);
-
-impl ButtonTuple {
-    pub fn new() -> Self { Default::default() }
-
-    pub fn contains(&self, btn: Button) -> bool {
-        let sbtn = Some(btn);
-        self.0 == sbtn || self.1 == sbtn || self.2 == sbtn
-    }
-
-    pub fn remove_inplace(&mut self, btn: Button) {
-        let sbtn = Some(btn);
-        if self.0 == sbtn {self.0 = None}
-        if self.1 == sbtn {self.1 = None}
-        if self.2 == sbtn {self.2 = None}
-    }
-
-    pub fn replace_inplace(&mut self, btn_idx: u32, btn: Button) -> bool {
-        match btn_idx {
-            0 => {self.0 = Some(btn); true},
-            1 => {self.1 = Some(btn); true},
-            2 => {self.2 = Some(btn); true},
-            _ => false
-        }
-    }
-
-    pub fn insert_inplace(&mut self, btn: Button) -> bool {
-        match self {
-            &mut ButtonTuple(a, b, c) if a.is_none() => {*self = ButtonTuple(Some(btn), b, c); true},
-            &mut ButtonTuple(a, b, c) if b.is_none() => {*self = ButtonTuple(a, Some(btn), c); true},
-            &mut ButtonTuple(a, b, c) if c.is_none() => {*self = ButtonTuple(a, b, Some(btn)); true}
-            _ => false
-        }
-    }
-}
-
-impl Default for ButtonTuple {
-    fn default() -> Self { ButtonTuple(None, None, None) }
 }
