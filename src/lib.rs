@@ -1,4 +1,5 @@
 #![warn(missing_docs)]
+#![feature(drain)]
 
 extern crate input;
 extern crate piston_window;

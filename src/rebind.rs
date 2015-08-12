@@ -1,4 +1,4 @@
-use {Action, ButtonTuple, MouseTranslationData};
+use {Action, ButtonTuple, InputTranslator, MouseTranslationData};
 use piston_window::Size;
 use std::collections::HashMap;
 use std::convert::Into;
@@ -80,9 +80,11 @@ impl<A: Action> Default for InputRebind<A> {
     }
 }
 
-#[cfg(unimplemented)]
 impl<A: Action> Into<InputTranslator<A>> for InputRebind<A> {
-    fn into(self) -> InputTranslator<A> {
-        InputTranslator::new(/* etc.. */)
+    fn into(mut self) -> InputTranslator<A> {
+        let mut input_translator = InputTranslator::new(self.mouse_data.viewport_size);
+        input_translator.mouse_translator.data = self.mouse_data;
+        input_translator.keymap.btn_map = self.keymap.drain().map(|(k, v)| (v, k)).collect();
+        input_translator
     }
 }
