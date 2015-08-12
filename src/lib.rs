@@ -1,4 +1,4 @@
-#[deny(missing_docs)]
+#![warn(missing_docs)]
 
 extern crate input;
 extern crate piston_window;
