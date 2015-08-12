@@ -11,7 +11,12 @@ pub struct InputTranslatorBuilder<A: Action> {
 }
 
 impl<A: Action> InputTranslatorBuilder<A> {
-    pub fn new() -> Self { Default::default() }
+    pub fn new(size: Size) -> Self {
+        InputTranslatorBuilder {
+            input_remappings: vec![],
+            mouse_data: MouseTranslationData::new(size)
+        }
+    }
 
     pub fn x_scroll_inverted(mut self, invert: bool) -> Self {
         self.mouse_data.x_axis_scroll_inverted = invert;
@@ -68,10 +73,7 @@ impl<A: Action> InputTranslatorBuilder<A> {
 
 impl<A: Action> Default for InputTranslatorBuilder<A> {
     fn default() -> Self {
-        InputTranslatorBuilder {
-            input_remappings: vec![],
-            mouse_data: MouseTranslationData::new((800, 600).into())
-        }
+        Self::new((800, 600).into())
     }
 }
 
