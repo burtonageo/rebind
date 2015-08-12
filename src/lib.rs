@@ -73,10 +73,6 @@ impl<A: Action> InputTranslator<A> {
         }
     }
 
-    pub fn add_binding(&mut self, but: Button, act: A) {
-        self.keymap.add_mapping(but, act);
-    }
-
     /// Re-set the mouse bounds size used for calculating mouse events
     pub fn set_size(&mut self, size: Size) {
         self.mouse_translator.data.viewport_size = size
@@ -154,12 +150,6 @@ impl<A: Action> KeyTranslator<A> {
         KeyTranslator {
             btn_map: HashMap::new()
         }
-    }
-
-    fn add_mapping(&mut self, button: Button, action: A) {
-        let mut bt = self.get_bindings_for_action(action).unwrap_or(ButtonTuple::new());
-        let bt = if bt.insert_inplace(button) {bt} else {ButtonTuple::new()};
-        self.btn_map.insert(bt, action);
     }
 
     fn get_bindings_for_action(&self, action: A) -> Option<ButtonTuple> {
