@@ -88,3 +88,12 @@ impl<A: Action> Into<InputTranslator<A>> for InputRebind<A> {
         input_translator
     }
 }
+
+impl<A: Action> Into<InputRebind<A>> for InputTranslator<A> {
+    fn into(mut self) -> InputRebind<A> {
+        let mut input_rebind = InputRebind::new(self.mouse_translator.data.viewport_size);
+        input_rebind.mouse_data = self.mouse_translator.data;
+        input_rebind.keymap = self.keymap.btn_map.drain().map(|(k, v)| (v, k)).collect();
+        input_rebind
+    }
+}
