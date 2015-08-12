@@ -43,7 +43,8 @@ pub enum Translated<A: Action> {
 pub struct ButtonTuple(pub Option<Button>, pub Option<Button>, pub Option<Button>);
 
 impl ButtonTuple {
-    /// Creates a new tuple with no buttons in it
+    /// Creates a new tuple with no buttons in it (equivalent to
+    /// ```Default::default()```
     pub fn new() -> Self { Default::default() }
 
     /// Check if the button is in the tuple.
@@ -82,7 +83,7 @@ impl ButtonTuple {
 }
 
 impl Default for ButtonTuple {
-    #[allow(missing_docs)]
+    /// Creates a new tuple with no buttons in it
     fn default() -> Self { ButtonTuple(None, None, None) }
 }
 
