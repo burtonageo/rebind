@@ -200,10 +200,6 @@ impl<A: Action> KeyTranslator<A> {
         }
     }
 
-    fn get_bindings_for_action(&self, action: A) -> Option<ButtonTuple> {
-        self.btn_map.iter().find(|&(_, &a)| a == action).map(|(&bt, _)| bt)
-    }
-
     fn translate(&self, button: Button) -> Option<A> {
         self.btn_map.iter().find(|&(&bt, _)| bt.contains(button)).map(|(_, &a)| a)
     }
