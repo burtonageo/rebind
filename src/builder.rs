@@ -35,13 +35,16 @@ impl<A: Action> InputTranslatorBuilder<A> {
         self.mouse_data.x_axis_motion_inverted = invert;
         self
     }
+
     pub fn get_x_motion_inverted(&self) -> &bool {
         &self.mouse_data.x_axis_motion_inverted
     }
+
     pub fn y_motion_inverted(mut self, invert: bool) -> Self {
         self.mouse_data.y_axis_motion_inverted = invert;
         self
     }
+
     pub fn get_y_motion_inverted(&self) -> &bool {
         &self.mouse_data.y_axis_motion_inverted
     }
