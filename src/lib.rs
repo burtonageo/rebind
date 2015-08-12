@@ -89,11 +89,11 @@ impl<A: Action> InputTranslator<A> {
 
 #[derive(Clone)]
 struct MouseTranslationData {
-    pub x_axis_motion_inverted: bool,
-    pub y_axis_motion_inverted: bool,
-    pub x_axis_scroll_inverted: bool,
-    pub y_axis_scroll_inverted: bool,
-    pub viewport_size: Size
+    x_axis_motion_inverted: bool,
+    y_axis_motion_inverted: bool,
+    x_axis_scroll_inverted: bool,
+    y_axis_scroll_inverted: bool,
+    viewport_size: Size
 }
 
 impl MouseTranslationData {
