@@ -43,7 +43,7 @@ pub struct ButtonTuple(pub Option<Button>, pub Option<Button>, pub Option<Button
 
 impl ButtonTuple {
     /// Creates a new tuple with no buttons in it (equivalent to
-    /// ```Default::default()```
+    /// ```Default::default()```)
     pub fn new() -> Self { Default::default() }
 
     /// Check if the button is in the tuple.
