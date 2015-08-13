@@ -106,7 +106,7 @@ impl<A: Action> Into<InputTranslator<A>> for InputRebind<A> {
         input_translator.keymap = self.keymap.values()
                                              .flat_map(|&bt| bt.into_iter())
                                              .filter_map(|x| x)
-                                             .zip(self.keymap.keys().map(|x| x.clone()))
+                                             .zip(self.keymap.keys().map(|x| *x))
                                              .collect();
 
         input_translator
