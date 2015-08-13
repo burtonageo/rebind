@@ -1,5 +1,10 @@
 #![warn(missing_docs)]
 
+//! input-map
+//! =========
+//!
+//! A library for binding input keys to actions, and manipulating mouse input
+
 extern crate input;
 extern crate piston_window;
 extern crate rustc_serialize;
