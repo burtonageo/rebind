@@ -103,11 +103,11 @@ impl<A: Action> Into<InputTranslator<A>> for InputRebind<A> {
     fn into(self) -> InputTranslator<A> {
         let mut input_translator = InputTranslator::new(self.mouse_data.viewport_size);
         input_translator.mouse_translator.data = self.mouse_data;
-        input_translator.keymap.btn_map = self.keymap.values()
-                                                     .flat_map(|&bt| bt.into_iter())
-                                                     .filter_map(|x| x)
-                                                     .zip(self.keymap.keys().map(|x| x.clone()))
-                                                     .collect();
+        input_translator.keymap = self.keymap.values()
+                                             .flat_map(|&bt| bt.into_iter())
+                                             .filter_map(|x| x)
+                                             .zip(self.keymap.keys().map(|x| x.clone()))
+                                             .collect();
 
         input_translator
     }

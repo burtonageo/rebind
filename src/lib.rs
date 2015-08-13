@@ -89,7 +89,7 @@ impl Default for ButtonTuple {
 /// An object which translates piston::input::Input events into input_map::Translated<A> events
 #[derive(Clone)]
 pub struct InputTranslator<A: Action> {
-    keymap: KeyTranslator<A>,
+    keymap: HashMap<Button, A>,
     mouse_translator: MouseTranslator
 }
 
@@ -98,7 +98,7 @@ impl<A: Action> InputTranslator<A> {
     /// Creates an empty InputTranslator.
     pub fn new(size: Size) -> Self {
         InputTranslator {
-            keymap: KeyTranslator::new(),
+            keymap: HashMap::new(),
             mouse_translator: MouseTranslator::new(size)
         }
     }
@@ -106,7 +106,7 @@ impl<A: Action> InputTranslator<A> {
     /// Translate an Input into a Translated<A> event
     pub fn translate(&self, input: &Input) -> Option<Translated<A>> {
         macro_rules! translate_button(($but_state:ident, $but_var:ident) => (
-            match self.keymap.translate(&$but_var) {
+            match self.keymap.get(&$but_var).map(|x| *x) {
                 Some(act) => Some(Translated::$but_state(act)),
                 None => None
             });
@@ -185,22 +185,5 @@ impl MouseTranslator {
             },
             relative => relative
         }
-    }
-}
-
-#[derive(Clone, Debug)]
-struct KeyTranslator<A: Action> {
-    btn_map: HashMap<Button, A>
-}
-
-impl<A: Action> KeyTranslator<A> {
-    fn new() -> Self {
-        KeyTranslator {
-            btn_map: HashMap::new()
-        }
-    }
-
-    fn translate(&self, button: &Button) -> Option<A> {
-        self.btn_map.get(button).map(|x| *x)
     }
 }

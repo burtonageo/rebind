@@ -101,7 +101,7 @@ impl<A: Action> Into<InputTranslator<A>> for InputTranslatorBuilder<A> {
         input_map.mouse_translator.data.x_axis_scroll_inverted = self.mouse_data.x_axis_scroll_inverted;
         input_map.mouse_translator.data.y_axis_scroll_inverted = self.mouse_data.y_axis_scroll_inverted;
 
-        input_map.keymap.btn_map = self.input_remappings.iter().map(|x| x.clone()).collect();
+        input_map.keymap = self.input_remappings.iter().map(|x| x.clone()).collect();
 
         input_map
     }
