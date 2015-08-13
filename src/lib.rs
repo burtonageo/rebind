@@ -27,7 +27,7 @@ pub use builder::InputTranslatorBuilder;
 pub trait Action: Copy + PartialEq + Eq + Hash { }
 
 /// A translated action.
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, PartialEq)]
 pub enum Translated<A: Action> {
     /// A keypress event which was bound to an action
     Press(A),
