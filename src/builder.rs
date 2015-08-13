@@ -96,11 +96,7 @@ impl<A: Action> Into<InputTranslator<A>> for InputTranslatorBuilder<A> {
     fn into(self) -> InputTranslator<A> {
         let mut input_map = InputTranslator::new(self.mouse_data.viewport_size);
 
-        input_map.mouse_translator.data.x_axis_motion_inverted = self.mouse_data.x_axis_motion_inverted;
-        input_map.mouse_translator.data.y_axis_motion_inverted = self.mouse_data.y_axis_motion_inverted;
-        input_map.mouse_translator.data.x_axis_scroll_inverted = self.mouse_data.x_axis_scroll_inverted;
-        input_map.mouse_translator.data.y_axis_scroll_inverted = self.mouse_data.y_axis_scroll_inverted;
-
+        input_map.mouse_translator.data = self.mouse_data;
         input_map.keymap = self.input_remappings.iter().map(|x| x.clone()).collect();
 
         input_map
@@ -115,11 +111,7 @@ impl<A: Action> Into<InputRebind<A>> for InputTranslatorBuilder<A> {
     fn into(self) -> InputRebind<A> {
         let mut input_rebind = InputRebind::new(self.mouse_data.viewport_size);
 
-        input_rebind.mouse_data.x_axis_motion_inverted = self.mouse_data.x_axis_motion_inverted;
-        input_rebind.mouse_data.y_axis_motion_inverted = self.mouse_data.y_axis_motion_inverted;
-        input_rebind.mouse_data.x_axis_scroll_inverted = self.mouse_data.x_axis_scroll_inverted;
-        input_rebind.mouse_data.y_axis_scroll_inverted = self.mouse_data.y_axis_scroll_inverted;
-
+        input_rebind.mouse_data = self.mouse_data;
         //input_rebind.keymap.btn_map = self.input_remappings.iter().map(|x| x.clone()).collect();
 
         input_rebind
