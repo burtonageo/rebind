@@ -40,12 +40,14 @@ pub enum Translated<A: Action> {
     Move(Motion)
 }
 
-/// A three-element tuple of Option<Button>. Used as the key of an InputTranslator
+/// A three-element tuple of Option<Button>. For simplicity, a maximum number of 3
+/// buttons can be bound to each action, and this is exposed through the `InputRebind`
+/// struct.
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub struct ButtonTuple(pub Option<Button>, pub Option<Button>, pub Option<Button>);
 
 impl ButtonTuple {
-    /// Creates a new tuple with no buttons in it (equivalent to `Default::default()`)
+    /// Creates a new tuple with no buttons in it (equivalent to `Default::default()`).
     pub fn new() -> Self { Default::default() }
 
     /// Check if the button is in the tuple.
@@ -54,37 +56,21 @@ impl ButtonTuple {
         self.0 == sbtn || self.1 == sbtn || self.2 == sbtn
     }
 
-    #[allow(missing_docs)]
-    pub fn remove_inplace(&mut self, btn: Button) {
-        let sbtn = Some(btn);
-        if self.0 == sbtn {self.0 = None}
-        if self.1 == sbtn {self.1 = None}
-        if self.2 == sbtn {self.2 = None}
-    }
-
-    #[allow(missing_docs)]
-    pub fn replace_inplace(&mut self, btn_idx: u32, btn: Button) -> bool {
-        match btn_idx {
-            0 => {self.0 = Some(btn); true},
-            1 => {self.1 = Some(btn); true},
-            2 => {self.2 = Some(btn); true},
-            _ => false
-        }
-    }
-
-    #[allow(missing_docs)]
-    pub fn insert_inplace(&mut self, btn: Button) -> bool {
+    /// Insert a button into the tuple if there is room, searching from left to right.
+    /// If the button is inserted, returns true. Otherwise, if the button is not inserted,
+    /// this function returns false.
+    pub fn insert_inplace(&mut self, button: Button) -> bool {
         match self {
-            &mut ButtonTuple(a, b, c) if a.is_none() => {*self = ButtonTuple(Some(btn), b, c); true},
-            &mut ButtonTuple(a, b, c) if b.is_none() => {*self = ButtonTuple(a, Some(btn), c); true},
-            &mut ButtonTuple(a, b, c) if c.is_none() => {*self = ButtonTuple(a, b, Some(btn)); true}
+            &mut ButtonTuple(a, b, c) if a.is_none() => {*self = ButtonTuple(Some(button), b, c); true},
+            &mut ButtonTuple(a, b, c) if b.is_none() => {*self = ButtonTuple(a, Some(button), c); true},
+            &mut ButtonTuple(a, b, c) if c.is_none() => {*self = ButtonTuple(a, b, Some(button)); true}
             _ => false
         }
     }
 }
 
 impl Default for ButtonTuple {
-    /// Creates a new tuple with no buttons in it
+    /// Creates a new tuple with no buttons in it.
     fn default() -> Self { ButtonTuple(None, None, None) }
 }
 
