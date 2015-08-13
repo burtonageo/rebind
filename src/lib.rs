@@ -185,7 +185,6 @@ impl MouseTranslator {
     }
 }
 
-
 #[allow(missing_docs)]
 pub struct InputRebind<A: Action> {
     keymap: HashMap<A, ButtonTuple>,
