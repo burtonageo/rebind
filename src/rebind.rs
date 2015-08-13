@@ -1,4 +1,5 @@
 use {Action, ButtonTuple, InputTranslator, MouseTranslationData};
+use input::Button;
 use piston_window::Size;
 use std::collections::HashMap;
 use std::convert::Into;
@@ -99,20 +100,55 @@ impl<A: Action> Default for InputRebind<A> {
 
 impl<A: Action> Into<InputTranslator<A>> for InputRebind<A> {
     #[allow(missing_docs)]
-    fn into(mut self) -> InputTranslator<A> {
+    fn into(self) -> InputTranslator<A> {
         let mut input_translator = InputTranslator::new(self.mouse_data.viewport_size);
         input_translator.mouse_translator.data = self.mouse_data;
-        input_translator.keymap.btn_map = self.keymap.drain().map(|(k, v)| (v, k)).collect();
+        input_translator.keymap.btn_map = self.keymap.values()
+                                                     .flat_map(|&bt| bt.into_iter())
+                                                     .filter_map(|x| x)
+                                                     .zip(self.keymap.keys().map(|x| x.clone()))
+                                                     .collect();
+
         input_translator
     }
 }
 
 impl<A: Action> Into<InputRebind<A>> for InputTranslator<A> {
     #[allow(missing_docs)]
-    fn into(mut self) -> InputRebind<A> {
+    fn into(self) -> InputRebind<A> {
         let mut input_rebind = InputRebind::new(self.mouse_translator.data.viewport_size);
         input_rebind.mouse_data = self.mouse_translator.data;
-        input_rebind.keymap = self.keymap.btn_map.drain().map(|(k, v)| (v, k)).collect();
+        //input_rebind.keymap = self.keymap.btn_map.
+        //input_rebind.keymap = self.keymap.btn_map.drain().map(|(k, v)| (v, k)).collect();
         input_rebind
+    }
+}
+
+impl ButtonTuple {
+    fn into_iter(self) -> ButtonTupleIterator {
+        ButtonTupleIterator {
+            button_tuple: self,
+            i: 0
+        }
+    }
+}
+
+struct ButtonTupleIterator {
+    button_tuple: ButtonTuple,
+    i: usize
+}
+
+impl Iterator for ButtonTupleIterator {
+    type Item = Option<Button>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let i = self.i;
+        self.i += 1;
+        match i {
+            0 => Some(self.button_tuple.0),
+            1 => Some(self.button_tuple.1),
+            2 => Some(self.button_tuple.2),
+            _ => None
+        }
     }
 }

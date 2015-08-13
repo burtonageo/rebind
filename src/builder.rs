@@ -101,11 +101,28 @@ impl<A: Action> Into<InputTranslator<A>> for InputTranslatorBuilder<A> {
         input_map.mouse_translator.data.x_axis_scroll_inverted = self.mouse_data.x_axis_scroll_inverted;
         input_map.mouse_translator.data.y_axis_scroll_inverted = self.mouse_data.y_axis_scroll_inverted;
 
-        //TODO: set key remappings
-        input_map.keymap.btn_map.reserve(self.input_remappings.len());
-        
+        input_map.keymap.btn_map = self.input_remappings.iter().map(|x| x.clone()).collect();
 
         input_map
+    }
+}
+
+#[cfg(unimplemented)]
+use rebind::InputRebind;
+#[cfg(unimplemented)]
+impl<A: Action> Into<InputRebind<A>> for InputTranslatorBuilder<A> {
+    #[allow(missing_docs)]
+    fn into(self) -> InputRebind<A> {
+        let mut input_rebind = InputRebind::new(self.mouse_data.viewport_size);
+
+        input_rebind.mouse_data.x_axis_motion_inverted = self.mouse_data.x_axis_motion_inverted;
+        input_rebind.mouse_data.y_axis_motion_inverted = self.mouse_data.y_axis_motion_inverted;
+        input_rebind.mouse_data.x_axis_scroll_inverted = self.mouse_data.x_axis_scroll_inverted;
+        input_rebind.mouse_data.y_axis_scroll_inverted = self.mouse_data.y_axis_scroll_inverted;
+
+        //input_rebind.keymap.btn_map = self.input_remappings.iter().map(|x| x.clone()).collect();
+
+        input_rebind
     }
 }
 

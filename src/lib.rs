@@ -1,5 +1,4 @@
 #![warn(missing_docs)]
-#![feature(drain)]
 
 extern crate input;
 extern crate piston_window;
@@ -107,7 +106,7 @@ impl<A: Action> InputTranslator<A> {
     /// Translate an Input into a Translated<A> event
     pub fn translate(&self, input: &Input) -> Option<Translated<A>> {
         macro_rules! translate_button(($but_state:ident, $but_var:ident) => (
-            match self.keymap.translate($but_var) {
+            match self.keymap.translate(&$but_var) {
                 Some(act) => Some(Translated::$but_state(act)),
                 None => None
             });
@@ -191,7 +190,7 @@ impl MouseTranslator {
 
 #[derive(Clone, Debug)]
 struct KeyTranslator<A: Action> {
-    btn_map: HashMap<ButtonTuple, A>
+    btn_map: HashMap<Button, A>
 }
 
 impl<A: Action> KeyTranslator<A> {
@@ -201,7 +200,7 @@ impl<A: Action> KeyTranslator<A> {
         }
     }
 
-    fn translate(&self, button: Button) -> Option<A> {
-        self.btn_map.iter().find(|&(&bt, _)| bt.contains(button)).map(|(_, &a)| a)
+    fn translate(&self, button: &Button) -> Option<A> {
+        self.btn_map.get(button).map(|x| *x)
     }
 }
