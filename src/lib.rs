@@ -23,7 +23,7 @@ pub use builder::InputTranslatorBuilder;
 
 /// Represents a logical action to be bound to a particular button press, e.g.
 /// jump, attack, or move forward. Needs to be hashable, as it is used as a
-/// lookup key when rebinding an action to a different key.
+/// lookup key when rebinding an action to a different button.
 pub trait Action: Copy + PartialEq + Eq + Hash { }
 
 /// A translated action.
