@@ -83,7 +83,6 @@ pub struct InputTranslator<A: Action> {
 }
 
 impl<A: Action> InputTranslator<A> {
-
     /// Creates an empty InputTranslator.
     pub fn new(size: Size) -> Self {
         InputTranslator {
@@ -92,7 +91,8 @@ impl<A: Action> InputTranslator<A> {
         }
     }
 
-    /// Translate an Input into a Translated<A> event
+    /// Translate an Input into a Translated<A> event. Returns `None` if there is no
+    /// action associated with the `Input` variant.
     pub fn translate(&self, input: &Input) -> Option<Translated<A>> {
         macro_rules! translate_button(($but_state:ident, $but_var:ident) => (
             match self.keymap.get(&$but_var).map(|x| *x) {
