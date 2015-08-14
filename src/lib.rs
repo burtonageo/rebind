@@ -286,8 +286,10 @@ impl<A: Action> Into<InputTranslator<A>> for InputRebind<A> {
 }
 
 impl<A: Action> Into<InputRebind<A>> for InputTranslator<A> {
-    #[allow(missing_docs)]
+    #[allow(missing_docs, unreachable_code)]
     fn into(self) -> InputRebind<A> {
+        unimplemented!();
+
         let mut input_rebind = InputRebind::new(self.mouse_translator.data.viewport_size);
         input_rebind.mouse_data = self.mouse_translator.data;
         //input_rebind.keymap = self.keymap.btn_map.
