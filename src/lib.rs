@@ -177,7 +177,8 @@ impl MouseTranslator {
     }
 }
 
-#[allow(missing_docs)]
+/// An interface for rebinding keys to actions. This is freely convertable to and
+/// from an InputTranslator.
 pub struct InputRebind<A: Action> {
     keymap: HashMap<A, ButtonTuple>,
     mouse_data: MouseTranslationData
