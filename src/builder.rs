@@ -1,6 +1,6 @@
 use {Action, InputTranslator, MouseTranslationData};
 use input::Button;
-use piston_window::Size;
+use window::Size;
 use std::convert::Into;
 use std::default::Default;
 

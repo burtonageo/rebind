@@ -6,14 +6,14 @@
 //! A library for binding input keys to actions, and manipulating mouse input
 
 extern crate input;
-extern crate piston_window;
+extern crate window;
 extern crate rustc_serialize;
 extern crate viewport;
 
 mod builder;
 
 use input::{Input, Button, Motion};
-use piston_window::Size;
+use window::Size;
 use std::collections::HashMap;
 use std::default::Default;
 use std::hash::Hash;
