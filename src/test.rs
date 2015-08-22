@@ -48,6 +48,5 @@ fn test_conversion_from_rebind_to_translator() {
     let converted_translator = Into::<TestTranslator>::into(
             Into::<TestRebind>::into(translator));
 
-
     assert_eq!(converted_translator, translator_clone);
 }
