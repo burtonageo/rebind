@@ -219,7 +219,7 @@ pub struct InputRebind<A: Action> {
 }
 
 impl<A: Action> InputRebind<A> {
-    #[allow(missing_docs)]
+    /// Creates a new InputRebind with no stored Action/ButtonTuple pairs.
     pub fn new(size: Size) -> Self {
         InputRebind {
             keymap: HashMap::new(),
@@ -227,7 +227,9 @@ impl<A: Action> InputRebind<A> {
         }
     }
 
-    #[allow(missing_docs)]
+    /// Insert an Action into this InputRebind. If the Action is already in the
+    /// InputRebind, then its ButtonTuple will be reset to (None, None, None), and
+    /// the old ButtonTuple will be returned.
     pub fn insert_action(&mut self, action: A) -> Option<ButtonTuple> {
         self.keymap.insert(action, ButtonTuple::new())
     }
