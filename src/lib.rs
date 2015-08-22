@@ -1,4 +1,5 @@
 #![warn(missing_docs)]
+#![feature(slice_patterns)]
 
 //! rebind
 //! =========
@@ -8,6 +9,7 @@
 //! a `HashMap`, so lookup time is constant.
 
 extern crate input;
+extern crate itertools;
 extern crate window;
 extern crate rustc_serialize;
 extern crate viewport;
@@ -292,12 +294,30 @@ impl<A: Action> Into<InputTranslator<A>> for InputRebind<A> {
 impl<A: Action> Into<InputRebind<A>> for InputTranslator<A> {
     #[allow(missing_docs, unreachable_code)]
     fn into(self) -> InputRebind<A> {
-        unimplemented!();
+        use itertools::Itertools;
 
         let mut input_rebind = InputRebind::new(self.mouse_translator.data.viewport_size);
         input_rebind.mouse_data = self.mouse_translator.data;
-        //input_rebind.keymap = self.keymap.btn_map.
-        //input_rebind.keymap = self.keymap.btn_map.drain().map(|(k, v)| (v, k)).collect();
+        input_rebind.keymap = self.keymap.keys()
+                                         .map(|x| vec![Some(x)])
+                                         .coalesce(|b0, b1| if b0 == b1 {
+                                                 Ok(b0.into_iter().chain(b1).collect())
+                                             } else {
+                                                 Err((b0, b1))
+                                             })
+                                         .map(|s| if let [b0, b1, b2] = &s.iter()
+                                                                          .fuse()
+                                                                          .take(3)
+                                                                          .map(|x| x.map(|y| *y))
+                                                                          .collect::<Vec<_>>()[..] {
+                                                 ButtonTuple(b0, b1, b2)
+                                             } else {
+                                                 unreachable!();
+                                             })
+                                         .zip(self.keymap.values().map(|x| *x))
+                                         .map(|(k, v)| (v, k))
+                                         .collect();
+
         input_rebind
     }
 }
