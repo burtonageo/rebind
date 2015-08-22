@@ -45,7 +45,9 @@ fn test_conversion_from_rebind_to_translator() {
     let translator = create_prepopulated_builder().build_translator();
 
     let translator_clone = translator.clone();
-    let converted_translator = Into::<TestRebind>::into(translator).into();
+    let converted_translator = Into::<TestTranslator>::into(
+            Into::<TestRebind>::into(translator));
+
 
     assert_eq!(converted_translator, translator_clone);
 }
