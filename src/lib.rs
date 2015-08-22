@@ -234,74 +234,84 @@ impl<A: Action> InputRebind<A> {
         self.keymap.insert(action, ButtonTuple::new())
     }
 
-    #[allow(missing_docs)]
+    /// Insert an Action into this InputRebind, and assign it to the ButtonTuple.
+    /// If the Action is already in the InputRebind, the old ButtonTuple will be
+    /// returned.
     pub fn insert_action_with_buttons(&mut self, action: A, buttons: ButtonTuple) -> Option<ButtonTuple> {
         self.keymap.insert(action, buttons)
     }
 
-    #[allow(missing_docs)]
+    /// Return a reference to the current ButtonTuple stored for an action. If the action
+    /// is not stored in this InputRebind, then `None` will be returned.
     pub fn get_bindings(&self, action: &A) -> Option<&ButtonTuple> {
         self.keymap.get(action)
     }
 
-    #[allow(missing_docs)]
+    /// Returns a mutable reference to the current ButtonTuple stored for an action. If the
+    /// action is not stored in this InputRebind, then `None` will be returned.
     pub fn get_bindings_mut(&mut self, action: &mut A) -> Option<&mut ButtonTuple> {
         self.keymap.get_mut(action)
     }
 
-    #[allow(missing_docs)]
+    /// Returns a reference to the boolean which represents whether x axis scrolling is inverted.
     pub fn get_x_scroll_inverted(&self) -> &bool {
         &self.mouse_data.x_axis_scroll_inverted
     }
 
-    #[allow(missing_docs)]
+    /// Returns a mutable reference to the boolean which represents whether x axis scrolling is inverted.
     pub fn get_x_scroll_inverted_mut(&mut self) -> &mut bool {
         &mut self.mouse_data.x_axis_scroll_inverted
     }
 
-    #[allow(missing_docs)]
+    /// Returns a reference to the boolean which represents whether y axis scrolling is inverted.
     pub fn get_y_scroll_inverted(&self) -> &bool {
         &self.mouse_data.y_axis_scroll_inverted
     }
 
-    #[allow(missing_docs)]
+    /// Returns a mutable reference to the boolean which represents whether y axis scrolling is inverted.
     pub fn get_y_scroll_inverted_mut(&mut self) -> &mut bool {
         &mut self.mouse_data.y_axis_scroll_inverted
     }
 
-    #[allow(missing_docs)]
+    /// Returns a reference to the boolean which represents whether mouse movement along the x axis is
+    /// inverted.
     pub fn get_x_motion_inverted(&self) -> &bool {
         &self.mouse_data.x_axis_motion_inverted
     }
 
-    #[allow(missing_docs)]
+    /// Returns a mutable reference to the boolean which represents whether mouse movement along the
+    /// x axis is inverted.
     pub fn get_x_motion_inverted_mut(&mut self) -> &mut bool {
         &mut self.mouse_data.x_axis_motion_inverted
     }
 
-    #[allow(missing_docs)]
+    /// Returns a reference to the boolean which represents whether mouse movement along the y axis is
+    /// inverted.
     pub fn get_y_motion_inverted(&self) -> &bool {
         &self.mouse_data.y_axis_motion_inverted
     }
 
-    #[allow(missing_docs)]
+    /// Returns a mutable reference to the boolean which represents whether mouse movement along the
+    /// y axis is inverted.
     pub fn get_y_motion_inverted_mut(&mut self) -> &mut bool {
         &mut self.mouse_data.y_axis_motion_inverted
     }
 
-    #[allow(missing_docs)]
+    /// Returns a reference to the currently stored viewport size used for calculating the imaginary mouse
+    /// position.
     pub fn get_viewport_size(&self) -> &Size {
         &self.mouse_data.viewport_size
     }
 
-    #[allow(missing_docs)]
+    /// Returns a mutable reference to the currently stored viewport size used for calculating the imaginary
+    /// mouse position.
     pub fn get_viewport_size_mut(&mut self) -> &mut Size {
         &mut self.mouse_data.viewport_size
     }
 }
 
 impl<A: Action> Default for InputRebind<A> {
-    #[allow(missing_docs)]
+    /// Creates an `InputRebind` with no pairs. In addition, the viewport size is set to [800, 600].
     fn default() -> Self {
         InputRebind::new((800, 600).into())
     }
