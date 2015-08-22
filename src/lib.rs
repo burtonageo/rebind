@@ -23,6 +23,8 @@ use input::{Input, Button, Motion};
 use window::Size;
 use std::collections::HashMap;
 use std::default::Default;
+use std::cmp::{PartialEq, Eq};
+use std::fmt::{Debug, Formatter, Result};
 use std::hash::Hash;
 use viewport::Viewport;
 
@@ -84,7 +86,7 @@ impl Default for ButtonTuple {
 }
 
 /// An object which translates piston::input::Input events into input_map::Translated<A> events
-#[derive(Clone)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct InputTranslator<A: Action> {
     keymap: HashMap<Button, A>,
     mouse_translator: MouseTranslator
@@ -150,7 +152,30 @@ impl MouseTranslationData {
     }
 }
 
-#[derive(Clone)]
+impl Debug for MouseTranslationData {
+    fn fmt(&self, f: &mut Formatter) -> Result {
+        write!(f, "{}, {}, {}, {}, ({}, {})",
+               self.x_axis_motion_inverted,
+               self.y_axis_motion_inverted,
+               self.x_axis_scroll_inverted,
+               self.y_axis_scroll_inverted,
+               self.viewport_size.width,
+               self.viewport_size.height)
+    }
+}
+
+impl PartialEq for MouseTranslationData {
+    fn eq(&self, other: &Self) -> bool {
+        self.x_axis_motion_inverted == other.x_axis_motion_inverted &&
+        self.y_axis_motion_inverted == other.y_axis_motion_inverted &&
+        self.x_axis_scroll_inverted == other.x_axis_scroll_inverted &&
+        self.y_axis_scroll_inverted == other.y_axis_scroll_inverted &&
+        self.viewport_size.width    == other.viewport_size.width &&
+        self.viewport_size.height   == other.viewport_size.height
+    }
+}
+
+#[derive(Clone, Debug, PartialEq)]
 struct MouseTranslator {
     data: MouseTranslationData
 }
@@ -187,6 +212,7 @@ impl MouseTranslator {
 
 /// An interface for rebinding keys to actions. This is freely convertable to and
 /// from an InputTranslator.
+#[derive(Clone, Debug, PartialEq)]
 pub struct InputRebind<A: Action> {
     keymap: HashMap<A, ButtonTuple>,
     mouse_data: MouseTranslationData
