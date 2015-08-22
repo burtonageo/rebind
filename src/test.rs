@@ -1,6 +1,6 @@
 #![allow(dead_code, unused_variables)]
 
-use {Action, InputTranslator, InputTranslatorBuilder, InputRebind};
+use {Action, InputTranslator, RebindBuilder, InputRebind};
 use window::Size;
 
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]
@@ -11,7 +11,7 @@ enum TestAction {
 
 impl Action for TestAction { }
 
-type TestBuilder = InputTranslatorBuilder<TestAction>;
+type TestBuilder = RebindBuilder<TestAction>;
 type TestTranslator = InputTranslator<TestAction>;
 type TestRebind = InputRebind<TestAction>;
 

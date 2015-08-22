@@ -26,7 +26,7 @@ use std::default::Default;
 use std::hash::Hash;
 use viewport::Viewport;
 
-pub use builder::InputTranslatorBuilder;
+pub use builder::RebindBuilder;
 
 /// Represents a logical action to be bound to a particular button press, e.g.
 /// jump, attack, or move forward. Needs to be hashable, as it is used as a

@@ -5,15 +5,15 @@ use std::convert::Into;
 use std::default::Default;
 
 /// Convenience object for constructing an InputMap
-pub struct InputTranslatorBuilder<A: Action> {
+pub struct RebindBuilder<A: Action> {
     input_remappings: Vec<(Button, A)>,
     mouse_data: MouseTranslationData
 }
 
-impl<A: Action> InputTranslatorBuilder<A> {
+impl<A: Action> RebindBuilder<A> {
     #[allow(missing_docs)]
     pub fn new(size: Size) -> Self {
-        InputTranslatorBuilder {
+        RebindBuilder {
             input_remappings: vec![],
             mouse_data: MouseTranslationData::new(size)
         }
@@ -84,14 +84,14 @@ impl<A: Action> InputTranslatorBuilder<A> {
     pub fn build(self) -> InputTranslator<A> {self.into()}
 }
 
-impl<A: Action> Default for InputTranslatorBuilder<A> {
+impl<A: Action> Default for RebindBuilder<A> {
     #[allow(missing_docs)]
     fn default() -> Self {
         Self::new((800, 600).into())
     }
 }
 
-impl<A: Action> Into<InputTranslator<A>> for InputTranslatorBuilder<A> {
+impl<A: Action> Into<InputTranslator<A>> for RebindBuilder<A> {
     #[allow(missing_docs)]
     fn into(self) -> InputTranslator<A> {
         let mut input_map = InputTranslator::new(self.mouse_data.viewport_size);
@@ -106,7 +106,7 @@ impl<A: Action> Into<InputTranslator<A>> for InputTranslatorBuilder<A> {
 #[cfg(unimplemented)]
 use rebind::InputRebind;
 #[cfg(unimplemented)]
-impl<A: Action> Into<InputRebind<A>> for InputTranslatorBuilder<A> {
+impl<A: Action> Into<InputRebind<A>> for RebindBuilder<A> {
     #[allow(missing_docs)]
     fn into(self) -> InputRebind<A> {
         let mut input_rebind = InputRebind::new(self.mouse_data.viewport_size);
