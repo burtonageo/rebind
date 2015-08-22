@@ -13,8 +13,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  
-Main improvements to be made (in order from most important to least important):
--------------------------------------------------------------------------------
+Main improvements to be made:
+-----------------------------
  
 * Implement conversion from InputTranslator to InputRebind
 * Improve the API: Is the distinction between InputRebind and InputTranslator necessary or useful?
