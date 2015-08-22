@@ -3,7 +3,9 @@
 //! rebind
 //! =========
 //!
-//! A library for binding input keys to actions, and manipulating mouse input
+//! A library for binding input keys to actions, and modifying mouse behaviour. Keys can be
+//! bound to actions, and then translated during runtime. `Keys` are mapped to `Actions` using
+//! a `HashMap`, so lookup time is constant.
 
 extern crate input;
 extern crate window;
