@@ -16,6 +16,9 @@ extern crate viewport;
 
 mod builder;
 
+#[cfg(test)]
+mod test;
+
 use input::{Input, Button, Motion};
 use window::Size;
 use std::collections::HashMap;
