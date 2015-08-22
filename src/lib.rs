@@ -333,7 +333,7 @@ impl<A: Action> Into<InputTranslator<A>> for InputRebind<A> {
 }
 
 impl<A: Action> Into<InputRebind<A>> for InputTranslator<A> {
-    #[allow(missing_docs, unreachable_code)]
+    #[allow(missing_docs)]
     fn into(self) -> InputRebind<A> {
         use itertools::Itertools;
 
