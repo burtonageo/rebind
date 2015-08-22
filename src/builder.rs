@@ -97,7 +97,7 @@ impl<A: Action> Into<InputTranslator<A>> for RebindBuilder<A> {
         let mut input_map = InputTranslator::new(self.mouse_data.viewport_size);
 
         input_map.mouse_translator.data = self.mouse_data;
-        input_map.keymap = self.input_remappings.iter().map(|x| x.clone()).collect();
+        input_map.keymap = self.input_remappings.iter().cloned().collect();
 
         input_map
     }
