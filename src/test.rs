@@ -37,17 +37,15 @@ fn create_prepopulated_builder() -> TestBuilder {
 
 #[test]
 fn test_empty() {
-    let builder = TestBuilder::new(TEST_SIZE).build();
+    let builder = TestBuilder::new(TEST_SIZE).build_translator();
 }
 
 #[test]
 fn test_conversion_from_rebind_to_translator() {
-    let translator: TestTranslator = create_prepopulated_builder().build();
+    let translator = create_prepopulated_builder().build_translator();
+
     let translator_clone = translator.clone();
-    let converted_translator: TestTranslator = {
-        let rebind = translator.into();
-        rebind.into()
-    };
+    let converted_translator = Into::<TestRebind>::into(translator).into();
 
     assert_eq!(converted_translator, translator_clone);
 }
