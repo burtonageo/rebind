@@ -45,7 +45,7 @@ fn test_conversion_from_rebind_to_translator() {
     let translator: TestTranslator = create_prepopulated_builder().build();
     let translator_clone = translator.clone();
     let converted_translator: TestTranslator = {
-        let rebind: TestRebind = translator.into();
+        let rebind = translator.into();
         rebind.into()
     };
 
