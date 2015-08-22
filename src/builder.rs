@@ -1,4 +1,4 @@
-use {Action, InputTranslator, MouseTranslationData};
+use {Action, InputTranslator, InputRebind, MouseTranslationData};
 use input::Button;
 use window::Size;
 use std::convert::Into;
@@ -81,7 +81,10 @@ impl<A: Action> RebindBuilder<A> {
     }
 
     #[allow(missing_docs)]
-    pub fn build(self) -> InputTranslator<A> {self.into()}
+    pub fn build_translator(self) -> InputTranslator<A> { self.into() }
+
+    #[allow(missing_docs)]
+    pub fn build_rebind(self) -> InputRebind<A> { self.into() }
 }
 
 impl<A: Action> Default for RebindBuilder<A> {
@@ -103,12 +106,11 @@ impl<A: Action> Into<InputTranslator<A>> for RebindBuilder<A> {
     }
 }
 
-#[cfg(unimplemented)]
-use rebind::InputRebind;
-#[cfg(unimplemented)]
 impl<A: Action> Into<InputRebind<A>> for RebindBuilder<A> {
-    #[allow(missing_docs)]
+    #[allow(missing_docs, dead_code, unused_variables, unreachable_code)]
     fn into(self) -> InputRebind<A> {
+        unimplemented!();
+
         let mut input_rebind = InputRebind::new(self.mouse_data.viewport_size);
 
         input_rebind.mouse_data = self.mouse_data;
