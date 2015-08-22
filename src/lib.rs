@@ -61,10 +61,11 @@ impl ButtonTuple {
     /// If the button is inserted, returns true. Otherwise, if the button is not inserted,
     /// this function returns false.
     pub fn insert_inplace(&mut self, button: Button) -> bool {
+        let sbtn = Some(button);
         match self {
-            &mut ButtonTuple(a, b, c) if a.is_none() => {*self = ButtonTuple(Some(button), b, c); true},
-            &mut ButtonTuple(a, b, c) if b.is_none() => {*self = ButtonTuple(a, Some(button), c); true},
-            &mut ButtonTuple(a, b, c) if c.is_none() => {*self = ButtonTuple(a, b, Some(button)); true}
+            &mut ButtonTuple(a, b, c) if a.is_none() => {*self = ButtonTuple(sbtn, b, c); true},
+            &mut ButtonTuple(a, b, c) if b.is_none() => {*self = ButtonTuple(a, sbtn, c); true},
+            &mut ButtonTuple(a, b, c) if c.is_none() => {*self = ButtonTuple(a, b, sbtn); true}
             _ => false
         }
     }
