@@ -349,7 +349,7 @@ impl<A: Action> Into<InputRebind<A>> for InputTranslator<A> {
                                          .map(|s| if let [b0, b1, b2] = &s.iter()
                                                                           .fuse()
                                                                           .take(3)
-                                                                          .map(|x| x.map(|y| *y))
+                                                                          .map(|x| x.cloned())
                                                                           .collect::<Vec<_>>()[..] {
                                                  ButtonTuple(b0, b1, b2)
                                              } else {
