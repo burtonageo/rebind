@@ -318,7 +318,6 @@ impl<A: Action> Default for InputRebind<A> {
 }
 
 impl<A: Action> Into<InputTranslator<A>> for InputRebind<A> {
-    #[allow(missing_docs)]
     fn into(self) -> InputTranslator<A> {
         let mut input_translator = InputTranslator::new(self.mouse_data.viewport_size);
         input_translator.mouse_translator.data = self.mouse_data;
@@ -333,7 +332,6 @@ impl<A: Action> Into<InputTranslator<A>> for InputRebind<A> {
 }
 
 impl<A: Action> Into<InputRebind<A>> for InputTranslator<A> {
-    #[allow(missing_docs)]
     fn into(self) -> InputRebind<A> {
         use itertools::Itertools;
 
