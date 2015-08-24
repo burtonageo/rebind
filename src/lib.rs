@@ -78,11 +78,47 @@ impl ButtonTuple {
             _ => false
         }
     }
+
+    /// Returns an iterator over this tuple.
+    pub fn iter(&self) -> ButtonTupleIter { (*self).into_iter() }
 }
 
 impl Default for ButtonTuple {
     /// Creates a new tuple with no buttons in it.
     fn default() -> Self { ButtonTuple(None, None, None) }
+}
+
+impl IntoIterator for ButtonTuple {
+    type Item = Option<Button>;
+    type IntoIter = ButtonTupleIter;
+
+    fn into_iter(self) -> ButtonTupleIter {
+        ButtonTupleIter {
+            button_tuple: self,
+            i: 0
+        }
+    }
+}
+
+/// An iterator over a ButtonTuple.
+pub struct ButtonTupleIter {
+    button_tuple: ButtonTuple,
+    i: usize
+}
+
+impl Iterator for ButtonTupleIter {
+    type Item = Option<Button>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let i = self.i;
+        self.i += 1;
+        match i {
+            0 => Some(self.button_tuple.0),
+            1 => Some(self.button_tuple.1),
+            2 => Some(self.button_tuple.2),
+            _ => None
+        }
+    }
 }
 
 /// An object which translates piston::input::Input events into input_map::Translated<A> events
@@ -358,34 +394,5 @@ impl<A: Action> Into<InputRebind<A>> for InputTranslator<A> {
                                          .collect();
 
         input_rebind
-    }
-}
-
-impl ButtonTuple {
-    fn into_iter(self) -> ButtonTupleIterator {
-        ButtonTupleIterator {
-            button_tuple: self,
-            i: 0
-        }
-    }
-}
-
-struct ButtonTupleIterator {
-    button_tuple: ButtonTuple,
-    i: usize
-}
-
-impl Iterator for ButtonTupleIterator {
-    type Item = Option<Button>;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        let i = self.i;
-        self.i += 1;
-        match i {
-            0 => Some(self.button_tuple.0),
-            1 => Some(self.button_tuple.1),
-            2 => Some(self.button_tuple.2),
-            _ => None
-        }
     }
 }
