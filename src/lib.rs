@@ -325,7 +325,7 @@ impl<A: Action> Into<InputTranslator<A>> for InputRebind<A> {
         input_translator.keymap = self.keymap.values()
                                              .flat_map(|&bt| bt.into_iter())
                                              .filter_map(|x| x)
-                                             .zip(self.keymap.keys().map(|x| *x))
+                                             .zip(self.keymap.keys().cloned())
                                              .collect();
 
         input_translator
@@ -355,7 +355,7 @@ impl<A: Action> Into<InputRebind<A>> for InputTranslator<A> {
                                              } else {
                                                  unreachable!();
                                              })
-                                         .zip(self.keymap.values().map(|x| *x))
+                                         .zip(self.keymap.values().cloned())
                                          .map(|(k, v)| (v, k))
                                          .collect();
 
