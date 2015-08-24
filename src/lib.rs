@@ -173,6 +173,7 @@ struct MouseTranslationData {
     y_axis_motion_inverted: bool,
     x_axis_scroll_inverted: bool,
     y_axis_scroll_inverted: bool,
+    _sensitivity: f64,
     viewport_size: Size
 }
 
@@ -183,6 +184,7 @@ impl MouseTranslationData {
             y_axis_motion_inverted: false,
             x_axis_scroll_inverted: false,
             y_axis_scroll_inverted: false,
+            _sensitivity: 0.0,
             viewport_size: size
         }
     }
@@ -190,11 +192,12 @@ impl MouseTranslationData {
 
 impl Debug for MouseTranslationData {
     fn fmt(&self, f: &mut Formatter) -> Result {
-        write!(f, "{}, {}, {}, {}, ({}, {})",
+        write!(f, "{}, {}, {}, {}, {}, ({}, {})",
                self.x_axis_motion_inverted,
                self.y_axis_motion_inverted,
                self.x_axis_scroll_inverted,
                self.y_axis_scroll_inverted,
+               self._sensitivity,
                self.viewport_size.width,
                self.viewport_size.height)
     }
@@ -206,6 +209,7 @@ impl PartialEq for MouseTranslationData {
         self.y_axis_motion_inverted == other.y_axis_motion_inverted &&
         self.x_axis_scroll_inverted == other.x_axis_scroll_inverted &&
         self.y_axis_scroll_inverted == other.y_axis_scroll_inverted &&
+        self._sensitivity == other._sensitivity &&
         self.viewport_size.width    == other.viewport_size.width &&
         self.viewport_size.height   == other.viewport_size.height
     }
