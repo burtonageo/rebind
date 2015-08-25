@@ -371,7 +371,7 @@ impl<A: Action> Into<InputTranslator<A>> for InputRebind<A> {
     }
 }
 
-impl<A: Action + Debug> Into<InputRebind<A>> for InputTranslator<A> {
+impl<A: Action> Into<InputRebind<A>> for InputTranslator<A> {
     fn into(self) -> InputRebind<A> {
         use itertools::Itertools;
 
