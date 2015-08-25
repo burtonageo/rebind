@@ -1,7 +1,6 @@
 #![allow(dead_code, unused_variables)]
 
 use {Action, InputTranslator, RebindBuilder, InputRebind};
-use window::Size;
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, Ord, PartialOrd)]
 enum TestAction {
@@ -15,16 +14,11 @@ type TestBuilder = RebindBuilder<TestAction>;
 type TestTranslator = InputTranslator<TestAction>;
 type TestRebind = InputRebind<TestAction>;
 
-const TEST_SIZE: Size = Size {
-    width:  800,
-    height: 600
-};
-
 fn create_prepopulated_builder() -> TestBuilder {
     use input::keyboard::Key;
     use input::Button::Keyboard;
 
-    RebindBuilder::new(TEST_SIZE)
+    RebindBuilder::default()
         .with_action_mapping(Keyboard(Key::Up),    TestAction::Action1)
         .with_action_mapping(Keyboard(Key::W),     TestAction::Action1)
         .with_action_mapping(Keyboard(Key::Down),  TestAction::Action2)
