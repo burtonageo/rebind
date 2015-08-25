@@ -23,7 +23,7 @@ use input::{Input, Button, Motion};
 use window::Size;
 use std::collections::HashMap;
 use std::default::Default;
-use std::cmp::{PartialEq, Eq};
+use std::cmp::{PartialEq, Eq, PartialOrd, Ord};
 use std::fmt::{Debug, Formatter, Result};
 use std::hash::Hash;
 use viewport::Viewport;
@@ -33,7 +33,7 @@ pub use builder::RebindBuilder;
 /// Represents a logical action to be bound to a particular button press, e.g.
 /// jump, attack, or move forward. Needs to be hashable, as it is used as a
 /// lookup key when rebinding an action to a different button.
-pub trait Action: Copy + PartialEq + Eq + Hash { }
+pub trait Action: Copy + PartialEq + Eq + Hash + PartialOrd + Ord { }
 
 /// A translated action.
 #[derive(Debug, Copy, Clone, PartialEq)]
@@ -371,30 +371,30 @@ impl<A: Action> Into<InputTranslator<A>> for InputRebind<A> {
     }
 }
 
-impl<A: Action> Into<InputRebind<A>> for InputTranslator<A> {
+impl<A: Action + Debug> Into<InputRebind<A>> for InputTranslator<A> {
     fn into(self) -> InputRebind<A> {
         use itertools::Itertools;
 
         let mut input_rebind = InputRebind::new(self.mouse_translator.data.viewport_size);
         input_rebind.mouse_data = self.mouse_translator.data;
-        input_rebind.keymap = self.keymap.keys()
-                                         .map(|x| vec![Some(x)])
-                                         .coalesce(|b0, b1| if b0 == b1 {
-                                                 Ok(b0.into_iter().chain(b1).collect())
+        input_rebind.keymap = self.keymap.iter()
+                                         .map(|(k, v)| (*v, vec![Some(*k)]))
+                                         .sorted_by(|&(v0, _), &(v1, _)| Ord::cmp(&v0, &v1))
+                                         .into_iter()
+                                         .coalesce(|(k0, v0), (k1, v1)| if k0 == k1 {
+                                                 Ok((k0, v0.into_iter().chain(v1).collect()))
                                              } else {
-                                                 Err((b0, b1))
+                                                 Err(((k0, v0), (k1, v1)))
                                              })
-                                         .map(|s| if let [b0, b1, b2] = &s.iter()
-                                                                          .fuse()
-                                                                          .take(3)
-                                                                          .map(|x| x.cloned())
-                                                                          .collect::<Vec<_>>()[..] {
-                                                 ButtonTuple(b0, b1, b2)
+                                         .map(|(k, v)| if let [b0, b1, b2] = &v.iter()
+                                                                               .cloned()
+                                                                               .pad_using(3, |_| None)
+                                                                               .take(3)
+                                                                               .collect::<Vec<_>>()[..] {
+                                                  (k, ButtonTuple(b0, b1, b2))
                                              } else {
                                                  unreachable!();
                                              })
-                                         .zip(self.keymap.values().cloned())
-                                         .map(|(k, v)| (v, k))
                                          .collect();
 
         input_rebind

@@ -3,7 +3,7 @@
 use {Action, InputTranslator, RebindBuilder, InputRebind};
 use window::Size;
 
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, Ord, PartialOrd)]
 enum TestAction {
     Action1, Action2, Action3, Action4, Action5,
     Action6, Action7, Action8, Action9, Action10
