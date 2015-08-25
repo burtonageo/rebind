@@ -36,11 +36,6 @@ fn create_prepopulated_builder() -> TestBuilder {
 }
 
 #[test]
-fn test_empty() {
-    let builder = TestBuilder::new(TEST_SIZE).build_translator();
-}
-
-#[test]
 fn test_conversion_from_rebind_to_translator() {
     let translator = create_prepopulated_builder().build_translator();
 
