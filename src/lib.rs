@@ -141,7 +141,7 @@ impl<A: Action> InputTranslator<A> {
     /// action associated with the `Input` variant.
     pub fn translate(&self, input: &Input) -> Option<Translated<A>> {
         macro_rules! translate_button(($but_state:ident, $but_var:ident) => (
-            match self.keymap.get(&$but_var).map(|x| *x) {
+            match self.keymap.get(&$but_var).cloned() {
                 Some(act) => Some(Translated::$but_state(act)),
                 None => None
             });
