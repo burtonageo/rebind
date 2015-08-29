@@ -93,7 +93,7 @@ impl IntoIterator for ButtonTuple {
     type Item = Option<Button>;
     type IntoIter = ButtonTupleIter;
 
-    fn into_iter(self) -> ButtonTupleIter {
+    fn into_iter(self) -> Self::IntoIter {
         ButtonTupleIter {
             button_tuple: self,
             i: 0
