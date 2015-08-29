@@ -4,7 +4,7 @@ use window::Size;
 use std::convert::Into;
 use std::default::Default;
 
-/// Convenience object for constructing an InputMap
+/// Convenience object for constructing an InputMap.
 pub struct RebindBuilder<A: Action> {
     input_remappings: Vec<(Button, A)>,
     mouse_data: MouseTranslationData
