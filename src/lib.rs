@@ -361,11 +361,18 @@ impl<A: Action> Into<InputTranslator<A>> for InputRebind<A> {
     fn into(self) -> InputTranslator<A> {
         let mut input_translator = InputTranslator::new(self.mouse_data.viewport_size);
         input_translator.mouse_translator.data = self.mouse_data;
-        input_translator.keymap = self.keymap.values()
-                                             .flat_map(|&bt| bt.into_iter())
-                                             .filter_map(|x| x)
-                                             .zip(self.keymap.keys().cloned())
-                                             .collect();
+        let key_vec = self.keymap.values()
+                                 .flat_map(|bt| bt.into_iter().filter_map(|x| x))
+                                 .collect::<Vec<_>>();
+
+        input_translator.keymap.reserve(key_vec.len());
+        for &k in &key_vec {
+            for (&a, bt) in self.keymap.iter() {
+                if bt.contains(k) {
+                    input_translator.keymap.insert(k, a);
+                }
+            }
+        }
 
         input_translator
     }
