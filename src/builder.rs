@@ -88,14 +88,12 @@ impl<A: Action> RebindBuilder<A> {
 }
 
 impl<A: Action> Default for RebindBuilder<A> {
-    #[allow(missing_docs)]
     fn default() -> Self {
         Self::new((800, 600).into())
     }
 }
 
 impl<A: Action> Into<InputTranslator<A>> for RebindBuilder<A> {
-    #[allow(missing_docs)]
     fn into(self) -> InputTranslator<A> {
         let mut input_map = InputTranslator::new(self.mouse_data.viewport_size);
 
@@ -107,7 +105,7 @@ impl<A: Action> Into<InputTranslator<A>> for RebindBuilder<A> {
 }
 
 impl<A: Action> Into<InputRebind<A>> for RebindBuilder<A> {
-    #[allow(missing_docs, dead_code, unused_variables, unreachable_code)]
+    #[allow(dead_code, unused_variables, unreachable_code)]
     fn into(self) -> InputRebind<A> {
         unimplemented!();
 
