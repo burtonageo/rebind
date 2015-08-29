@@ -1,6 +1,9 @@
 #![allow(dead_code, unused_variables)]
 
-use {Action, InputTranslator, RebindBuilder, InputRebind};
+use {Action, InputTranslator, RebindBuilder, InputRebind, Translated};
+use input::Input;
+use input::Button::Keyboard;
+use input::keyboard::Key;
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, Ord, PartialOrd)]
 enum TestAction {
@@ -15,9 +18,6 @@ type TestTranslator = InputTranslator<TestAction>;
 type TestRebind = InputRebind<TestAction>;
 
 fn create_prepopulated_builder() -> TestBuilder {
-    use input::keyboard::Key;
-    use input::Button::Keyboard;
-
     RebindBuilder::default()
         .with_action_mapping(Keyboard(Key::Up),    TestAction::Action1)
         .with_action_mapping(Keyboard(Key::W),     TestAction::Action1)
@@ -27,6 +27,23 @@ fn create_prepopulated_builder() -> TestBuilder {
         .with_action_mapping(Keyboard(Key::A),     TestAction::Action3)
         .with_action_mapping(Keyboard(Key::Right), TestAction::Action4)
         .with_action_mapping(Keyboard(Key::D),     TestAction::Action4)
+}
+
+#[test]
+fn test_translator_get_action_from_buttonpress() {
+    let translator = create_prepopulated_builder().build_translator();
+
+    assert_eq!(translator.translate(&Input::Press(Keyboard(Key::Down))).unwrap(),
+               Translated::Press(TestAction::Action2));
+
+    assert_eq!(translator.translate(&Input::Press(Keyboard(Key::D))).unwrap(),
+               Translated::Press(TestAction::Action4));
+
+    assert_eq!(translator.translate(&Input::Press(Keyboard(Key::Left))).unwrap(),
+               Translated::Press(TestAction::Action3));
+
+    assert_eq!(translator.translate(&Input::Press(Keyboard(Key::W))).unwrap(),
+               Translated::Press(TestAction::Action1));
 }
 
 #[test]
