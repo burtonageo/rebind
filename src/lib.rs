@@ -20,6 +20,7 @@ mod builder;
 mod test;
 
 use input::{Input, Button, Motion};
+use itertools::Itertools;
 use window::Size;
 use std::collections::HashMap;
 use std::default::Default;
@@ -380,8 +381,6 @@ impl<A: Action> Into<InputTranslator<A>> for InputRebind<A> {
 
 impl<A: Action> Into<InputRebind<A>> for InputTranslator<A> {
     fn into(self) -> InputRebind<A> {
-        use itertools::Itertools;
-
         let mut input_rebind = InputRebind::new(self.mouse_translator.data.viewport_size);
         input_rebind.mouse_data = self.mouse_translator.data;
         input_rebind.keymap = self.keymap.iter()
