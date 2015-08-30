@@ -24,7 +24,7 @@ use itertools::Itertools;
 use window::Size;
 use std::collections::HashMap;
 use std::default::Default;
-use std::cmp::{PartialEq, Eq, PartialOrd, Ord};
+use std::cmp::{PartialEq, Eq, Ord};
 use std::fmt::{Debug, Formatter, Result};
 use std::hash::Hash;
 use viewport::Viewport;
@@ -34,7 +34,7 @@ pub use builder::RebindBuilder;
 /// Represents a logical action to be bound to a particular button press, e.g.
 /// jump, attack, or move forward. Needs to be hashable, as it is used as a
 /// lookup key when rebinding an action to a different button.
-pub trait Action: Copy + Eq + Hash + Ord + PartialEq + PartialOrd { }
+pub trait Action: Copy + Eq + Hash + Ord { }
 
 /// A translated action.
 #[derive(Debug, Copy, Clone, PartialEq)]
