@@ -10,9 +10,9 @@
 
 extern crate input;
 extern crate itertools;
-extern crate window;
 extern crate rustc_serialize;
 extern crate viewport;
+extern crate window;
 
 mod builder;
 
@@ -21,13 +21,13 @@ mod test;
 
 use input::{Input, Button, Motion};
 use itertools::Itertools;
-use window::Size;
+use std::cmp::{PartialEq, Eq, Ord};
 use std::collections::HashMap;
 use std::default::Default;
-use std::cmp::{PartialEq, Eq, Ord};
 use std::fmt::{Debug, Formatter, Result};
 use std::hash::Hash;
 use viewport::Viewport;
+use window::Size;
 
 pub use builder::RebindBuilder;
 
