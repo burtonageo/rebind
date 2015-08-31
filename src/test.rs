@@ -1,6 +1,6 @@
 #![allow(dead_code, unused_variables)]
 
-use {Action, InputTranslator, RebindBuilder, InputRebind, Translated};
+use {Action, ButtonTuple, InputTranslator, RebindBuilder, InputRebind, Translated};
 use input::Input;
 use input::Button::Keyboard;
 use input::keyboard::Key;
@@ -55,4 +55,20 @@ fn test_conversion_from_rebind_to_translator() {
             Into::<TestRebind>::into(translator));
 
     assert_eq!(translator_clone, converted_translator);
+}
+
+#[test]
+fn test_add_button_to_translator_using_rebind() {
+    use input::Button;
+    const Q_KEY: Button = Keyboard(Key::Q);
+    const E_KEY: Button = Keyboard(Key::E);
+
+    let translator = create_prepopulated_builder().build_translator();
+    let mut rebind = translator.into_rebind();
+    rebind.insert_action_with_buttons(TestAction::Action5, ButtonTuple(Some(Q_KEY), Some(E_KEY), None));
+
+    let translator = rebind.into_translator();
+
+    assert_eq!(translator.translate(&Input::Press(Q_KEY)), Some(Translated::Press(TestAction::Action5)));
+    assert_eq!(translator.translate(&Input::Press(E_KEY)), Some(Translated::Press(TestAction::Action5)));
 }
