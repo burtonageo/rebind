@@ -166,6 +166,10 @@ impl<A: Action> InputTranslator<A> {
     pub fn set_size_from_viewport(&mut self, vp: Viewport) {
         self.set_size(Size::from(vp.draw_size));
     }
+
+    /// Convert the `InputTranslator` into an `InputRebind`. Consumes the
+    /// `InputTranslator`.
+    pub fn into_rebind(self) -> InputRebind<A> { self.into() }
 }
 
 #[derive(Clone)]
@@ -349,6 +353,10 @@ impl<A: Action> InputRebind<A> {
     pub fn get_viewport_size_mut(&mut self) -> &mut Size {
         &mut self.mouse_data.viewport_size
     }
+
+    /// Convert the `InputRebind` into an `InputTranslator`. Consumes the
+    /// `InputRebind`.
+    pub fn into_translator(self) -> InputTranslator<A> { self.into() }
 }
 
 impl<A: Action> Default for InputRebind<A> {
