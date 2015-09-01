@@ -90,10 +90,7 @@ impl App {
         // draw the cursor dot
         {
             let dot = ellipse::circle(self.cursor_pos[0], self.cursor_pos[1], 5.0);
-            gl_graphics.draw(args.viewport(), |c, gl| {
-                let transform = c.transform.trans(0.0, 0.0);
-                ellipse([0.0, 1.0, 0.0, 1.0], dot, transform, gl)
-            })
+            gl_graphics.draw(args.viewport(), |c, gl| ellipse([0.0, 1.0, 0.0, 1.0], dot, c.transform, gl))
         }
     }
 }
