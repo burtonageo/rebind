@@ -51,10 +51,10 @@ pub enum Translated<A: Action> {
     Move(Motion)
 }
 
-/// A three-element tuple of Option<Button>. For simplicity, a maximum number of 3
+/// A three-element tuple of `Option<Button>`. For simplicity, a maximum number of 3
 /// buttons can be bound to each action, and this is exposed through the `InputRebind`
 /// struct.
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, Eq, Hash, PartialEq)]
 pub struct ButtonTuple(pub Option<Button>, pub Option<Button>, pub Option<Button>);
 
 impl ButtonTuple {
@@ -82,11 +82,6 @@ impl ButtonTuple {
 
     /// Returns an iterator over this tuple.
     pub fn iter(&self) -> ButtonTupleIter { (*self).into_iter() }
-}
-
-impl Default for ButtonTuple {
-    /// Creates a new tuple with no buttons in it.
-    fn default() -> Self { ButtonTuple(None, None, None) }
 }
 
 impl IntoIterator for ButtonTuple {
