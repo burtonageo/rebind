@@ -73,7 +73,7 @@ impl<A: Action> RebindBuilder<A> {
 
     /// Sets the viewport size used for mouse position calculations.
     pub fn viewport_size(mut self, size: Size) -> Self {
-        self.mouse_data.viewport_size = sz;
+        self.mouse_data.viewport_size = size;
         self
     }
 
@@ -84,7 +84,7 @@ impl<A: Action> RebindBuilder<A> {
 
     /// Add an association between the Button and Action in the built object.
     pub fn with_action_mapping(mut self, button: Button, action: A) -> Self {
-        self.input_remappings.push((but, act));
+        self.input_remappings.push((button, action));
         self
     }
 
