@@ -11,7 +11,15 @@ use glutin_window::GlutinWindow;
 use graphics::*;
 use opengl_graphics::{GlGraphics, OpenGL};
 use piston::event_loop::{EventMap, Events};
-use piston::input::{Event, Input, RenderArgs, RenderEvent, UpdateArgs, UpdateEvent};
+use piston::input::{
+    Event,
+    Input,
+    Motion,
+    RenderArgs,
+    RenderEvent,
+    UpdateArgs,
+    UpdateEvent
+};
 use piston::input::keyboard::Key;
 use piston::input::Button::Keyboard;
 use piston::window::WindowSettings;
@@ -24,6 +32,7 @@ struct App {
     graphics: Rc<RefCell<GlGraphics>>,
     translator: InputTranslator<CharacterAction>,
     character: Character,
+    cursor_pos: [f64; 2],
     bg_color: [f32; 4]
 }
 
@@ -47,7 +56,10 @@ impl App {
                 Translated::Release(_) => {
                     self.character.current_velocity = [0.0, 0.0];
                 },
-                Translated::Move(motion) => { }
+                Translated::Move(Motion::MouseCursor(x, y)) => {
+                    self.cursor_pos = [x, y];
+                }
+                _ => { }
             }
         }
     }
@@ -73,6 +85,15 @@ impl App {
                 let transform = c.transform.trans(x, y);
                 rectangle(self.character.color, square, transform, gl);
             });
+        }
+        
+        // draw the cursor dot
+        {
+            let dot = ellipse::circle(self.cursor_pos[0], self.cursor_pos[1], 5.0);
+            gl_graphics.draw(args.viewport(), |c, gl| {
+                let transform = c.transform.trans(0.0, 0.0);
+                ellipse([0.0, 1.0, 0.0, 1.0], dot, transform, gl)
+            })
         }
     }
 }
@@ -135,6 +156,7 @@ fn main() {
         graphics: Rc::new(RefCell::new(gl_graphics)),
         translator: translator,
         character: character,
+        cursor_pos: [0.0, 0.0],
         bg_color: [0.0, 0.0, 0.0, 1.0] // black background
     };
     
