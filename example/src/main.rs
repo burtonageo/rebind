@@ -46,10 +46,10 @@ impl App {
                             
                         },
                         CharacterAction::MoveLeft => {
-                            self.character.current_velocity[0] += 0.5
+                            self.character.current_velocity[0] += 0.5;
                         },
                         CharacterAction::MoveRight => {
-                            self.character.current_velocity[0] -= 0.5
+                            self.character.current_velocity[0] -= 0.5;
                         }
                     }
                 },
