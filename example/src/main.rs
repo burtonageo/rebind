@@ -32,7 +32,7 @@ struct App {
     graphics: Rc<RefCell<GlGraphics>>,
     translator: InputTranslator<CharacterAction>,
     character: Character,
-    cursor_pos: [f64; 2],
+    virtual_cursor_pos: [f64; 2],
     bg_color: [f32; 4]
 }
 
@@ -62,7 +62,7 @@ impl App {
                     self.character.current_velocity = [0.0, 0.0];
                 },
                 Translated::Move(Motion::MouseCursor(x, y)) => {
-                    self.cursor_pos = [x, y];
+                    self.virtual_cursor_pos = [x, y];
                 },
                 _ => { }
             }
@@ -95,7 +95,7 @@ impl App {
 
         // draw the cursor dot
         {
-            let dot = ellipse::circle(self.cursor_pos[0], self.cursor_pos[1], 5.0);
+            let dot = ellipse::circle(self.virtual_cursor_pos[0], self.virtual_cursor_pos[1], 5.0);
             gl_graphics.draw(args.viewport(), |c, gl| ellipse([0.0, 1.0, 0.0, 1.0], dot, c.transform, gl));
         }
     }
@@ -150,6 +150,7 @@ fn main() {
         .with_action_mapping(Keyboard(Key::A),     CharacterAction::MoveLeft)
         .with_action_mapping(Keyboard(Key::Right), CharacterAction::MoveRight)
         .with_action_mapping(Keyboard(Key::D),     CharacterAction::MoveRight)
+        .x_motion_inverted(true)
         .build_translator();
 
     let character = Character::new([1.0, 0.0, 0.0, 1.0],
@@ -161,7 +162,7 @@ fn main() {
         graphics: Rc::new(RefCell::new(gl_graphics)),
         translator: translator,
         character: character,
-        cursor_pos: [0.0, 0.0],
+        virtual_cursor_pos: [0.0, 0.0],
         bg_color: [0.0, 0.0, 0.0, 1.0] // black background
     };
 
