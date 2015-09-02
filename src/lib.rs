@@ -184,7 +184,7 @@ impl MouseTranslationData {
             y_axis_motion_inverted: false,
             x_axis_scroll_inverted: false,
             y_axis_scroll_inverted: false,
-            _sensitivity: 0.0,
+            sensitivity: 0.0,
             viewport_size: size
         }
     }
@@ -197,7 +197,7 @@ impl Debug for MouseTranslationData {
                self.y_axis_motion_inverted,
                self.x_axis_scroll_inverted,
                self.y_axis_scroll_inverted,
-               self._sensitivity,
+               self.sensitivity,
                self.viewport_size.width,
                self.viewport_size.height)
     }
@@ -209,7 +209,7 @@ impl PartialEq for MouseTranslationData {
         self.y_axis_motion_inverted == other.y_axis_motion_inverted &&
         self.x_axis_scroll_inverted == other.x_axis_scroll_inverted &&
         self.y_axis_scroll_inverted == other.y_axis_scroll_inverted &&
-        self._sensitivity == other._sensitivity &&
+        self.sensitivity == other.sensitivity &&
         self.viewport_size.width    == other.viewport_size.width &&
         self.viewport_size.height   == other.viewport_size.height
     }
