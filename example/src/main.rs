@@ -43,7 +43,7 @@ impl App {
                 Translated::Press(action) => {
                     match action {
                         CharacterAction::Jump => {
-                            
+                            println!("You jumped! Yay!");
                         },
                         CharacterAction::MoveLeft => {
                             self.character.current_velocity[0] += 0.5;
@@ -58,7 +58,7 @@ impl App {
                 },
                 Translated::Move(Motion::MouseCursor(x, y)) => {
                     self.cursor_pos = [x, y];
-                }
+                },
                 _ => { }
             }
         }
@@ -78,7 +78,10 @@ impl App {
 
         // draw the character
         {
-            let square = rectangle::square(self.character.topleft[0], self.character.topleft[1], self.character.size);
+            let square = rectangle::square(self.character.topleft[0],
+                                           self.character.topleft[1],
+                                           self.character.size);
+
             let (x, y) = ((args.width / 2) as f64, (args.height / 2) as f64);
     
             gl_graphics.draw(args.viewport(), |c, gl| {
@@ -156,7 +159,7 @@ fn main() {
         cursor_pos: [0.0, 0.0],
         bg_color: [0.0, 0.0, 0.0, 1.0] // black background
     };
-    
+
     for e in app.window.clone().events() {
         match e {
             Event::Render(r) => { app.render(&r); },
