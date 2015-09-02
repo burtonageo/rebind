@@ -41,15 +41,20 @@ impl App {
         if let Some(t) = self.translator.translate(input) {
             match t {
                 Translated::Press(action) => {
+                    const CHARACTER_WALK_SPEED_INCREMENT: f64 = 400.0f64;
                     match action {
                         CharacterAction::Jump => {
                             println!("You jumped! Yay!");
                         },
                         CharacterAction::MoveLeft => {
-                            self.character.current_velocity[0] += 0.5;
+                            if self.character.current_velocity[0] > (self.character.max_velocity[0] * -1.0) {
+                                self.character.current_velocity[0] -= CHARACTER_WALK_SPEED_INCREMENT;
+                            }
                         },
                         CharacterAction::MoveRight => {
-                            self.character.current_velocity[0] -= 0.5;
+                            if self.character.current_velocity[0] < self.character.max_velocity[0] {
+                                self.character.current_velocity[0] += CHARACTER_WALK_SPEED_INCREMENT;
+                            }
                         }
                     }
                 },
@@ -65,7 +70,10 @@ impl App {
     }
 
     fn update(&mut self, args: &UpdateArgs) {
+        let ctl = self.character.topleft;
+        let v = self.character.current_velocity;
 
+        self.character.topleft = [ctl[0] + (v[0] * args.dt), ctl[1] + (v[1] * args.dt)];
     }
 
     fn render(&mut self, args: &RenderArgs) {
@@ -82,12 +90,7 @@ impl App {
                                            self.character.topleft[1],
                                            self.character.size);
 
-            let (x, y) = ((args.width / 2) as f64, (args.height / 2) as f64);
-
-            gl_graphics.draw(args.viewport(), |c, gl| {
-                let transform = c.transform.trans(x, y);
-                rectangle(self.character.color, square, transform, gl);
-            });
+            gl_graphics.draw(args.viewport(), |c, gl| rectangle(self.character.color, square, c.transform, gl));
         }
 
         // draw the cursor dot
@@ -102,6 +105,7 @@ struct Character {
     color: [f32; 4],
     topleft: [f64; 2],
     current_velocity: [f64; 2],
+    max_velocity: [f64; 2],
     size: f64
 }
 
@@ -111,6 +115,7 @@ impl Character {
             color: col,
             topleft: tl,
             current_velocity: [0.0f64, 0.0],
+            max_velocity: [800.0, 0.0],
             size: sz
         }
     }
@@ -148,7 +153,7 @@ fn main() {
         .build_translator();
 
     let character = Character::new([1.0, 0.0, 0.0, 1.0],
-                                   [30.0, 30.0],
+                                   [30.0, (WINDOW_SIZE.1 as f64) * 0.85],
                                    50.0);
 
     let mut app = App {
