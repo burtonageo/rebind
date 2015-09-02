@@ -131,8 +131,8 @@ enum CharacterAction {
 impl Action for CharacterAction { }
 
 fn main() {
-    const WINDOW_SIZE: (u32, u32)  = (800, 600);
     const OPENGL: OpenGL = OpenGL::V3_2;
+    const WINDOW_SIZE: (u32, u32) = (800, 600);
 
     let window = WindowSettings::new("calaxite", WINDOW_SIZE)
         .exit_on_esc(true)
