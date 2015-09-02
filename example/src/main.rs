@@ -150,7 +150,6 @@ fn main() {
         .with_action_mapping(Keyboard(Key::A),     CharacterAction::MoveLeft)
         .with_action_mapping(Keyboard(Key::Right), CharacterAction::MoveRight)
         .with_action_mapping(Keyboard(Key::D),     CharacterAction::MoveRight)
-        .x_motion_inverted(true)
         .build_translator();
 
     let character = Character::new([1.0, 0.0, 0.0, 1.0],
