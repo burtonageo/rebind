@@ -173,7 +173,7 @@ struct MouseTranslationData {
     y_axis_motion_inverted: bool,
     x_axis_scroll_inverted: bool,
     y_axis_scroll_inverted: bool,
-    _sensitivity: f64,
+    sensitivity: f64,
     viewport_size: Size
 }
 

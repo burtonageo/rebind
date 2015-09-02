@@ -71,6 +71,17 @@ impl<A: Action> RebindBuilder<A> {
         &self.mouse_data.y_axis_motion_inverted
     }
 
+    /// Set the mouse sensitivity
+    pub fn mouse_sensitivity(mut self, sensitivity: f64) -> Self {
+        self.mouse_data.sensitivity = sensitivity;
+        self
+    }
+
+    /// Returns the mouse sensitivity
+    pub fn get_mouse_sensitivity(&self) -> &f64 {
+        &self.mouse_data.sensitivity
+    }
+
     /// Sets the viewport size used for mouse position calculations.
     pub fn viewport_size(mut self, size: Size) -> Self {
         self.mouse_data.viewport_size = size;
