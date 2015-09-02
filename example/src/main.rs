@@ -65,7 +65,7 @@ impl App {
     }
 
     fn update(&mut self, args: &UpdateArgs) {
-        
+
     }
 
     fn render(&mut self, args: &RenderArgs) {
@@ -83,13 +83,13 @@ impl App {
                                            self.character.size);
 
             let (x, y) = ((args.width / 2) as f64, (args.height / 2) as f64);
-    
+
             gl_graphics.draw(args.viewport(), |c, gl| {
                 let transform = c.transform.trans(x, y);
                 rectangle(self.character.color, square, transform, gl);
             });
         }
-        
+
         // draw the cursor dot
         {
             let dot = ellipse::circle(self.cursor_pos[0], self.cursor_pos[1], 5.0);
@@ -128,7 +128,7 @@ impl Action for CharacterAction { }
 fn main() {
     const WINDOW_SIZE: (u32, u32)  = (800, 600);
     const OPENGL: OpenGL = OpenGL::V3_2;
-    
+
     let window = WindowSettings::new("calaxite", WINDOW_SIZE)
         .exit_on_esc(true)
         .fullscreen(false)
