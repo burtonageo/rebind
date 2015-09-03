@@ -1,13 +1,14 @@
 #![warn(missing_docs)]
 
 //! rebind
-//! =========
+//! ======
 //!
 //! A library for binding input keys to actions, and modifying mouse behaviour. Keys can be
 //! bound to actions, and then translated during runtime. `Keys` are mapped to `Actions` using
 //! a `HashMap`, so lookup time is constant.
 //!
-//! # Examples
+//! Example
+//! -------
 //!
 //! ```no_run
 //! extern crate glutin_window;
