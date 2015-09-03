@@ -134,4 +134,3 @@ impl<A: Action> Into<InputRebind<A>> for RebindBuilder<A> {
         input_rebind
     }
 }
-
