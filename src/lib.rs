@@ -1,5 +1,4 @@
 #![warn(missing_docs)]
-#![feature(slice_patterns)]
 
 //! rebind
 //! =========
@@ -441,15 +440,20 @@ impl<A: Action> Into<InputRebind<A>> for InputTranslator<A> {
                                              } else {
                                                  Err(((k0, v0), (k1, v1)))
                                              })
-                                         .map(|(k, v)| if let [b0, b1, b2] = &v.iter()
-                                                                               .cloned()
-                                                                               .pad_using(3, |_| None)
-                                                                               .take(3)
-                                                                               .collect::<Vec<_>>()[..] {
-                                                  (k, ButtonTuple(b0, b1, b2))
+                                         .map(|(k, v)| {
+                                            let button_slice = &v.iter()
+                                                                 .cloned()
+                                                                 .pad_using(3, |_| None)
+                                                                 .take(3)
+                                                                 .collect::<Vec<_>>()[..];
+                                             if button_slice.len() >= 3 {
+                                                  (k, ButtonTuple(button_slice[0],
+                                                                  button_slice[1],
+                                                                  button_slice[2]))
                                              } else {
                                                  unreachable!();
-                                             })
+                                             }
+                                         })
                                          .collect();
 
         input_rebind
