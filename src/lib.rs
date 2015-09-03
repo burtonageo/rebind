@@ -441,15 +441,16 @@ impl<A: Action> Into<InputRebind<A>> for InputTranslator<A> {
                                                  Err(((k0, v0), (k1, v1)))
                                              })
                                          .map(|(k, v)| {
-                                            let button_slice = &v.iter()
-                                                                 .cloned()
-                                                                 .pad_using(3, |_| None)
-                                                                 .take(3)
-                                                                 .collect::<Vec<_>>()[..];
-                                             if button_slice.len() >= 3 {
-                                                  (k, ButtonTuple(button_slice[0],
-                                                                  button_slice[1],
-                                                                  button_slice[2]))
+                                            let buttons = &v.iter()
+                                                            .cloned()
+                                                            .pad_using(3, |_| None)
+                                                            .take(3)
+                                                            .collect::<Vec<_>>();
+
+                                             if buttons.len() >= 3 {
+                                                  (k, ButtonTuple(buttons[0],
+                                                                  buttons[1],
+                                                                  buttons[2]))
                                              } else {
                                                  unreachable!();
                                              }
