@@ -144,7 +144,7 @@ fn main() {
 
     let gl_graphics = GlGraphics::new(OPENGL);
 
-    let translator = RebindBuilder::new(WINDOW_SIZE.into())
+    let translator = RebindBuilder::new(WINDOW_SIZE)
         .with_action_mapping(Keyboard(Key::Space), CharacterAction::Jump)
         .with_action_mapping(Keyboard(Key::Left),  CharacterAction::MoveLeft)
         .with_action_mapping(Keyboard(Key::A),     CharacterAction::MoveLeft)
