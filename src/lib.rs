@@ -35,7 +35,7 @@
 //!         .build()
 //!         .unwrap_or_else(|e| panic!("Could not create window: {}", e));
 //!
-//!     let translator = RebindBuilder::<MyAction>::new((800, 600).into())
+//!     let translator = RebindBuilder::<MyAction>::new((800, 600))
 //!         .with_action_mapping(Keyboard(Key::D1), MyAction::Action1)
 //!         .with_action_mapping(Keyboard(Key::A),  MyAction::Action1)
 //!         .with_action_mapping(Keyboard(Key::D2), MyAction::Action2)
@@ -72,6 +72,7 @@ use input::{Input, Button, Motion};
 use itertools::Itertools;
 use std::cmp::{PartialEq, Eq, Ord};
 use std::collections::HashMap;
+use std::convert::Into;
 use std::default::Default;
 use std::fmt::{Debug, Formatter, Result};
 use std::hash::Hash;
@@ -175,7 +176,7 @@ pub struct InputTranslator<A: Action> {
 
 impl<A: Action> InputTranslator<A> {
     /// Creates an empty InputTranslator.
-    pub fn new(size: Size) -> Self {
+    pub fn new<S: Into<Size> + Sized>(size: S) -> Self {
         InputTranslator {
             keymap: HashMap::new(),
             mouse_translator: MouseTranslator::new(size)
@@ -227,14 +228,14 @@ struct MouseTranslationData {
 }
 
 impl MouseTranslationData {
-    fn new(size: Size) -> Self {
+    fn new<S: Into<Size> + Sized>(size: S) -> Self {
         MouseTranslationData {
             x_axis_motion_inverted: false,
             y_axis_motion_inverted: false,
             x_axis_scroll_inverted: false,
             y_axis_scroll_inverted: false,
             sensitivity: 0.0,
-            viewport_size: size
+            viewport_size: size.into()
         }
     }
 }
@@ -270,7 +271,7 @@ struct MouseTranslator {
 }
 
 impl MouseTranslator {
-    fn new(size: Size) -> Self {
+    fn new<S: Into<Size> + Sized>(size: S) -> Self {
         MouseTranslator {
             data: MouseTranslationData::new(size)
         }
@@ -309,7 +310,7 @@ pub struct InputRebind<A: Action> {
 
 impl<A: Action> InputRebind<A> {
     /// Creates a new InputRebind with no stored Action/ButtonTuple pairs.
-    pub fn new(size: Size) -> Self {
+    pub fn new<S: Into<Size> + Sized>(size: S) -> Self {
         InputRebind {
             keymap: HashMap::new(),
             mouse_data: MouseTranslationData::new(size)
@@ -406,7 +407,7 @@ impl<A: Action> InputRebind<A> {
 impl<A: Action> Default for InputRebind<A> {
     /// Creates an `InputRebind` with no pairs. In addition, the viewport size is set to [800, 600].
     fn default() -> Self {
-        InputRebind::new((800, 600).into())
+        InputRebind::new((800, 600))
     }
 }
 

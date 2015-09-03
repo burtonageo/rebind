@@ -12,7 +12,7 @@ pub struct RebindBuilder<A: Action> {
 
 impl<A: Action> RebindBuilder<A> {
     /// Creates a new `RebindBuilder` with the specified viewport size.
-    pub fn new(size: Size) -> Self {
+    pub fn new<S: Into<Size> + Sized>(size: S) -> Self {
         RebindBuilder {
             input_remappings: vec![],
             mouse_data: MouseTranslationData::new(size)
@@ -109,7 +109,7 @@ impl<A: Action> RebindBuilder<A> {
 impl<A: Action> Default for RebindBuilder<A> {
     /// Creates a new `RebindBuilder`. The viewport size is set to (800, 600).
     fn default() -> Self {
-        Self::new((800, 600).into())
+        Self::new((800, 600))
     }
 }
 
