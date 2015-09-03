@@ -1,5 +1,6 @@
-use {Action, InputTranslator, InputRebind, MouseTranslationData};
+use {Action, ButtonTuple, InputTranslator, InputRebind, MouseTranslationData};
 use input::Button;
+use itertools::Itertools;
 use window::Size;
 use std::convert::Into;
 use std::default::Default;
@@ -125,14 +126,35 @@ impl<A: Action> Into<InputTranslator<A>> for RebindBuilder<A> {
 }
 
 impl<A: Action> Into<InputRebind<A>> for RebindBuilder<A> {
-    #[allow(dead_code, unused_variables, unreachable_code)]
     fn into(self) -> InputRebind<A> {
-        unimplemented!();
-
         let mut input_rebind = InputRebind::new(self.mouse_data.viewport_size);
 
         input_rebind.mouse_data = self.mouse_data;
-        //input_rebind.keymap.btn_map = self.input_remappings.iter().map(|x| x.clone()).collect();
+        input_rebind.keymap = self.input_remappings.iter()
+                                                   .map(|&(b, a)| (a, vec![Some(b)]))
+                                                   .sorted_by(|&(a0, _), &(a1, _)| Ord::cmp(&a0, &a1))
+                                                   .into_iter()
+                                                   .coalesce(|(a0, b0), (a1, b1)| if a0 == a1 {
+                                                       Ok((a0, b0.into_iter().chain(b1).collect()))
+                                                   } else {
+                                                       Err(((a0, b0), (a1, b1)))
+                                                   })
+                                                   .map(|(a, bs)| {
+                                                      let buttons = &bs.iter()
+                                                                       .cloned()
+                                                                       .pad_using(3, |_| None)
+                                                                       .take(3)
+                                                                       .collect_vec();
+
+                                                       if buttons.len() >= 3 {
+                                                            (a, ButtonTuple(buttons[0],
+                                                                            buttons[1],
+                                                                            buttons[2]))
+                                                       } else {
+                                                           unreachable!();
+                                                       }
+                                                   })
+                                                   .collect();
 
         input_rebind
     }
