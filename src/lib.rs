@@ -435,33 +435,39 @@ impl<A: Action> Into<InputTranslator<A>> for InputRebind<A> {
 impl<A: Action> Into<InputRebind<A>> for InputTranslator<A> {
     fn into(self) -> InputRebind<A> {
         let mut input_rebind = InputRebind::new(self.mouse_translator.data.viewport_size);
-        input_rebind.mouse_data = self.mouse_translator.data;
-        input_rebind.keymap = self.keymap.iter()
-                                         .map(|(k, v)| (*v, vec![Some(*k)]))
-                                         .sorted_by(|&(v0, _), &(v1, _)| Ord::cmp(&v0, &v1))
-                                         .into_iter()
-                                         .coalesce(|(k0, v0), (k1, v1)| if k0 == k1 {
-                                             Ok((k0, v0.into_iter().chain(v1).collect()))
-                                         } else {
-                                             Err(((k0, v0), (k1, v1)))
-                                         })
-                                         .map(|(k, v)| {
-                                            let buttons = &v.iter()
-                                                            .cloned()
-                                                            .pad_using(3, |_| None)
-                                                            .take(3)
-                                                            .collect_vec();
 
-                                             if buttons.len() >= 3 {
-                                                  (k, ButtonTuple(buttons[0],
-                                                                  buttons[1],
-                                                                  buttons[2]))
-                                             } else {
-                                                 unreachable!();
-                                             }
-                                         })
-                                         .collect();
+        input_rebind.mouse_data = self.mouse_translator.data;
+        input_rebind.keymap = to_act_bt_hashmap(self.keymap.iter().map(|(b, a)| (*b, *a)));
 
         input_rebind
     }
+}
+
+fn to_act_bt_hashmap<A, I>(iter: I) -> HashMap<A, ButtonTuple>
+    where A: Action,
+          I: Iterator<Item = (Button, A)> {
+    iter.map(|(b, a)| (a, vec![Some(b)]))
+        .sorted_by(|&(a0, _), &(a1, _)| Ord::cmp(&a0, &a1))
+        .into_iter()
+        .coalesce(|(a0, b0), (a1, b1)| if a0 == a1 {
+            Ok((a0, b0.into_iter().chain(b1).collect()))
+        } else {
+            Err(((a0, b0), (a1, b1)))
+        })
+        .map(|(a, bs)| {
+           let buttons = &bs.iter()
+                            .cloned()
+                            .pad_using(3, |_| None)
+                            .take(3)
+                            .collect_vec();
+        
+            if buttons.len() >= 3 {
+                 (a, ButtonTuple(buttons[0],
+                                 buttons[1],
+                                 buttons[2]))
+            } else {
+                unreachable!();
+            }
+        })
+        .collect()
 }

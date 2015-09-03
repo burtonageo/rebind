@@ -1,6 +1,5 @@
-use {Action, ButtonTuple, InputTranslator, InputRebind, MouseTranslationData};
+use {Action, InputTranslator, InputRebind, MouseTranslationData, to_act_bt_hashmap};
 use input::Button;
-use itertools::Itertools;
 use window::Size;
 use std::convert::Into;
 use std::default::Default;
@@ -130,31 +129,7 @@ impl<A: Action> Into<InputRebind<A>> for RebindBuilder<A> {
         let mut input_rebind = InputRebind::new(self.mouse_data.viewport_size);
 
         input_rebind.mouse_data = self.mouse_data;
-        input_rebind.keymap = self.input_remappings.iter()
-                                                   .map(|&(b, a)| (a, vec![Some(b)]))
-                                                   .sorted_by(|&(a0, _), &(a1, _)| Ord::cmp(&a0, &a1))
-                                                   .into_iter()
-                                                   .coalesce(|(a0, b0), (a1, b1)| if a0 == a1 {
-                                                       Ok((a0, b0.into_iter().chain(b1).collect()))
-                                                   } else {
-                                                       Err(((a0, b0), (a1, b1)))
-                                                   })
-                                                   .map(|(a, bs)| {
-                                                      let buttons = &bs.iter()
-                                                                       .cloned()
-                                                                       .pad_using(3, |_| None)
-                                                                       .take(3)
-                                                                       .collect_vec();
-
-                                                       if buttons.len() >= 3 {
-                                                            (a, ButtonTuple(buttons[0],
-                                                                            buttons[1],
-                                                                            buttons[2]))
-                                                       } else {
-                                                           unreachable!();
-                                                       }
-                                                   })
-                                                   .collect();
+        input_rebind.keymap = to_act_bt_hashmap(self.input_remappings.iter().cloned());
 
         input_rebind
     }
