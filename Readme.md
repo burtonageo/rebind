@@ -8,38 +8,48 @@ A library for binding input keys to actions, and modifying mouse behaviour. Keys
 bound to actions, and then translated during runtime. `Keys` are mapped to `Actions` using
 a `HashMap`, so lookup time is constant.
 
-    // Minimal api example
+Example
+-------
 
+    extern crate glutin_window;
+    extern crate piston;
+    extern crate rebind;
+    
     use glutin_window::GlutinWindow;
-    use piston::event_loop::{EventMap, Events};
+    use piston::event_loop::Events;
     use piston::input::{Event, Input};
+    use piston::input::Button::Keyboard;
+    use piston::input::keyboard::Key;
     use piston::window::WindowSettings;
     use rebind::{Action, InputTranslator, RebindBuilder, Translated};
-
+    
     #[derive(Clone, Copy, Eq, Hash, Ord, PartialEq, PartialOrd)]
     enum MyAction {
         Action1, Action2
     }
-
+    
     impl Action for MyAction { }
-
+    
     fn main() {
-        let window = WindowSettings::new("rebind-example", (800, 600)).build().expect("Could not create window");
-        let translator = InputRebind::<MyAction>::new((800, 600).into())
-            .with_action_mapping(Keyboard(Key::1), MyAction::Action1)
-            .with_action_mapping(Keyboard(Key::A), MyAction::Action1)
-            .with_action_mapping(Keyboard(Key::2), MyAction::Action2)
-            .with_action_mapping(Keyboard(Key::B), MyAction::Action2)
+        let window: GlutinWindow = WindowSettings::new("rebind-example", (800, 600))
+            .build()
+            .unwrap_or_else(|e| panic!("Could not create window: {}", e));
+    
+        let translator = RebindBuilder::<MyAction>::new((800, 600).into())
+            .with_action_mapping(Keyboard(Key::D1), MyAction::Action1)
+            .with_action_mapping(Keyboard(Key::A),  MyAction::Action1)
+            .with_action_mapping(Keyboard(Key::D2), MyAction::Action2)
+            .with_action_mapping(Keyboard(Key::B),  MyAction::Action2)
             .build_translator();
-
+    
         for e in window.events() {
-            if let Event::Input(i) = e {
-                if let Some(a) = translator.translate(e) {
+            if let Event::Input(ref i) = e {
+                if let Some(a) = translator.translate(i) {
                     match a {
-                        Translated::Pressed(MyAction::Action1) => {
+                        Translated::Press(MyAction::Action1) => {
                             println!("Action 1 pressed!");
                         },
-                        Translated::Pressed(MyAction::Action2) => {
+                        Translated::Press(MyAction::Action2) => {
                             println!("Action 2 pressed!");
                         },
                         _ => { }
