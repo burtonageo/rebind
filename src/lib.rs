@@ -455,16 +455,16 @@ fn to_act_bt_hashmap<A, I>(iter: I) -> HashMap<A, ButtonTuple>
             Err(((a0, b0), (a1, b1)))
         })
         .map(|(a, bs)| {
-           let buttons = &bs.iter()
-                            .cloned()
-                            .pad_using(3, |_| None)
-                            .take(3)
-                            .collect_vec();
+            let buttons = &bs.iter()
+                             .cloned()
+                             .pad_using(3, |_| None)
+                             .take(3)
+                             .collect_vec();
         
             if buttons.len() >= 3 {
-                 (a, ButtonTuple(buttons[0],
-                                 buttons[1],
-                                 buttons[2]))
+                (a, ButtonTuple(buttons[0],
+                                buttons[1],
+                                buttons[2]))
             } else {
                 unreachable!();
             }
