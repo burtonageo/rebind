@@ -106,8 +106,8 @@ impl<A: Action> RebindBuilder<A> {
     pub fn build_rebind(self) -> InputRebind<A> { self.into() }
 }
 
+/// Creates a new `RebindBuilder`. The viewport size is set to (800, 600).
 impl<A: Action> Default for RebindBuilder<A> {
-    /// Creates a new `RebindBuilder`. The viewport size is set to (800, 600).
     fn default() -> Self {
         Self::new((800, 600))
     }

@@ -404,8 +404,8 @@ impl<A: Action> InputRebind<A> {
     pub fn into_translator(self) -> InputTranslator<A> { self.into() }
 }
 
+/// Creates an `InputRebind` with no pairs. In addition, the viewport size is set to [800, 600].
 impl<A: Action> Default for InputRebind<A> {
-    /// Creates an `InputRebind` with no pairs. In addition, the viewport size is set to [800, 600].
     fn default() -> Self {
         InputRebind::new((800, 600))
     }
