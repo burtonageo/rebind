@@ -18,11 +18,11 @@ extern crate rebind;
 
 use glutin_window::GlutinWindow;
 use piston::event_loop::Events;
-use piston::input::{Event, Input};
+use piston::input::Event;
 use piston::input::Button::Keyboard;
 use piston::input::keyboard::Key;
 use piston::window::WindowSettings;
-use rebind::{Action, InputTranslator, RebindBuilder, Translated};
+use rebind::{Action, RebindBuilder, Translated};
 
 #[derive(Clone, Copy, Eq, Hash, Ord, PartialEq, PartialOrd)]
 enum MyAction {
