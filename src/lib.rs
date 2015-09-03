@@ -445,7 +445,7 @@ impl<A: Action> Into<InputRebind<A>> for InputTranslator<A> {
                                                             .cloned()
                                                             .pad_using(3, |_| None)
                                                             .take(3)
-                                                            .collect::<Vec<_>>();
+                                                            .collect_vec();
 
                                              if buttons.len() >= 3 {
                                                   (k, ButtonTuple(buttons[0],
