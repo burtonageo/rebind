@@ -441,10 +441,10 @@ impl<A: Action> Into<InputRebind<A>> for InputTranslator<A> {
                                          .sorted_by(|&(v0, _), &(v1, _)| Ord::cmp(&v0, &v1))
                                          .into_iter()
                                          .coalesce(|(k0, v0), (k1, v1)| if k0 == k1 {
-                                                 Ok((k0, v0.into_iter().chain(v1).collect()))
-                                             } else {
-                                                 Err(((k0, v0), (k1, v1)))
-                                             })
+                                             Ok((k0, v0.into_iter().chain(v1).collect()))
+                                         } else {
+                                             Err(((k0, v0), (k1, v1)))
+                                         })
                                          .map(|(k, v)| {
                                             let buttons = &v.iter()
                                                             .cloned()
