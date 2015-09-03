@@ -67,9 +67,6 @@ extern crate window;
 
 mod builder;
 
-#[cfg(test)]
-mod test;
-
 use input::{Input, Button, Motion};
 use itertools::Itertools;
 use std::cmp::{PartialEq, Eq, Ord};

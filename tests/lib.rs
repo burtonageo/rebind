@@ -1,6 +1,9 @@
 #![allow(dead_code, unused_variables)]
 
-use {Action, ButtonTuple, InputTranslator, RebindBuilder, InputRebind, Translated};
+extern crate rebind;
+extern crate input;
+
+use rebind::{Action, ButtonTuple, InputTranslator, RebindBuilder, InputRebind, Translated};
 use input::Input;
 use input::Button::Keyboard;
 use input::keyboard::Key;
