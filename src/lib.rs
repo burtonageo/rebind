@@ -412,7 +412,7 @@ impl<A: Action> Into<InputTranslator<A>> for InputRebind<A> {
         input_translator.mouse_translator.data = self.mouse_data;
         let key_vec = self.keymap.values()
                                  .flat_map(|bt| bt.into_iter().filter_map(|x| x))
-                                 .collect::<Vec<_>>();
+                                 .collect_vec();
 
         input_translator.keymap.reserve(key_vec.len());
         for &k in &key_vec {
