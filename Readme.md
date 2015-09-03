@@ -1,12 +1,9 @@
-[rebind](https://github.com/burtonageo/rebind)
-==============================================
+rebind
+======
 
-Description
------------
-
-A library for binding input keys to actions, and modifying mouse behaviour. Keys can be
-bound to actions, and then translated during runtime. `Keys` are mapped to `Actions` using
-a `HashMap`, so lookup time is constant.
+A library for binding input keys to actions, and modifying mouse behaviour. Keys can be bound to
+actions, and then translated during runtime. `Keys` are mapped to `Actions` using a `HashMap`, so
+lookup time is constant.
 
 Example
 -------
@@ -68,6 +65,11 @@ Main improvements to be made:
 * Improve the API: Is the distinction between InputRebind and InputTranslator necessary or useful?
 * Add serialisation
 * Add mouse sensitivity options
-* Add tests/benchmarks
+* Add more tests/benchmarks
+* Improve documentation
+* Change the internal lookup from a `HashMap` to an array, where actions are stored in an array at positions
+  corresponding to the numeric value of the key. This should be faster than using a `HashMap` and collisions/
+  algorithmic DOS attacks are not a concern, although the size of the map is usually very small and lookups
+  are relatively quick, so this is probably not a problem in practice.
 
 Contributions welcome.
