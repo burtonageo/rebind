@@ -22,13 +22,15 @@ use piston::input::{
 };
 use piston::input::keyboard::Key;
 use piston::input::Button::Keyboard;
-use piston::window::WindowSettings;
+use piston::window::{Window, WindowSettings};
 use rebind::{Action, InputTranslator, RebindBuilder, Translated};
 use std::cell::RefCell;
 use std::rc::Rc;
 
+type RcWindow = Rc<RefCell<GlutinWindow>>;
+
 struct App {
-    window: Rc<RefCell<GlutinWindow>>,
+    window: RcWindow,
     graphics: Rc<RefCell<GlGraphics>>,
     translator: InputTranslator<CharacterAction>,
     character: Character,
@@ -66,12 +68,15 @@ impl App {
                 },
                 _ => { }
             }
-        } else if let &Input::Resize(x, y) = input {
-            self.resize((x, y))
         }
     }
 
-    fn update(&mut self, args: &UpdateArgs) {
+    fn update(&mut self, args: &UpdateArgs, window: RcWindow) {
+        // we need to pass the window into update (and set the size here) because
+        // using the update event from the window events is currently broken.
+        self.translator.set_size(window.borrow().size());
+
+        // update the character's velocity
         let ctl = self.character.topleft;
         let v = self.character.current_velocity;
 
@@ -100,10 +105,6 @@ impl App {
             let dot = ellipse::circle(self.virtual_cursor_pos[0], self.virtual_cursor_pos[1], 5.0);
             gl_graphics.draw(args.viewport(), |c, gl| ellipse([0.0, 1.0, 0.0, 1.0], dot, c.transform, gl));
         }
-    }
-
-    fn resize(&mut self, new_size: (u32, u32)) {
-        self.translator.set_size(new_size.into());
     }
 }
 
@@ -171,11 +172,12 @@ fn main() {
         bg_color: [0.0, 0.0, 0.0, 1.0] // black background
     };
 
-    for e in app.window.clone().events() {
+    for e in  app.window.clone().events() {
+        let app_window = app.window.clone();
         match e {
             Event::Render(r) => { app.render(&r); },
-            Event::Update(u) => { app.update(&u); },
-            Event::Input(i)  => { app.input(&i); },
+            Event::Update(u) => { app.update(&u, app_window); },
+            Event::Input(i) => { app.input(&i); },
             _ => { }
         }
     }
