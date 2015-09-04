@@ -66,6 +66,8 @@ impl App {
                 },
                 _ => { }
             }
+        } else if let &Input::Resize(x, y) = input {
+            self.resize((x, y))
         }
     }
 
@@ -98,6 +100,10 @@ impl App {
             let dot = ellipse::circle(self.virtual_cursor_pos[0], self.virtual_cursor_pos[1], 5.0);
             gl_graphics.draw(args.viewport(), |c, gl| ellipse([0.0, 1.0, 0.0, 1.0], dot, c.transform, gl));
         }
+    }
+
+    fn resize(&mut self, new_size: (u32, u32)) {
+        self.translator.set_size(new_size.into());
     }
 }
 
