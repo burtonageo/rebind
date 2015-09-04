@@ -103,7 +103,8 @@ impl App {
         // draw the cursor dot
         {
             let dot = ellipse::circle(self.virtual_cursor_pos[0], self.virtual_cursor_pos[1], 5.0);
-            gl_graphics.draw(args.viewport(), |c, gl| ellipse([0.0, 1.0, 0.0, 1.0], dot, c.transform, gl));
+            const CURSOR_DOT_COLOR: [f32; 4] = [0.0, 1.0, 0.0, 1.0];
+            gl_graphics.draw(args.viewport(), |c, gl| ellipse(CURSOR_DOT_COLOR, dot, c.transform, gl));
         }
     }
 }
