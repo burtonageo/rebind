@@ -72,8 +72,8 @@ impl App {
     }
 
     fn update(&mut self, args: &UpdateArgs, window: RcWindow) {
-        // we need to pass the window into update (and set the size here) because
-        // using the update event from the window events is currently broken.
+        // we need to pass the window to update (and set the size here) because using
+        // the update event from the window events queue is currently broken.
         self.translator.set_size(window.borrow().size());
 
         // update the character's velocity
