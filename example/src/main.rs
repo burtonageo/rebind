@@ -34,7 +34,7 @@ struct App {
     graphics: Rc<RefCell<GlGraphics>>,
     translator: InputTranslator<CharacterAction>,
     character: Character,
-    virtual_cursor_pos: [f64; 2],
+    cursor: VirtualCursor,
     bg_color: [f32; 4]
 }
 
@@ -64,7 +64,7 @@ impl App {
                     self.character.current_velocity = [0.0, 0.0];
                 },
                 Translated::Move(Motion::MouseCursor(x, y)) => {
-                    self.virtual_cursor_pos = [x, y];
+                    self.cursor.position = [x, y];
                 },
                 _ => { }
             }
@@ -102,9 +102,10 @@ impl App {
 
         // draw the cursor dot
         {
-            let dot = ellipse::circle(self.virtual_cursor_pos[0], self.virtual_cursor_pos[1], 5.0);
-            const CURSOR_DOT_COLOR: [f32; 4] = [0.0, 1.0, 0.0, 1.0];
-            gl_graphics.draw(args.viewport(), |c, gl| ellipse(CURSOR_DOT_COLOR, dot, c.transform, gl));
+            let dot = ellipse::circle(self.cursor.position[0],
+                                      self.cursor.position[1],
+                                      self.cursor.size);
+            gl_graphics.draw(args.viewport(), |c, gl| ellipse(self.cursor.color, dot, c.transform, gl));
         }
     }
 }
@@ -125,6 +126,22 @@ impl Character {
             current_velocity: [0.0f64, 0.0],
             max_velocity: [800.0, 0.0],
             size: sz
+        }
+    }
+}
+
+struct VirtualCursor {
+    position: [f64; 2],
+    color: [f32; 4],
+    size: f64
+}
+
+impl VirtualCursor {
+    fn new() -> Self {
+        VirtualCursor {
+            position: [0.0, 0.0],
+            color: [0.0, 1.0, 0.0, 1.0],
+            size: 5.0
         }
     }
 }
@@ -169,7 +186,7 @@ fn main() {
         graphics: Rc::new(RefCell::new(gl_graphics)),
         translator: translator,
         character: character,
-        virtual_cursor_pos: [0.0, 0.0],
+        cursor: VirtualCursor::new(),
         bg_color: [0.0, 0.0, 0.0, 1.0] // black background
     };
 
