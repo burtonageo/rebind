@@ -171,7 +171,8 @@ fn main() {
         .opengl(OPENGL)
         .vsync(true)
         .build()
-        .unwrap_or_else(|e| panic!("Could not create window: {}", e));
+        .ok()
+        .expect("Could not create window: {}");
 
     let gl_graphics = GlGraphics::new(OPENGL);
 
@@ -181,6 +182,7 @@ fn main() {
         .with_action_mapping(Keyboard(Key::A),     CharacterAction::MoveLeft)
         .with_action_mapping(Keyboard(Key::Right), CharacterAction::MoveRight)
         .with_action_mapping(Keyboard(Key::D),     CharacterAction::MoveRight)
+        .y_motion_inverted(true)
         .build_translator();
 
     let character = Character::new(RED, [30.0, (WINDOW_SIZE.1 as f64) * 0.85], 50.0);
