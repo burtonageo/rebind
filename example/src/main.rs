@@ -28,14 +28,20 @@ use std::cell::RefCell;
 use std::rc::Rc;
 
 type RcWindow = Rc<RefCell<GlutinWindow>>;
+type RcGraphics = Rc<RefCell<GlGraphics>>;
+type RgbaColor = [f32; 4];
+
+const RED: RgbaColor = [1.0, 0.0, 0.0, 1.0];
+const GREEN: RgbaColor = [0.0, 1.0, 0.0, 1.0];
+const BLACK: RgbaColor = [0.0, 0.0, 0.0, 1.0];
 
 struct App {
     window: RcWindow,
-    graphics: Rc<RefCell<GlGraphics>>,
+    graphics: RcGraphics,
     translator: InputTranslator<CharacterAction>,
     character: Character,
     cursor: VirtualCursor,
-    bg_color: [f32; 4]
+    bg_color: RgbaColor
 }
 
 impl App {
@@ -111,7 +117,7 @@ impl App {
 }
 
 struct Character {
-    color: [f32; 4],
+    color: RgbaColor,
     topleft: [f64; 2],
     current_velocity: [f64; 2],
     max_velocity: [f64; 2],
@@ -132,7 +138,7 @@ impl Character {
 
 struct VirtualCursor {
     position: [f64; 2],
-    color: [f32; 4],
+    color: RgbaColor,
     size: f64
 }
 
@@ -140,7 +146,7 @@ impl VirtualCursor {
     fn new() -> Self {
         VirtualCursor {
             position: [0.0, 0.0],
-            color: [0.0, 1.0, 0.0, 1.0],
+            color: GREEN,
             size: 5.0
         }
     }
@@ -175,11 +181,10 @@ fn main() {
         .with_action_mapping(Keyboard(Key::A),     CharacterAction::MoveLeft)
         .with_action_mapping(Keyboard(Key::Right), CharacterAction::MoveRight)
         .with_action_mapping(Keyboard(Key::D),     CharacterAction::MoveRight)
+        .y_motion_inverted(true)
         .build_translator();
 
-    let character = Character::new([1.0, 0.0, 0.0, 1.0],
-                                   [30.0, (WINDOW_SIZE.1 as f64) * 0.85],
-                                   50.0);
+    let character = Character::new(RED, [30.0, (WINDOW_SIZE.1 as f64) * 0.85], 50.0);
 
     let mut app = App {
         window: Rc::new(RefCell::new(window)),
@@ -187,7 +192,7 @@ fn main() {
         translator: translator,
         character: character,
         cursor: VirtualCursor::new(),
-        bg_color: [0.0, 0.0, 0.0, 1.0] // black background
+        bg_color: BLACK
     };
 
     for e in  app.window.clone().events() {
