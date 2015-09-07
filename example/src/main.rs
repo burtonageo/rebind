@@ -43,7 +43,7 @@ impl App {
         if let Some(t) = self.translator.translate(input) {
             match t {
                 Translated::Press(action) => {
-                    const CHARACTER_WALK_SPEED_INCREMENT: f64 = 400.0f64;
+                    const CHARACTER_WALK_SPEED_INCREMENT: f64 = 400.0;
                     match action {
                         CharacterAction::Jump => {
                             println!("You jumped! Yay!");
@@ -123,7 +123,7 @@ impl Character {
         Character {
             color: col,
             topleft: tl,
-            current_velocity: [0.0f64, 0.0],
+            current_velocity: [0.0, 0.0],
             max_velocity: [800.0, 0.0],
             size: sz
         }
