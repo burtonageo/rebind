@@ -185,7 +185,11 @@ fn main() {
         .y_motion_inverted(true)
         .build_translator();
 
-    let character = Character::new(RED, [30.0, (WINDOW_SIZE.1 as f64) * 0.85], 50.0);
+    let character = {
+        const INITIAL_CHARACTER_POS: [f64; 2] = [WINDOW_SIZE.0 as f64 / 20.0,
+                                                 WINDOW_SIZE.1 as f64 * 0.85];
+        Character::new(RED, INITIAL_CHARACTER_POS, 50.0)
+    };
 
     let mut app = App {
         window: Rc::new(RefCell::new(window)),
