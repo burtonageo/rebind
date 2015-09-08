@@ -1,7 +1,7 @@
 #![feature(rustc_private, plugin_registrar)]
 
-extern crate syntax;
 extern crate rustc;
+extern crate syntax;
 
 mod derive_action;
 
