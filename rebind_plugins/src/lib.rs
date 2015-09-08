@@ -9,7 +9,7 @@ use rustc::plugin::Registry;
 use syntax::parse::token::intern;
 use syntax::ext::base::SyntaxExtension;
 
-use derive_action::expand_action_annotation;
+use derive_action::expand_derive_action_annotation;
 
 #[plugin_registrar]
 #[doc(hidden)]
