@@ -123,7 +123,7 @@ struct Character {
 }
 
 impl Character {
-    fn new(col: [f32; 4], tl: [f64; 2], sz: f64) -> Self {
+    fn new(col: RgbaColor, tl: [f64; 2], sz: f64) -> Self {
         Character {
             color: col,
             topleft: tl,
