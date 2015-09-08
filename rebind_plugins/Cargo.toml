@@ -4,5 +4,9 @@ version = "0.1.0"
 authors = ["George Burton <burtonageo@gmail.com>"]
 license = "MIT"
 
+[lib]
+name = "rebind_plugins"
+plugin = true
+
 [dependencies.rebind]
 path = ".."
