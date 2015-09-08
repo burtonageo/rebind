@@ -1,5 +1,3 @@
-#![allow(unused_variables)]
-
 extern crate glutin_window;
 extern crate graphics;
 extern crate rebind;
