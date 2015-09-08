@@ -15,5 +15,6 @@ use derive_action::expand_action_annotation;
 #[doc(hidden)]
 pub fn plugin_registrar(registry: &mut Registry) {
     registry.register_syntax_extension(intern("derive_Action"),
-                                       SyntaxExtension::MultiDecorator(Box::new(expand_action_annotation)));
+                                       SyntaxExtension::MultiDecorator(
+                                           Box::new(expand_derive_action_annotation)));
 }
