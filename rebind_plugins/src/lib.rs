@@ -1,5 +1,6 @@
 #![feature(rustc_private, plugin_registrar)]
 
+extern crate rebind;
 extern crate rustc;
 extern crate syntax;
 
