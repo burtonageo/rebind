@@ -58,6 +58,24 @@ fn main() {
 }
 ```
 
+rebind_plugins
+--------------
+
+This library has a companion crate called `rebind_plugins`. If you are using the nighly compiler, then
+you can use this crate, which contains a special `derive` annotation for declaring `Action`s:
+
+```rust
+#![feature(plugin)]
+#![plugin(rebind_macros)]
+
+#[derive(Action)]
+enum MyAction {
+    Action1, Action2
+}
+
+// ... rest of example as normal
+```
+
 Main improvements to be made:
 -----------------------------
 
