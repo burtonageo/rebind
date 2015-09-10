@@ -85,6 +85,7 @@ Main improvements to be made:
 * Add mouse sensitivity options
 * Add more tests/benchmarks
 * Improve documentation
+* Add double press detection
 * Change the internal lookup from a `HashMap` to an array, where actions are stored in an array at positions
   corresponding to the numeric value of the key. This should be faster than using a `HashMap` and collisions/
   algorithmic DOS attacks are not a concern, although the size of the map is usually very small and lookups
