@@ -1,12 +1,8 @@
-#![allow(dead_code, unused_imports, unused_variables)]
+#![allow(unused_variables)]
 
-use syntax::ast;
-use syntax::ast::{MetaItem, Expr};
+use syntax::ast::MetaItem;
 use syntax::codemap::Span;
 use syntax::ext::base::{Annotatable, ExtCtxt};
-use syntax::ext::build::AstBuilder;
-use syntax::ext::deriving::generic::{Struct, Substructure, TraitDef, ty};
-use syntax::ext::deriving::generic::{combine_substructure, EnumMatching, FieldInfo, MethodDef};
 
 pub fn expand_derive_action_annotation(context: &mut ExtCtxt,
                                        span: Span,
