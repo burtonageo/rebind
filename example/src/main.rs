@@ -1,3 +1,4 @@
+extern crate conrod;
 extern crate glutin_window;
 extern crate graphics;
 extern crate rebind;
@@ -5,6 +6,8 @@ extern crate piston;
 extern crate opengl_graphics;
 extern crate viewport;
 
+use conrod::Color;
+use conrod::color::{black, green, red};
 use glutin_window::GlutinWindow;
 use graphics::*;
 use opengl_graphics::{GlGraphics, OpenGL};
@@ -27,11 +30,6 @@ use std::rc::Rc;
 
 type RcWindow = Rc<RefCell<GlutinWindow>>;
 type RcGraphics = Rc<RefCell<GlGraphics>>;
-type RgbaColor = [f32; 4];
-
-const RED: RgbaColor = [1.0, 0.0, 0.0, 1.0];
-const GREEN: RgbaColor = [0.0, 1.0, 0.0, 1.0];
-const BLACK: RgbaColor = [0.0, 0.0, 0.0, 1.0];
 
 struct App {
     window: RcWindow,
@@ -39,7 +37,7 @@ struct App {
     translator: InputTranslator<CharacterAction>,
     character: Character,
     cursor: VirtualCursor,
-    bg_color: RgbaColor
+    bg_color: Color
 }
 
 impl App {
@@ -92,7 +90,7 @@ impl App {
 
         // draw the background color
         {
-            gl_graphics.draw(args.viewport(), |_, gl| clear(self.bg_color, gl));
+            gl_graphics.draw(args.viewport(), |_, gl| clear(self.bg_color.to_fsa(), gl));
         }
 
         // draw the character
@@ -101,7 +99,10 @@ impl App {
                                            self.character.topleft[1],
                                            self.character.size);
 
-            gl_graphics.draw(args.viewport(), |c, gl| rectangle(self.character.color, square, c.transform, gl));
+            gl_graphics.draw(args.viewport(), |c, gl| rectangle(self.character.color.to_fsa(),
+                                                                square,
+                                                                c.transform,
+                                                                gl));
         }
 
         // draw the cursor dot
@@ -109,13 +110,16 @@ impl App {
             let dot = ellipse::circle(self.cursor.position[0],
                                       self.cursor.position[1],
                                       self.cursor.size);
-            gl_graphics.draw(args.viewport(), |c, gl| ellipse(self.cursor.color, dot, c.transform, gl));
+            gl_graphics.draw(args.viewport(), |c, gl| ellipse(self.cursor.color.to_fsa(),
+                                                              dot,
+                                                              c.transform,
+                                                              gl));
         }
     }
 }
 
 struct Character {
-    color: RgbaColor,
+    color: Color,
     topleft: [f64; 2],
     current_velocity: [f64; 2],
     max_velocity: [f64; 2],
@@ -123,7 +127,7 @@ struct Character {
 }
 
 impl Character {
-    fn new(col: RgbaColor, tl: [f64; 2], sz: f64) -> Self {
+    fn new(col: Color, tl: [f64; 2], sz: f64) -> Self {
         Character {
             color: col,
             topleft: tl,
@@ -136,7 +140,7 @@ impl Character {
 
 struct VirtualCursor {
     position: [f64; 2],
-    color: RgbaColor,
+    color: Color,
     size: f64
 }
 
@@ -144,7 +148,7 @@ impl VirtualCursor {
     fn new() -> Self {
         VirtualCursor {
             position: [0.0, 0.0],
-            color: GREEN,
+            color: green(),
             size: 5.0
         }
     }
@@ -186,7 +190,7 @@ fn main() {
     let character = {
         const INITIAL_CHARACTER_POS: [f64; 2] = [WINDOW_SIZE.0 as f64 / 20.0,
                                                  WINDOW_SIZE.1 as f64 * 0.85];
-        Character::new(RED, INITIAL_CHARACTER_POS, 50.0)
+        Character::new(red(), INITIAL_CHARACTER_POS, 50.0)
     };
 
     let mut app = App {
@@ -195,7 +199,7 @@ fn main() {
         translator: translator,
         character: character,
         cursor: VirtualCursor::new(),
-        bg_color: BLACK
+        bg_color: black()
     };
 
     for e in  app.window.clone().events() {
