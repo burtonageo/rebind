@@ -1,4 +1,30 @@
 #![feature(rustc_private, plugin_registrar)]
+#![warn(missing_docs)]
+
+//! rebind_plugins
+//! ==============
+//!
+//! A compiler plugin which complements the `rebind` crate by providing the `#[derive(Action)]`
+//! annotation.
+//!
+//! Example
+//! -------
+//!
+//! ```
+//! #![feature(plugin)]
+//! #![plugin(rebind_macros)]
+//!
+//! extern crate rebind;
+//! use rebind::RebindBuilder;
+//!
+//! fn main {
+//!    #[derive(Action)]
+//!    enum MyAction {ActionA, ActionB}
+//!
+//!    let _ = RebindBuilder::<MyAction>::new().build_translator();
+//!    // ...
+//! }
+//! ```
 
 extern crate rebind;
 extern crate rustc;
