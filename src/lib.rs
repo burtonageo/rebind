@@ -343,42 +343,52 @@ impl<A: Action> InputRebind<A> {
         self.keymap.get_mut(action)
     }
 
+    /// Returns whether mouse scroll along the x axis is inverted.
     pub fn get_x_scroll_inverted(&self) -> bool {
         self.mouse_data.x_axis_scroll_inverted
     }
 
+    /// Set whether mouse scroll along the x axis is inverted.
     pub fn set_x_scroll_inverted(&mut self, invert_x_scroll: bool) {
         self.mouse_data.x_axis_scroll_inverted = invert_x_scroll;
     }
 
+    /// Returns whether mouse scroll along the y axis is inverted.
     pub fn get_y_scroll_inverted(&self) -> bool {
         self.mouse_data.y_axis_scroll_inverted
     }
 
+    /// Set whether mouse scroll along the y axis is inverted.
     pub fn set_y_scroll_inverted(&mut self, invert_y_scroll: bool) {
         self.mouse_data.y_axis_scroll_inverted = invert_y_scroll;
     }
 
+    /// Returns whether mouse motion along the x axis is inverted.
     pub fn get_x_motion_inverted(&self) -> bool {
         self.mouse_data.x_axis_motion_inverted
     }
 
+    /// Set whether mouse motion along the x axis is inverted.
     pub fn set_x_motion_inverted(&mut self, invert_x_motion: bool) {
         self.mouse_data.x_axis_motion_inverted = invert_x_motion;
     }
 
+    /// Returns whether mouse scroll along the y axis is inverted.
     pub fn get_y_motion_inverted(&self) -> bool {
         self.mouse_data.y_axis_motion_inverted
     }
 
+    /// Set whether mouse scroll along the y axis is inverted.
     pub fn set_y_motion_inverted(&mut self, invert_y_motion: bool) {
         self.mouse_data.y_axis_motion_inverted = invert_y_motion;
     }
 
+    /// Returns the viewport size used for calculating mouse positions.
     pub fn get_viewport_size(&self) -> Size {
         self.mouse_data.viewport_size
     }
 
+    /// Set the viewport size used for calculating mouse positions.
     pub fn set_viewport_size(&mut self, viewport_size: Size) {
         self.mouse_data.viewport_size = viewport_size;
     }
