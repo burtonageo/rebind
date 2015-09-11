@@ -205,7 +205,7 @@ fn main() {
         .vsync(true)
         .build()
         .ok()
-        .expect("Could not create window: {}");
+        .expect("Could not create main window");
 
     let gl_graphics = GlGraphics::new(OPENGL);
 
