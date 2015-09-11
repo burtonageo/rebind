@@ -106,12 +106,20 @@ impl App {
 
     fn render(&mut self, args: &RenderArgs) {
         let mut gl_graphics = self.graphics.borrow_mut();
-        let mut ui = &mut *self.ui.borrow_mut();
+        let ui = &mut *self.ui.borrow_mut();
 
-        // draw the background color
-        {
-            gl_graphics.draw(args.viewport(), |_, gl| clear(self.bg_color.to_fsa(), gl));
-        }
+        // draw the ui
+        gl_graphics.draw(args.viewport(), |c, gl| {
+            Background::new().color(self.bg_color).set(ui);
+
+            Label::new("Hello")
+                .xy(10.0, 10.0)
+                .font_size(32)
+                .color(self.bg_color.plain_contrast())
+                .set(TITLE, ui);
+
+            ui.draw(c, gl)
+        });
 
         // draw the character
         {
@@ -134,17 +142,6 @@ impl App {
                                                               dot,
                                                               c.transform,
                                                               gl));
-        }
-
-        // draw the ui
-        {
-            Background::new().color(self.bg_color).set(ui);
-
-            Label::new("Hello")
-                .xy(-150.0, -150.0)
-                .font_size(32)
-                .color(self.bg_color.plain_contrast())
-                .set(TITLE, ui);
         }
     }
 }
