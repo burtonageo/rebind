@@ -1,4 +1,5 @@
-extern crate conrod;
+#[macro_use] extern crate conrod;
+extern crate find_folder;
 extern crate glutin_window;
 extern crate graphics;
 extern crate rebind;
@@ -6,11 +7,23 @@ extern crate piston;
 extern crate opengl_graphics;
 extern crate viewport;
 
-use conrod::Color;
+use conrod::{
+    Background,
+    Color,
+    Colorable,
+    Label,
+    Labelable,
+    Positionable,
+    Theme,
+    Toggle,
+    Ui,
+    Widget
+};
 use conrod::color::{black, green, red};
 use glutin_window::GlutinWindow;
 use graphics::*;
 use opengl_graphics::{GlGraphics, OpenGL};
+use opengl_graphics::glyph_cache::GlyphCache;
 use piston::event_loop::{EventMap, Events};
 use piston::input::{
     Event,
@@ -30,14 +43,20 @@ use std::rc::Rc;
 
 type RcWindow = Rc<RefCell<GlutinWindow>>;
 type RcGraphics = Rc<RefCell<GlGraphics>>;
+type RcUi = Rc<RefCell<Ui<GlyphCache<'static>>>>;
 
 struct App {
     window: RcWindow,
     graphics: RcGraphics,
+    ui: RcUi,
     translator: InputTranslator<CharacterAction>,
     character: Character,
     cursor: VirtualCursor,
     bg_color: Color
+}
+
+widget_ids! {
+    TITLE
 }
 
 impl App {
@@ -73,10 +92,10 @@ impl App {
         }
     }
 
-    fn update(&mut self, args: &UpdateArgs, window: RcWindow) {
+    fn update(&mut self, args: &UpdateArgs) {
         // we need to pass the window to update (and set the size here) because using
         // the update event from the window events queue is currently broken.
-        self.translator.set_size(window.borrow().size());
+        self.translator.set_size(self.window.borrow().size());
 
         // update the character's velocity
         let ctl = self.character.topleft;
@@ -87,6 +106,7 @@ impl App {
 
     fn render(&mut self, args: &RenderArgs) {
         let mut gl_graphics = self.graphics.borrow_mut();
+        let mut ui = &mut *self.ui.borrow_mut();
 
         // draw the background color
         {
@@ -114,6 +134,17 @@ impl App {
                                                               dot,
                                                               c.transform,
                                                               gl));
+        }
+
+        // draw the ui
+        {
+            Background::new().color(self.bg_color).set(ui);
+
+            Label::new("Hello")
+                .xy(-150.0, -150.0)
+                .font_size(32)
+                .color(self.bg_color.plain_contrast())
+                .set(TITLE, ui);
         }
     }
 }
@@ -193,21 +224,37 @@ fn main() {
         Character::new(red(), INITIAL_CHARACTER_POS, 50.0)
     };
 
+    let ui = {
+        let glyph_cache = {
+            let font_path = find_folder::Search::ParentsThenKids(3, 3)
+                .for_folder("assets")
+                .ok()
+                .expect("Could not find assets folder")
+                .join("fonts/NotoSans/NotoSans-Regular.ttf");
+
+            GlyphCache::new(&font_path)
+                .ok()
+                .expect("Could not find font file within assets folder")
+        };
+
+        Ui::new(glyph_cache, Theme::default())
+    };
+
     let mut app = App {
         window: Rc::new(RefCell::new(window)),
         graphics: Rc::new(RefCell::new(gl_graphics)),
+        ui: Rc::new(RefCell::new(ui)),
         translator: translator,
         character: character,
         cursor: VirtualCursor::new(),
         bg_color: black()
     };
 
-    for e in  app.window.clone().events() {
-        let app_window = app.window.clone();
+    for e in app.window.clone().events() {
         match e {
-            Event::Render(r) => { app.render(&r); },
-            Event::Update(u) => { app.update(&u, app_window); },
             Event::Input(i) => { app.input(&i); },
+            Event::Update(u) => { app.update(&u); },
+            Event::Render(r) => { app.render(&r); },
             _ => { }
         }
     }
