@@ -343,60 +343,44 @@ impl<A: Action> InputRebind<A> {
         self.keymap.get_mut(action)
     }
 
-    /// Returns a reference to the boolean which represents whether x axis scrolling is inverted.
-    pub fn get_x_scroll_inverted(&self) -> &bool {
-        &self.mouse_data.x_axis_scroll_inverted
+    pub fn get_x_scroll_inverted(&self) -> bool {
+        self.mouse_data.x_axis_scroll_inverted
     }
 
-    /// Returns a mutable reference to the boolean which represents whether x axis scrolling is inverted.
-    pub fn get_x_scroll_inverted_mut(&mut self) -> &mut bool {
-        &mut self.mouse_data.x_axis_scroll_inverted
+    pub fn set_x_scroll_inverted(&mut self, invert_x_scroll: bool) {
+        self.mouse_data.x_axis_scroll_inverted = invert_x_scroll;
     }
 
-    /// Returns a reference to the boolean which represents whether y axis scrolling is inverted.
-    pub fn get_y_scroll_inverted(&self) -> &bool {
+    pub fn get_y_scroll_inverted(&self) -> bool {
         &self.mouse_data.y_axis_scroll_inverted
     }
 
-    /// Returns a mutable reference to the boolean which represents whether y axis scrolling is inverted.
-    pub fn get_y_scroll_inverted_mut(&mut self) -> &mut bool {
-        &mut self.mouse_data.y_axis_scroll_inverted
+    pub fn set_y_scroll_inverted(&mut self, invert_y_scroll: bool) {
+        self.mouse_data.y_axis_scroll_inverted = invert_y_scroll;
     }
 
-    /// Returns a reference to the boolean which represents whether mouse movement along the x axis is
-    /// inverted.
-    pub fn get_x_motion_inverted(&self) -> &bool {
-        &self.mouse_data.x_axis_motion_inverted
+    pub fn get_x_motion_inverted(&self) -> bool {
+        self.mouse_data.x_axis_motion_inverted
     }
 
-    /// Returns a mutable reference to the boolean which represents whether mouse movement along the
-    /// x axis is inverted.
-    pub fn get_x_motion_inverted_mut(&mut self) -> &mut bool {
-        &mut self.mouse_data.x_axis_motion_inverted
+    pub fn set_x_motion_inverted(&mut self, invert_x_motion: bool) {
+        self.mouse_data.x_axis_motion_inverted = invert_x_motion;
     }
 
-    /// Returns a reference to the boolean which represents whether mouse movement along the y axis is
-    /// inverted.
-    pub fn get_y_motion_inverted(&self) -> &bool {
-        &self.mouse_data.y_axis_motion_inverted
+    pub fn get_y_motion_inverted(&self) -> bool {
+        self.mouse_data.y_axis_motion_inverted
     }
 
-    /// Returns a mutable reference to the boolean which represents whether mouse movement along the
-    /// y axis is inverted.
-    pub fn get_y_motion_inverted_mut(&mut self) -> &mut bool {
-        &mut self.mouse_data.y_axis_motion_inverted
+    pub fn set_y_motion_inverted(&mut self, invert_y_motion: bool) {
+        self.mouse_data.y_axis_motion_inverted = invert_y_motion;
     }
 
-    /// Returns a reference to the currently stored viewport size used for calculating the imaginary mouse
-    /// position.
-    pub fn get_viewport_size(&self) -> &Size {
-        &self.mouse_data.viewport_size
+    pub fn get_viewport_size(&self) -> Size {
+        self.mouse_data.viewport_size
     }
 
-    /// Returns a mutable reference to the currently stored viewport size used for calculating the imaginary
-    /// mouse position.
-    pub fn get_viewport_size_mut(&mut self) -> &mut Size {
-        &mut self.mouse_data.viewport_size
+    pub fn set_viewport_size(&mut self, viewport_size: Size) {
+        self.mouse_data.viewport_size = viewport_size;
     }
 
     /// Convert the `InputRebind` into an `InputTranslator`. Consumes the
