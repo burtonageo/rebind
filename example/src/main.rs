@@ -11,15 +11,16 @@ use conrod::{
     Background,
     Color,
     Colorable,
-    Label,
+    Frameable,
     Labelable,
     Positionable,
+    Sizeable,
     Theme,
     Toggle,
     Ui,
-    Widget
+    Widget,
 };
-use conrod::color::{black, green, red};
+use conrod::color::{black, grayscale, green, red};
 use glutin_window::GlutinWindow;
 use graphics::*;
 use opengl_graphics::{GlGraphics, OpenGL};
@@ -53,10 +54,6 @@ struct App {
     character: Character,
     cursor: VirtualCursor,
     bg_color: Color
-}
-
-widget_ids! {
-    TITLE
 }
 
 impl App {
@@ -107,16 +104,39 @@ impl App {
     fn render(&mut self, args: &RenderArgs) {
         let mut gl_graphics = self.graphics.borrow_mut();
         let ui = &mut *self.ui.borrow_mut();
+        let mut rebind = self.translator.clone().into_rebind();
+
+        // declare widget ids
+        widget_ids! {
+            X_INVERT_TOGGLE,
+            Y_INVERT_TOGGLE
+        }
 
         // draw the ui
         gl_graphics.draw(args.viewport(), |c, gl| {
             Background::new().color(self.bg_color).set(ui);
 
-            Label::new("Hello")
-                .xy(10.0, 10.0)
-                .font_size(32)
-                .color(self.bg_color.plain_contrast())
-                .set(TITLE, ui);
+            Toggle::new(rebind.get_x_motion_inverted())
+                .xy(-350.0, 260.0)
+                .dimensions(80.0, 40.0)
+                .color(grayscale(0.4))
+                .frame(1.0)
+                .label(&"Invert x".to_string())
+                .label_color(self.bg_color.plain_contrast())
+                .label_font_size(16)
+                .react(|b| rebind.set_x_motion_inverted(b))
+                .set(X_INVERT_TOGGLE, ui);
+
+            Toggle::new(rebind.get_y_motion_inverted())
+                .xy(-350.0, 200.0)
+                .dimensions(80.0, 40.0)
+                .color(grayscale(0.4))
+                .frame(1.0)
+                .label(&"Invert y".to_string())
+                .label_color(self.bg_color.plain_contrast())
+                .label_font_size(16)
+                .react(|b| rebind.set_y_motion_inverted(b))
+                .set(Y_INVERT_TOGGLE, ui);
 
             ui.draw(c, gl)
         });
@@ -143,6 +163,8 @@ impl App {
                                                               c.transform,
                                                               gl));
         }
+
+        self.translator = rebind.into();
     }
 }
 
@@ -212,7 +234,6 @@ fn main() {
         .with_action_mapping(Keyboard(Key::A),     CharacterAction::MoveLeft)
         .with_action_mapping(Keyboard(Key::Right), CharacterAction::MoveRight)
         .with_action_mapping(Keyboard(Key::D),     CharacterAction::MoveRight)
-        .y_motion_inverted(true)
         .build_translator();
 
     let character = {
@@ -248,6 +269,7 @@ fn main() {
     };
 
     for e in app.window.clone().events() {
+        app.ui.borrow_mut().handle_event(&e);
         match e {
             Event::Input(i) => { app.input(&i); },
             Event::Update(u) => { app.update(&u); },
