@@ -352,7 +352,7 @@ impl<A: Action> InputRebind<A> {
     }
 
     pub fn get_y_scroll_inverted(&self) -> bool {
-        &self.mouse_data.y_axis_scroll_inverted
+        self.mouse_data.y_axis_scroll_inverted
     }
 
     pub fn set_y_scroll_inverted(&mut self, invert_y_scroll: bool) {
