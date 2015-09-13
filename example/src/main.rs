@@ -217,7 +217,7 @@ fn main() {
     const OPENGL: OpenGL = OpenGL::V3_2;
     const WINDOW_SIZE: (u32, u32) = (800, 600);
 
-    let window = WindowSettings::new("calaxite", WINDOW_SIZE)
+    let window = WindowSettings::new("rebind-example", WINDOW_SIZE)
         .exit_on_esc(true)
         .fullscreen(false)
         .opengl(OPENGL)
