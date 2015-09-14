@@ -99,10 +99,10 @@ impl<A: Action> RebindBuilder<A> {
         self
     }
 
-    /// Creates an `InputTranslator` from this builder object. Consumes self.
+    /// Creates an `InputTranslator` from this builder object.
     pub fn build_translator(self) -> InputTranslator<A> { self.into() }
 
-    /// Creates an `InputRebind` from this builder object. Consumes self.
+    /// Creates an `InputRebind` from this builder object.
     pub fn build_rebind(self) -> InputRebind<A> { self.into() }
 }
 
