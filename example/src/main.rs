@@ -35,8 +35,6 @@ use piston::input::{
     UpdateArgs,
     UpdateEvent
 };
-use piston::input::keyboard::Key;
-use piston::input::Button::Keyboard;
 use piston::window::{Window, WindowSettings};
 use rebind::{Action, InputTranslator, RebindBuilder, Translated};
 use std::cell::RefCell;
@@ -229,13 +227,17 @@ fn main() {
 
     let gl_graphics = GlGraphics::new(OPENGL);
 
-    let translator = RebindBuilder::new(WINDOW_SIZE)
-        .with_action_mapping(Keyboard(Key::Space), CharacterAction::Jump)
-        .with_action_mapping(Keyboard(Key::Left),  CharacterAction::MoveLeft)
-        .with_action_mapping(Keyboard(Key::A),     CharacterAction::MoveLeft)
-        .with_action_mapping(Keyboard(Key::Right), CharacterAction::MoveRight)
-        .with_action_mapping(Keyboard(Key::D),     CharacterAction::MoveRight)
-        .build_translator();
+    let translator = {
+        use piston::input::keyboard::Key;
+        use piston::input::Button::Keyboard;
+        RebindBuilder::new(WINDOW_SIZE)
+            .with_action_mapping(Keyboard(Key::Space), CharacterAction::Jump)
+            .with_action_mapping(Keyboard(Key::Left),  CharacterAction::MoveLeft)
+            .with_action_mapping(Keyboard(Key::A),     CharacterAction::MoveLeft)
+            .with_action_mapping(Keyboard(Key::Right), CharacterAction::MoveRight)
+            .with_action_mapping(Keyboard(Key::D),     CharacterAction::MoveRight)
+            .build_translator()
+    };
 
     let character = {
         const INITIAL_CHARACTER_POS: [f64; 2] = [WINDOW_SIZE.0 as f64 / 20.0,
