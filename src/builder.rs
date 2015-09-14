@@ -19,65 +19,57 @@ impl<A: Action> RebindBuilder<A> {
         }
     }
 
-    /// Set whether the x scroll is inverted on the builder (and thus
-    /// on the built object).
+    /// Set whether the x scroll is inverted on the builder.
     pub fn x_scroll_inverted(mut self, invert: bool) -> Self {
         self.mouse_data.x_axis_scroll_inverted = invert;
         self
     }
 
-    /// Returns true if the x scroll is inverted on the builder (and thus
-    /// on the built object).
+    /// Returns true if the x scroll is inverted on the builder.
     pub fn get_x_scroll_inverted(&self) -> bool {
         self.mouse_data.x_axis_scroll_inverted
     }
 
-    /// Set whether the y scroll is inverted on the builder (and thus
-    /// on the built object).
+    /// Set whether the y scroll is inverted on the builder.
     pub fn y_scroll_inverted(mut self, invert: bool) -> Self {
         self.mouse_data.y_axis_scroll_inverted = invert;
         self
     }
 
-    /// Returns true if the y scroll is inverted on the builder (and thus
-    /// on the built object).
+    /// Returns true if the y scroll is inverted on the builder.
     pub fn get_y_scroll_inverted(&self) -> bool {
         self.mouse_data.y_axis_scroll_inverted
     }
 
-    /// Set whether the x axis motion is inverted on the builder (and thus
-    /// on the built object).
+    /// Set whether the x axis motion is inverted on the builder.
     pub fn x_motion_inverted(mut self, invert: bool) -> Self {
         self.mouse_data.x_axis_motion_inverted = invert;
         self
     }
 
-    /// Returns true if the x axis motion is inverted on the builder (and thus
-    /// on the built object).
+    /// Returns true if the x axis motion is inverted on the builder.
     pub fn get_x_motion_inverted(&self) -> bool {
         self.mouse_data.x_axis_motion_inverted
     }
 
-    /// Set whether the y axis motion is inverted on the builder (and thus
-    /// on the built object).
+    /// Set whether the y axis motion is inverted on the builder.
     pub fn y_motion_inverted(mut self, invert: bool) -> Self {
         self.mouse_data.y_axis_motion_inverted = invert;
         self
     }
 
-    /// Returns true if the y axis motion is inverted on the builder (and thus
-    /// on the built object).
+    /// Returns true if the y axis motion is inverted on the builder.
     pub fn get_y_motion_inverted(&self) -> bool {
         self.mouse_data.y_axis_motion_inverted
     }
 
-    /// Set the mouse sensitivity
+    /// Set the mouse sensitivity.
     pub fn mouse_sensitivity(mut self, sensitivity: f64) -> Self {
         self.mouse_data.sensitivity = sensitivity;
         self
     }
 
-    /// Returns the mouse sensitivity
+    /// Returns the mouse sensitivity.
     pub fn get_mouse_sensitivity(&self) -> f64 {
         self.mouse_data.sensitivity
     }
@@ -93,7 +85,7 @@ impl<A: Action> RebindBuilder<A> {
         self.mouse_data.viewport_size
     }
 
-    /// Add an association between the Button and Action in the built object.
+    /// Add an association between the Button and Action.
     pub fn with_action_mapping(mut self, button: Button, action: A) -> Self {
         self.input_remappings.push((button, action));
         self
