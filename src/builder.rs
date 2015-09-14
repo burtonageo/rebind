@@ -28,8 +28,8 @@ impl<A: Action> RebindBuilder<A> {
 
     /// Returns true if the x scroll is inverted on the builder (and thus
     /// on the built object).
-    pub fn get_x_scroll_inverted(&self) -> &bool {
-        &self.mouse_data.x_axis_scroll_inverted
+    pub fn get_x_scroll_inverted(&self) -> bool {
+        self.mouse_data.x_axis_scroll_inverted
     }
 
     /// Set whether the y scroll is inverted on the builder (and thus
@@ -41,8 +41,8 @@ impl<A: Action> RebindBuilder<A> {
 
     /// Returns true if the y scroll is inverted on the builder (and thus
     /// on the built object).
-    pub fn get_y_scroll_inverted(&self) -> &bool {
-        &self.mouse_data.y_axis_scroll_inverted
+    pub fn get_y_scroll_inverted(&self) -> bool {
+        self.mouse_data.y_axis_scroll_inverted
     }
 
     /// Set whether the x axis motion is inverted on the builder (and thus
@@ -54,8 +54,8 @@ impl<A: Action> RebindBuilder<A> {
 
     /// Returns true if the x axis motion is inverted on the builder (and thus
     /// on the built object).
-    pub fn get_x_motion_inverted(&self) -> &bool {
-        &self.mouse_data.x_axis_motion_inverted
+    pub fn get_x_motion_inverted(&self) -> bool {
+        self.mouse_data.x_axis_motion_inverted
     }
 
     /// Set whether the y axis motion is inverted on the builder (and thus
@@ -67,8 +67,8 @@ impl<A: Action> RebindBuilder<A> {
 
     /// Returns true if the y axis motion is inverted on the builder (and thus
     /// on the built object).
-    pub fn get_y_motion_inverted(&self) -> &bool {
-        &self.mouse_data.y_axis_motion_inverted
+    pub fn get_y_motion_inverted(&self) -> bool {
+        self.mouse_data.y_axis_motion_inverted
     }
 
     /// Set the mouse sensitivity
@@ -78,8 +78,8 @@ impl<A: Action> RebindBuilder<A> {
     }
 
     /// Returns the mouse sensitivity
-    pub fn get_mouse_sensitivity(&self) -> &f64 {
-        &self.mouse_data.sensitivity
+    pub fn get_mouse_sensitivity(&self) -> f64 {
+        self.mouse_data.sensitivity
     }
 
     /// Sets the viewport size used for mouse position calculations.
@@ -89,8 +89,8 @@ impl<A: Action> RebindBuilder<A> {
     }
 
     /// Returns the currently set viewport size.
-    pub fn get_viewport_size(&self) -> &Size {
-        &self.mouse_data.viewport_size
+    pub fn get_viewport_size(&self) -> Size {
+        self.mouse_data.viewport_size
     }
 
     /// Add an association between the Button and Action in the built object.
