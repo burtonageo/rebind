@@ -138,7 +138,7 @@ impl App {
                 .react(|b| rebind.set_y_motion_inverted(b))
                 .set(Y_INVERT_TOGGLE, ui);
 
-            ui.draw(c, gl)
+            ui.draw(c, gl);
         });
 
         // draw the character
@@ -158,6 +158,7 @@ impl App {
             let dot = ellipse::circle(self.cursor.position[0],
                                       self.cursor.position[1],
                                       self.cursor.size);
+
             gl_graphics.draw(args.viewport(), |c, gl| ellipse(self.cursor.color.to_fsa(),
                                                               dot,
                                                               c.transform,
