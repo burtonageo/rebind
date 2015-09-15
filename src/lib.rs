@@ -167,6 +167,10 @@ impl Iterator for ButtonTupleIter {
     }
 }
 
+impl ExactSizeIterator for ButtonTupleIter {
+    fn len(&self) -> usize { 3 }
+}
+
 /// An object which translates piston::input::Input events into input_map::Translated<A> events
 #[derive(Clone, Debug, PartialEq)]
 pub struct InputTranslator<A: Action> {
