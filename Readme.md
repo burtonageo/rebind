@@ -5,8 +5,8 @@ A library for binding input keys to actions, and modifying mouse behaviour. Keys
 actions, and then translated during runtime. `Keys` are mapped to `Actions` using a `HashMap`, so
 lookup time is constant.
 
-Example
--------
+Api Example
+-----------
 
 ```rust
 extern crate glutin_window;
@@ -75,6 +75,12 @@ enum MyAction {
 
 // ... rest of example as normal
 ```
+
+Example Application
+-------------------
+
+A sample application which shows off the main features (and the main method  used to drive design decisions
+about this library) is available in the `example/` folder.
 
 Main improvements to be made:
 -----------------------------
