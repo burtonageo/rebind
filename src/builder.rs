@@ -107,22 +107,22 @@ impl<A: Action> Default for RebindBuilder<A> {
 
 impl<A: Action> Into<InputTranslator<A>> for RebindBuilder<A> {
     fn into(self) -> InputTranslator<A> {
-        let mut input_map = InputTranslator::new(self.mouse_data.viewport_size);
+        let mut translator = InputTranslator::new(self.mouse_data.viewport_size);
 
-        input_map.mouse_translator.data = self.mouse_data;
-        input_map.keymap = self.input_remappings.iter().cloned().collect();
+        translator.mouse_translator.data = self.mouse_data;
+        translator.keymap = self.input_remappings.iter().cloned().collect();
 
-        input_map
+        translator
     }
 }
 
 impl<A: Action> Into<InputRebind<A>> for RebindBuilder<A> {
     fn into(self) -> InputRebind<A> {
-        let mut input_rebind = InputRebind::new(self.mouse_data.viewport_size);
+        let mut rebind = InputRebind::new(self.mouse_data.viewport_size);
 
-        input_rebind.mouse_data = self.mouse_data;
-        input_rebind.keymap = to_act_bt_hashmap(self.input_remappings.iter().cloned());
+        rebind.mouse_data = self.mouse_data;
+        rebind.keymap = to_act_bt_hashmap(self.input_remappings.iter().cloned());
 
-        input_rebind
+        rebind
     }
 }
