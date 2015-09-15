@@ -84,7 +84,7 @@ pub use builder::RebindBuilder;
 /// Represents a logical action to be bound to a particular button press, e.g.
 /// jump, attack, or move forward. Needs to be hashable, as it is used as a
 /// lookup key when rebinding an action to a different button.
-pub trait Action: Copy + Eq + Hash + Ord { }
+pub trait Action: Copy + Hash + Ord { }
 
 /// A translated action.
 #[derive(Debug, Copy, Clone, PartialEq)]
