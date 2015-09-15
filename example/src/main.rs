@@ -88,11 +88,11 @@ impl App {
     }
 
     fn update(&mut self, args: &UpdateArgs) {
-        // we need to pass the window to update (and set the size here) because using
+        // We need to pass the window to update (and set the size here) because using
         // the update event from the window events queue is currently broken.
         self.translator.set_size(self.window.borrow().size());
 
-        // update the character's velocity
+        // Update the character's velocity
         let ctl = self.character.topleft;
         let v = self.character.current_velocity;
 
@@ -109,13 +109,12 @@ impl App {
         let mut gl_graphics = self.graphics.borrow_mut();
         let ui = &mut *self.ui.borrow_mut();
 
-        // declare widget ids
         widget_ids! {
             X_INVERT_TOGGLE,
             Y_INVERT_TOGGLE
         }
 
-        // draw the ui
+        // Draw the ui
         gl_graphics.draw(args.viewport(), |c, gl| {
             Background::new().color(self.bg_color).set(ui);
 
@@ -144,7 +143,7 @@ impl App {
             ui.draw(c, gl);
         });
 
-        // draw the character
+        // Draw the character
         {
             let square = rectangle::square(self.character.topleft[0],
                                            self.character.topleft[1],
@@ -156,7 +155,7 @@ impl App {
                                                                 gl));
         }
 
-        // draw the cursor dot
+        // Draw the cursor dot
         {
             let dot = ellipse::circle(self.cursor.position[0],
                                       self.cursor.position[1],
