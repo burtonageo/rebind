@@ -443,9 +443,9 @@ impl<A: Action> Into<InputRebind<A>> for InputTranslator<A> {
 
 /// Utility function to convert an iterator of (Button, Action) to a
 /// `HashMap<Action, ButtonTuple>`.
-fn to_act_bt_hashmap<A, I>(iter: I) -> HashMap<A, ButtonTuple>
-    where A: Action,
-          I: Iterator<Item = (Button, A)> {
+fn to_act_bt_hashmap<I, A>(iter: I) -> HashMap<A, ButtonTuple>
+    where I: Iterator<Item = (Button, A)>,
+          A: Action {
     iter.map(|(b, a)| (a, vec![Some(b)]))
         .sorted_by(|&(a0, _), &(a1, _)| Ord::cmp(&a0, &a1))
         .into_iter()
