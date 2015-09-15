@@ -4,8 +4,7 @@ version = "0.1.0"
 authors = ["George Burton <burtonageo@gmail.com>"]
 description = """
 A library for binding input keys to actions, and modifying mouse behaviour. Keys can be bound
-to actions, and then translated during runtime. Keys are mapped to Actions using a HashMap, so
-lookup time is constant.
+to actions, and then translated during runtime.
 """
 repository = "https://github.com/burtonageo/input-map"
 readme = "./Readme.md"
