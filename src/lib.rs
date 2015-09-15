@@ -180,7 +180,7 @@ pub struct InputTranslator<A: Action> {
 
 impl<A: Action> InputTranslator<A> {
     /// Creates an empty InputTranslator.
-    pub fn new<S: Into<Size> + Sized>(size: S) -> Self {
+    pub fn new<S: Into<Size>>(size: S) -> Self {
         InputTranslator {
             keymap: HashMap::new(),
             mouse_translator: MouseTranslator::new(size)
@@ -232,7 +232,7 @@ struct MouseTranslationData {
 }
 
 impl MouseTranslationData {
-    fn new<S: Into<Size> + Sized>(size: S) -> Self {
+    fn new<S: Into<Size>>(size: S) -> Self {
         MouseTranslationData {
             x_axis_motion_inverted: false,
             y_axis_motion_inverted: false,
@@ -275,7 +275,7 @@ struct MouseTranslator {
 }
 
 impl MouseTranslator {
-    fn new<S: Into<Size> + Sized>(size: S) -> Self {
+    fn new<S: Into<Size>>(size: S) -> Self {
         MouseTranslator {
             data: MouseTranslationData::new(size)
         }
@@ -314,7 +314,7 @@ pub struct InputRebind<A: Action> {
 
 impl<A: Action> InputRebind<A> {
     /// Creates a new InputRebind with no stored Action/ButtonTuple pairs.
-    pub fn new<S: Into<Size> + Sized>(size: S) -> Self {
+    pub fn new<S: Into<Size>>(size: S) -> Self {
         InputRebind {
             keymap: HashMap::new(),
             mouse_data: MouseTranslationData::new(size)
