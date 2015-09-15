@@ -6,6 +6,10 @@ repository = "https://github.com/burtonageo/input-map"
 readme = "./Readme.md"
 keywords = ["Input mapping", "Rebind", "Mouse reverse"]
 license = "MIT"
+exclude = [
+    "example/*"
+    "rebind_plugins/*"
+]
 
 [dependencies]
 itertools = "^0.3.0"
