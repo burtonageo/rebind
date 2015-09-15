@@ -2,12 +2,17 @@
 name = "rebind"
 version = "0.1.0"
 authors = ["George Burton <burtonageo@gmail.com>"]
+description = """
+A library for binding input keys to actions, and modifying mouse behaviour. Keys can be bound
+to actions, and then translated during runtime. Keys are mapped to Actions using a HashMap, so
+lookup time is constant.
+"""
 repository = "https://github.com/burtonageo/input-map"
 readme = "./Readme.md"
 keywords = ["Input mapping", "Rebind", "Mouse reverse"]
 license = "MIT"
 exclude = [
-    "example/*"
+    "example/*",
     "rebind_plugins/*"
 ]
 
@@ -22,4 +27,3 @@ rustc-serialize = "0.3"
 [dev-dependencies]
 piston = "0.10.0"
 pistoncore-glutin_window = "0.12"
-rebind = {path = "./"}
