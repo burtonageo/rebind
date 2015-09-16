@@ -130,6 +130,14 @@ impl ButtonTuple {
         }
     }
 
+    /// Get the maximum number of buttons which this tuple can contain.
+    pub fn max_buttons(&self) -> usize { 3 }
+
+    /// Returns the number of buttons in the ButtonTuple which are not `None`.
+    pub fn num_buttons_set(&self) -> usize {
+        self.iter().map(|b| b.is_some() as usize).fold(0, std::ops::Add::add)
+    }
+
     /// Returns an iterator over this tuple.
     pub fn iter(&self) -> ButtonTupleIter { (*self).into_iter() }
 }
