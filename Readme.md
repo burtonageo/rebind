@@ -33,7 +33,7 @@ fn main() {
         .build()
         .unwrap_or_else(|e| panic!("Could not create window: {}", e));
 
-    let translator = RebindBuilder::<MyAction>::new((800, 600).into())
+    let translator = RebindBuilder::<MyAction>::new((800, 600))
         .with_action_mapping(Keyboard(Key::D1), MyAction::Action1)
         .with_action_mapping(Keyboard(Key::A),  MyAction::Action1)
         .with_action_mapping(Keyboard(Key::D2), MyAction::Action2)
