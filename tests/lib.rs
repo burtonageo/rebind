@@ -75,3 +75,18 @@ fn test_add_button_to_translator_using_rebind() {
     assert_eq!(translator.translate(&Input::Press(Q_KEY)), Some(Translated::Press(TestAction::Action5)));
     assert_eq!(translator.translate(&Input::Press(E_KEY)), Some(Translated::Press(TestAction::Action5)));
 }
+
+#[test]
+fn test_get_button_len() {
+    let bt = ButtonTuple(Some(Keyboard(Key::B)), None, None);
+    let mut bti = bt.iter();
+    assert_eq!(bti.len(), 3);
+    let _ = bti.next();
+    assert_eq!(bti.len(), 2);
+    let _ = bti.next();
+    assert_eq!(bti.len(), 1);
+    let _ = bti.next();
+    assert_eq!(bti.len(), 0);
+    let _ = bti.next();
+    assert_eq!(bti.len(), 0);
+}

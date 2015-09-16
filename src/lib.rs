@@ -168,7 +168,14 @@ impl Iterator for ButtonTupleIter {
 }
 
 impl ExactSizeIterator for ButtonTupleIter {
-    fn len(&self) -> usize { 3 }
+    fn len(&self) -> usize {
+        match self.i {
+            0 => 3,
+            1 => 2,
+            2 => 1,
+            _ => 0
+        }
+    }
 }
 
 /// An object which translates piston::input::Input events into input_map::Translated<A> events
