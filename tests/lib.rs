@@ -77,6 +77,21 @@ fn test_add_button_to_translator_using_rebind() {
 }
 
 #[test]
+fn test_get_num_buttons_set() {
+    let mut bt = ButtonTuple::new();
+    assert_eq!(bt.num_buttons_set(), 0);
+
+    bt.0 = Some(Keyboard(Key::Z));
+    assert_eq!(bt.num_buttons_set(), 1);
+
+    bt.1 = Some(Keyboard(Key::Q));
+    assert_eq!(bt.num_buttons_set(), 2);
+
+    bt.2 = Some(Keyboard(Key::D0));
+    assert_eq!(bt.num_buttons_set(), 3);
+}
+
+#[test]
 fn test_get_button_iter_len() {
     let bt = ButtonTuple(Some(Keyboard(Key::B)), None, None);
     let mut bti = bt.iter();
