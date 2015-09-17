@@ -77,7 +77,7 @@ fn test_add_button_to_translator_using_rebind() {
 }
 
 #[test]
-fn test_get_button_len() {
+fn test_get_button_iter_len() {
     let bt = ButtonTuple(Some(Keyboard(Key::B)), None, None);
     let mut bti = bt.iter();
     assert_eq!(bti.len(), 3);
