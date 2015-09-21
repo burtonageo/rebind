@@ -1,3 +1,6 @@
+#![cfg_attr(feature = "rebind_plugins", feature(custom_derive, plugin))]
+#![cfg_attr(feature = "rebind_plugins", plugin(rebind_plugins))]
+
 #[macro_use] extern crate conrod;
 extern crate find_folder;
 extern crate glutin_window;
@@ -207,13 +210,16 @@ impl VirtualCursor {
     }
 }
 
-#[derive(Copy, Clone, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "rebind_plugins", derive(Action))]
+#[cfg_attr(not(feature = "rebind_plugins"),
+           derive(Copy, Clone, Eq, Hash, Ord, PartialEq, PartialOrd))]
 enum CharacterAction {
     Jump,
     MoveLeft,
     MoveRight
 }
 
+#[cfg(not(feature = "rebind_plugins"))]
 impl Action for CharacterAction { }
 
 fn main() {

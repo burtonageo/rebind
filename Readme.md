@@ -80,7 +80,10 @@ Example Application
 -------------------
 
 A sample application which shows off the main features (and the main method  used to drive design decisions
-about this library) is available in the `example/` folder.
+about this library) is available in the `example/` folder. The example builds on stable, although you can
+build it to use the `rebind_plugins` package by passing `--features "rebind_plugins"` along with the Cargo
+incantation you usually use.
+
 
 Main improvements to be made:
 -----------------------------
