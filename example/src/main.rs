@@ -232,7 +232,6 @@ fn main() {
         .opengl(OPENGL)
         .vsync(true)
         .build()
-        .ok()
         .expect("Could not create main window");
 
     let gl_graphics = GlGraphics::new(OPENGL);
@@ -259,12 +258,10 @@ fn main() {
         let glyph_cache = {
             let font_path = find_folder::Search::ParentsThenKids(3, 3)
                 .for_folder("assets")
-                .ok()
                 .expect("Could not find assets folder")
                 .join("fonts/NotoSans/NotoSans-Regular.ttf");
 
             GlyphCache::new(&font_path)
-                .ok()
                 .expect("Could not find font file within assets folder")
         };
 
