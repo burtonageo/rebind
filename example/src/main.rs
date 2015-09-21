@@ -1,5 +1,5 @@
-#![cfg_attr(feature = "rebind_plugins", feature(custom_derive, plugin))]
-#![cfg_attr(feature = "rebind_plugins", plugin(rebind_plugins))]
+#![cfg_attr(feature = "nightly", feature(custom_derive, plugin))]
+#![cfg_attr(feature = "nightly", plugin(rebind_plugins))]
 
 #[macro_use] extern crate conrod;
 extern crate find_folder;
@@ -210,8 +210,8 @@ impl VirtualCursor {
     }
 }
 
-#[cfg_attr(feature = "rebind_plugins", derive(Action))]
-#[cfg_attr(not(feature = "rebind_plugins"),
+#[cfg_attr(feature = "nightly", derive(Action))]
+#[cfg_attr(not(feature = "nightly"),
            derive(Copy, Clone, Eq, Hash, Ord, PartialEq, PartialOrd))]
 enum CharacterAction {
     Jump,
@@ -219,7 +219,7 @@ enum CharacterAction {
     MoveRight
 }
 
-#[cfg(not(feature = "rebind_plugins"))]
+#[cfg(not(feature = "nightly"))]
 impl Action for CharacterAction { }
 
 fn main() {

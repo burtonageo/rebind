@@ -20,4 +20,5 @@ optional = true
 path = ".."
 
 [features]
-nightly = []
+default = []
+nightly = ["rebind_plugins"]
