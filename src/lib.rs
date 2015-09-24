@@ -177,12 +177,7 @@ impl Iterator for ButtonTupleIter {
 
 impl ExactSizeIterator for ButtonTupleIter {
     fn len(&self) -> usize {
-        match self.i {
-            0 => 3,
-            1 => 2,
-            2 => 1,
-            _ => 0
-        }
+        (std::cmp::min(self.i as isize, 3) - 3).abs() as usize
     }
 }
 
