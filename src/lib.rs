@@ -123,9 +123,9 @@ impl ButtonTuple {
     pub fn insert_inplace(&mut self, button: Button) -> bool {
         let sbtn = Some(button);
         match self {
-            &mut ButtonTuple(a, b, c) if a.is_none() => {*self = ButtonTuple(sbtn, b, c); true},
-            &mut ButtonTuple(a, b, c) if b.is_none() => {*self = ButtonTuple(a, sbtn, c); true},
-            &mut ButtonTuple(a, b, c) if c.is_none() => {*self = ButtonTuple(a, b, sbtn); true}
+            &mut ButtonTuple(None, _, _) => {self.0 = sbtn; true},
+            &mut ButtonTuple(_, None, _) => {self.1 = sbtn; true},
+            &mut ButtonTuple(_, _, None) => {self.2 = sbtn; true},
             _ => false
         }
     }
