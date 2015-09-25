@@ -9,7 +9,7 @@ dependencies = [
  "piston2d-graphics 0.9.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "piston2d-opengl_graphics 0.12.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "pistoncore-glutin_window 0.12.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "rebind 0.1.0",
+ "rebind 0.0.1",
  "rebind_plugins 0.1.0",
 ]
 
@@ -580,7 +580,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "rebind"
-version = "0.1.0"
+version = "0.0.1"
 dependencies = [
  "itertools 0.3.25 (registry+https://github.com/rust-lang/crates.io-index)",
  "piston-viewport 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -593,7 +593,7 @@ dependencies = [
 name = "rebind_plugins"
 version = "0.1.0"
 dependencies = [
- "rebind 0.1.0",
+ "rebind 0.0.1",
 ]
 
 [[package]]
