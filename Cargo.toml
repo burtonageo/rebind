@@ -8,7 +8,7 @@ to actions, and then translated during runtime.
 """
 repository = "https://github.com/burtonageo/input-map"
 readme = "./Readme.md"
-keywords = ["Input mapping", "Rebind", "Mouse reverse"]
+keywords = ["Input", "Rebind", "Mouse", "Mapping", "Keyboard"]
 license = "MIT"
 exclude = ["example/*", "rebind_plugins/*"]
 
