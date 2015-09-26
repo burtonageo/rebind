@@ -122,7 +122,7 @@ impl App {
             Background::new().color(self.bg_color).set(ui);
 
             Toggle::new(rebind.get_x_motion_inverted())
-                .xy(-350.0, 260.0)
+                .xy(-350.0, 270.0)
                 .dimensions(80.0, 40.0)
                 .color(grayscale(0.4))
                 .frame(1.0)
@@ -133,7 +133,7 @@ impl App {
                 .set(X_INVERT_TOGGLE, ui);
 
             Toggle::new(rebind.get_y_motion_inverted())
-                .xy(-350.0, 200.0)
+                .xy(-350.0, 218.0)
                 .dimensions(80.0, 40.0)
                 .color(grayscale(0.4))
                 .frame(1.0)
