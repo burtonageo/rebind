@@ -301,7 +301,7 @@ dependencies = [
 
 [[package]]
 name = "image"
-version = "0.3.13"
+version = "0.3.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "byteorder 0.3.13 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -495,7 +495,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "freetype-rs 0.3.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "gl 0.0.12 (registry+https://github.com/rust-lang/crates.io-index)",
- "image 0.3.13 (registry+https://github.com/rust-lang/crates.io-index)",
+ "image 0.3.14 (registry+https://github.com/rust-lang/crates.io-index)",
  "khronos_api 0.0.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "libc 0.1.10 (registry+https://github.com/rust-lang/crates.io-index)",
  "piston-shaders_graphics2d 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
