@@ -21,7 +21,7 @@ use conrod::{
     Theme,
     Toggle,
     Ui,
-    Widget,
+    Widget
 };
 use conrod::color::{black, grayscale, green, red};
 use glutin_window::GlutinWindow;
