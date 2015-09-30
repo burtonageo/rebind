@@ -240,11 +240,11 @@ fn main() {
         use piston::input::keyboard::Key;
         use piston::input::Button::Keyboard;
         RebindBuilder::new(WINDOW_SIZE)
-            .with_action_mapping(Keyboard(Key::Space), CharacterAction::Jump)
-            .with_action_mapping(Keyboard(Key::Left),  CharacterAction::MoveLeft)
-            .with_action_mapping(Keyboard(Key::A),     CharacterAction::MoveLeft)
-            .with_action_mapping(Keyboard(Key::Right), CharacterAction::MoveRight)
-            .with_action_mapping(Keyboard(Key::D),     CharacterAction::MoveRight)
+            .with_mapping(CharacterAction::Jump,      Keyboard(Key::Space))
+            .with_mapping(CharacterAction::MoveLeft,  Keyboard(Key::Left))
+            .with_mapping(CharacterAction::MoveLeft,  Keyboard(Key::A))
+            .with_mapping(CharacterAction::MoveRight, Keyboard(Key::Right))
+            .with_mapping(CharacterAction::MoveRight, Keyboard(Key::D))
             .build_translator()
     };
 

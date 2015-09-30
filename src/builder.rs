@@ -86,7 +86,7 @@ impl<A: Action> RebindBuilder<A> {
     }
 
     /// Add an association between the Button and Action.
-    pub fn with_action_mapping(mut self, button: Button, action: A) -> Self {
+    pub fn with_mapping(mut self, action: A, button: Button) -> Self {
         self.input_remappings.push((button, action));
         self
     }
