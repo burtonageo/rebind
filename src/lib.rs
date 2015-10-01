@@ -1,4 +1,5 @@
 #![warn(missing_docs)]
+#![cfg_attr(feature = "fnv", feature(hashmap_hasher))]
 
 //! rebind
 //! ======
@@ -60,6 +61,7 @@
 //! }
 //! ```
 
+#[cfg(feature = "fnv")] extern crate fnv;
 extern crate input;
 extern crate itertools;
 extern crate rustc_serialize;
@@ -184,7 +186,7 @@ impl ExactSizeIterator for ButtonTupleIter {
 /// An object which translates piston::input::Input events into input_map::Translated<A> events
 #[derive(Clone, Debug, PartialEq)]
 pub struct InputTranslator<A: Action> {
-    keymap: HashMap<Button, A>,
+    keymap: nhash::HashMap<Button, A>,
     mouse_translator: MouseTranslator
 }
 
@@ -192,7 +194,7 @@ impl<A: Action> InputTranslator<A> {
     /// Creates an empty InputTranslator.
     pub fn new<S: Into<Size>>(size: S) -> Self {
         InputTranslator {
-            keymap: HashMap::new(),
+            keymap: nhash::new_hash_map(),
             mouse_translator: MouseTranslator::new(size)
         }
     }
@@ -480,4 +482,28 @@ fn to_act_bt_hashmap<I, A>(iter: I) -> HashMap<A, ButtonTuple>
             }
         })
         .collect()
+}
+
+#[cfg(feature = "fnv")]
+mod nhash {
+    use fnv::FnvHasher;
+    use std::collections;
+    use std::collections::hash_state::DefaultState;
+    use std::hash::Hash;
+
+    pub type HashMap<K: Hash + Eq, V> = collections::HashMap<K, V, DefaultState<FnvHasher>>;
+
+    pub fn new_hash_map<K: Hash + Eq, V>() -> HashMap<K, V> {
+        HashMap::with_hash_state(Default::default())
+    }
+}
+
+#[cfg(not(feature = "fnv"))]
+mod nhash {
+    use std::collections;
+    use std::hash::Hash;
+
+    pub type HashMap<K: Hash + Eq, V> = collections::HashMap<K, V>;
+
+    pub fn new_hash_map<K: Hash + Eq, V>() -> HashMap<K, V> { HashMap::new() }
 }
