@@ -3,7 +3,14 @@ rebind
 
 A library for binding input keys to actions, and modifying mouse behaviour. Keys can be bound to
 actions, and then translated during runtime. `Keys` are mapped to `Actions` using a `HashMap`, so
-lookup time is constant.
+lookup time is constant. To use this crate in your application, simply put
+
+```toml
+[dependencies]
+rebind = "*"
+```
+
+in your `Cargo.toml`.
 
 Api Example
 -----------
@@ -74,6 +81,20 @@ enum MyAction {
 }
 
 // ... rest of example as normal
+```
+
+Custom Hasher
+-------------
+
+When custom hashers are stabilised, it will be possible to specify the hash algorithm used to look up
+actions from keys. Until then, the hasher will not be configurable using the builder, and will by default
+use SipHasher. However, if you are using the nightly compiler, you can enable the Fnv hasher as an option
+in your `Cargo.toml`:
+
+```toml
+[dependencies.rebind]
+version = ">=0.3"
+features = ["fnv"]
 ```
 
 Example Application
