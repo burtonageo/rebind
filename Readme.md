@@ -65,6 +65,20 @@ fn main() {
 }
 ```
 
+Custom Hasher
+-------------
+
+When custom hashers are stabilised, it will be possible to specify the hash algorithm used to look up
+actions from keys. Until then, the hasher will not be configurable using the builder, and will by default
+use SipHasher. However, if you are using the nightly compiler, you can enable the Fnv hasher as an option
+in your `Cargo.toml`:
+
+```toml
+[dependencies.rebind]
+version = ">=0.3"
+features = ["fnv"]
+```
+
 rebind_plugins
 --------------
 
@@ -81,20 +95,6 @@ enum MyAction {
 }
 
 // ... rest of example as normal
-```
-
-Custom Hasher
--------------
-
-When custom hashers are stabilised, it will be possible to specify the hash algorithm used to look up
-actions from keys. Until then, the hasher will not be configurable using the builder, and will by default
-use SipHasher. However, if you are using the nightly compiler, you can enable the Fnv hasher as an option
-in your `Cargo.toml`:
-
-```toml
-[dependencies.rebind]
-version = ">=0.3"
-features = ["fnv"]
 ```
 
 Example Application
