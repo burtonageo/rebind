@@ -34,10 +34,10 @@ fn main() {
         .unwrap_or_else(|e| panic!("Could not create window: {}", e));
 
     let translator = RebindBuilder::<MyAction>::new((800, 600))
-        .with_action_mapping(Keyboard(Key::D1), MyAction::Action1)
-        .with_action_mapping(Keyboard(Key::A),  MyAction::Action1)
-        .with_action_mapping(Keyboard(Key::D2), MyAction::Action2)
-        .with_action_mapping(Keyboard(Key::B),  MyAction::Action2)
+        .with_mapping(MyAction::Action1, Keyboard(Key::D1))
+        .with_mapping(MyAction::Action1, Keyboard(Key::A))
+        .with_mapping(MyAction::Action2, Keyboard(Key::D2))
+        .with_mapping(MyAction::Action2, Keyboard(Key::B))
         .build_translator();
 
     for e in window.events() {
