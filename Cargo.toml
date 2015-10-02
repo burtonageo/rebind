@@ -13,7 +13,7 @@ license = "MIT"
 exclude = ["example/*", "rebind_plugins/*"]
 
 [features]
-default = ["fnv"]
+default = []
 
 [dependencies]
 itertools = "~0.3"
