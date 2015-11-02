@@ -39,7 +39,7 @@ use piston::input::{
     UpdateEvent
 };
 use piston::window::{Window, WindowSettings};
-use rebind::{Action, InputTranslator, RebindBuilder, Translated};
+use rebind::{Action, InputTranslator, Builder, Translated};
 use std::cell::RefCell;
 use std::rc::Rc;
 
@@ -239,7 +239,7 @@ fn main() {
     let translator = {
         use piston::input::keyboard::Key;
         use piston::input::Button::Keyboard;
-        RebindBuilder::new(WINDOW_SIZE)
+        Builder::new(WINDOW_SIZE)
             .with_mapping(CharacterAction::Jump,      Keyboard(Key::Space))
             .with_mapping(CharacterAction::MoveLeft,  Keyboard(Key::Left))
             .with_mapping(CharacterAction::MoveLeft,  Keyboard(Key::A))
