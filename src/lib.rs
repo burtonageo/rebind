@@ -25,7 +25,7 @@
 //! use piston::input::Button::Keyboard;
 //! use piston::input::keyboard::Key;
 //! use piston::window::WindowSettings;
-//! use rebind::{Action, RebindBuilder, Translated};
+//! use rebind::{Action, Builder, Translated};
 //!
 //! #[derive(Clone, Copy, Eq, Hash, Ord, PartialEq, PartialOrd)]
 //! enum MyAction {
@@ -39,7 +39,7 @@
 //!         .build()
 //!         .unwrap_or_else(|e| panic!("Could not create window: {}", e));
 //!
-//!     let translator = RebindBuilder::<MyAction>::new((800, 600))
+//!     let translator = Builder::<MyAction>::new((800, 600))
 //!         .with_mapping(MyAction::Action1, Keyboard(Key::D1))
 //!         .with_mapping(MyAction::Action1, Keyboard(Key::A))
 //!         .with_mapping(MyAction::Action2, Keyboard(Key::D2))
@@ -84,7 +84,7 @@ use std::hash::Hash;
 use viewport::Viewport;
 use window::Size;
 
-pub use builder::RebindBuilder;
+pub use builder::Builder;
 
 /// Represents a logical action to be bound to a particular button press, e.g.
 /// jump, attack, or move forward. Needs to be hashable, as it is used as a

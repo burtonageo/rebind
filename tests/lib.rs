@@ -3,7 +3,7 @@
 extern crate rebind;
 extern crate input;
 
-use rebind::{Action, ButtonTuple, InputTranslator, RebindBuilder, InputRebind, Translated};
+use rebind::{Action, ButtonTuple, InputTranslator, Builder, InputRebind, Translated};
 use input::Input;
 use input::Button::Keyboard;
 use input::keyboard::Key;
@@ -16,12 +16,12 @@ enum TestAction {
 
 impl Action for TestAction { }
 
-type TestBuilder = RebindBuilder<TestAction>;
+type TestBuilder = Builder<TestAction>;
 type TestTranslator = InputTranslator<TestAction>;
 type TestRebind = InputRebind<TestAction>;
 
 fn create_prepopulated_builder() -> TestBuilder {
-    RebindBuilder::default()
+    Builder::default()
         .with_mapping(TestAction::Action1, Keyboard(Key::Up))
         .with_mapping(TestAction::Action1, Keyboard(Key::W))
         .with_mapping(TestAction::Action2, Keyboard(Key::Down))

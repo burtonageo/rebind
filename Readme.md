@@ -26,7 +26,7 @@ use piston::input::Event;
 use piston::input::Button::Keyboard;
 use piston::input::keyboard::Key;
 use piston::window::WindowSettings;
-use rebind::{Action, RebindBuilder, Translated};
+use rebind::{Action, Builder, Translated};
 
 #[derive(Clone, Copy, Eq, Hash, Ord, PartialEq, PartialOrd)]
 enum MyAction {
@@ -40,7 +40,7 @@ fn main() {
         .build()
         .unwrap_or_else(|e| panic!("Could not create window: {}", e));
 
-    let translator = RebindBuilder::<MyAction>::new((800, 600))
+    let translator = Builder::<MyAction>::new((800, 600))
         .with_mapping(MyAction::Action1, Keyboard(Key::D1))
         .with_mapping(MyAction::Action1, Keyboard(Key::A))
         .with_mapping(MyAction::Action2, Keyboard(Key::D2))
