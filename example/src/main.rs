@@ -223,6 +223,9 @@ enum CharacterAction {
 impl Action for CharacterAction { }
 
 fn main() {
+    use piston::input::keyboard::Key;
+    use piston::input::Button::Keyboard;
+
     const OPENGL: OpenGL = OpenGL::V3_2;
     const WINDOW_SIZE: (u32, u32) = (800, 600);
 
@@ -236,17 +239,13 @@ fn main() {
 
     let gl_graphics = GlGraphics::new(OPENGL);
 
-    let translator = {
-        use piston::input::keyboard::Key;
-        use piston::input::Button::Keyboard;
-        Builder::new(WINDOW_SIZE)
-            .with_mapping(CharacterAction::Jump,      Keyboard(Key::Space))
-            .with_mapping(CharacterAction::MoveLeft,  Keyboard(Key::Left))
-            .with_mapping(CharacterAction::MoveLeft,  Keyboard(Key::A))
-            .with_mapping(CharacterAction::MoveRight, Keyboard(Key::Right))
-            .with_mapping(CharacterAction::MoveRight, Keyboard(Key::D))
-            .build_translator()
-    };
+    let translator = Builder::new(WINDOW_SIZE)
+                         .with_mapping(CharacterAction::Jump,      Keyboard(Key::Space))
+                         .with_mapping(CharacterAction::MoveLeft,  Keyboard(Key::Left))
+                         .with_mapping(CharacterAction::MoveLeft,  Keyboard(Key::A))
+                         .with_mapping(CharacterAction::MoveRight, Keyboard(Key::Right))
+                         .with_mapping(CharacterAction::MoveRight, Keyboard(Key::D))
+                         .build_translator();
 
     let character = {
         const INITIAL_CHARACTER_POS: [f64; 2] = [WINDOW_SIZE.0 as f64 / 20.0,
