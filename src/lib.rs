@@ -7,8 +7,10 @@
 //! rebind
 //! ======
 //!
-//! A library for binding input keys to actions, and modifying mouse behaviour. Keys can be
-//! bound to actions, and then translated during runtime. `Keys` are mapped to `Actions` using
+//! A library for binding input keys to actions, and modifying mouse behaviour. Keys can
+//! be
+//! bound to actions, and then translated during runtime. `Keys` are mapped to `Actions`
+//! using
 //! a `HashMap`, so lookup time is constant.
 //!
 //! Example
@@ -64,7 +66,8 @@
 //! }
 //! ```
 
-#[cfg(feature = "fnv")] extern crate fnv;
+#[cfg(feature = "fnv")]
+extern crate fnv;
 extern crate input;
 extern crate itertools;
 extern crate rustc_serialize;
@@ -73,9 +76,9 @@ extern crate window;
 
 mod builder;
 
-use input::{Input, Button, Motion};
+use input::{Button, Input, Motion};
 use itertools::Itertools;
-use std::cmp::{PartialEq, Eq, Ord};
+use std::cmp::{Eq, Ord, PartialEq};
 use std::collections::HashMap;
 use std::convert::Into;
 use std::default::Default;
@@ -103,7 +106,7 @@ pub enum Translated<A: Action> {
     /// A translated mouse motion. The logical origin of a translated MouseCursor event
     /// is in the top left corner of the window, and the logical scroll is non-natural.
     /// Relative events are unchanged for now.
-    Move(Motion)
+    Move(Motion),
 }
 
 /// A three-element tuple of `Option<Button>`. For simplicity, a maximum number of 3
@@ -114,7 +117,9 @@ pub struct ButtonTuple(pub Option<Button>, pub Option<Button>, pub Option<Button
 
 impl ButtonTuple {
     /// Creates a new tuple with no buttons in it (equivalent to `Default::default()`).
-    pub fn new() -> Self { Default::default() }
+    pub fn new() -> Self {
+        Default::default()
+    }
 
     /// Check if the button is in the tuple.
     pub fn contains(&self, button: Button) -> bool {
@@ -128,15 +133,26 @@ impl ButtonTuple {
     pub fn insert_inplace(&mut self, button: Button) -> bool {
         let sbtn = Some(button);
         match self {
-            &mut ButtonTuple(None, _, _) => {self.0 = sbtn; true},
-            &mut ButtonTuple(_, None, _) => {self.1 = sbtn; true},
-            &mut ButtonTuple(_, _, None) => {self.2 = sbtn; true},
-            _ => false
+            &mut ButtonTuple(None, _, _) => {
+                self.0 = sbtn;
+                true
+            }
+            &mut ButtonTuple(_, None, _) => {
+                self.1 = sbtn;
+                true
+            }
+            &mut ButtonTuple(_, _, None) => {
+                self.2 = sbtn;
+                true
+            }
+            _ => false,
         }
     }
 
     /// Get the maximum number of buttons which this tuple can contain.
-    pub fn max_buttons(&self) -> usize { 3 }
+    pub fn max_buttons(&self) -> usize {
+        3
+    }
 
     /// Returns the number of buttons in the ButtonTuple which are not `None`.
     pub fn num_buttons_set(&self) -> usize {
@@ -144,7 +160,9 @@ impl ButtonTuple {
     }
 
     /// Returns an iterator over this tuple.
-    pub fn iter(&self) -> ButtonTupleIter { (*self).into_iter() }
+    pub fn iter(&self) -> ButtonTupleIter {
+        (*self).into_iter()
+    }
 }
 
 impl IntoIterator for ButtonTuple {
@@ -152,10 +170,7 @@ impl IntoIterator for ButtonTuple {
     type IntoIter = ButtonTupleIter;
 
     fn into_iter(self) -> Self::IntoIter {
-        ButtonTupleIter {
-            button_tuple: self,
-            i: 0
-        }
+        ButtonTupleIter { button_tuple: self, i: 0 }
     }
 }
 
@@ -176,7 +191,7 @@ impl Iterator for ButtonTupleIter {
             0 => Some(self.button_tuple.0),
             1 => Some(self.button_tuple.1),
             2 => Some(self.button_tuple.2),
-            _ => None
+            _ => None,
         }
     }
 }
@@ -216,9 +231,8 @@ impl<A: Action> InputTranslator<A> {
         match input {
             &Input::Press(button) => translate_button!(Press, button),
             &Input::Release(button) => translate_button!(Release, button),
-            &Input::Move(motion) =>
-                Some(Translated::Move(self.mouse_translator.translate(motion))),
-            _ => None
+            &Input::Move(motion) => Some(Translated::Move(self.mouse_translator.translate(motion))),
+            _ => None,
         }
     }
 
@@ -234,7 +248,9 @@ impl<A: Action> InputTranslator<A> {
 
     /// Convert the `InputTranslator` into an `InputRebind`. Consumes the
     /// `InputTranslator`.
-    pub fn into_rebind(self) -> InputRebind<A> { self.into() }
+    pub fn into_rebind(self) -> InputRebind<A> {
+        self.into()
+    }
 }
 
 #[derive(Clone)]
@@ -262,7 +278,8 @@ impl MouseTranslationData {
 
 impl Debug for MouseTranslationData {
     fn fmt(&self, f: &mut Formatter) -> Result {
-        write!(f, "{}, {}, {}, {}, {}, ({}, {})",
+        write!(f,
+               "{}, {}, {}, {}, {}, ({}, {})",
                self.x_axis_motion_inverted,
                self.y_axis_motion_inverted,
                self.x_axis_scroll_inverted,
@@ -279,9 +296,8 @@ impl PartialEq for MouseTranslationData {
         self.y_axis_motion_inverted == other.y_axis_motion_inverted &&
         self.x_axis_scroll_inverted == other.x_axis_scroll_inverted &&
         self.y_axis_scroll_inverted == other.y_axis_scroll_inverted &&
-        self.sensitivity == other.sensitivity &&
-        self.viewport_size.width    == other.viewport_size.width &&
-        self.viewport_size.height   == other.viewport_size.height
+        self.sensitivity == other.sensitivity && self.viewport_size.width == other.viewport_size.width &&
+        self.viewport_size.height == other.viewport_size.height
     }
 }
 
@@ -292,9 +308,7 @@ struct MouseTranslator {
 
 impl MouseTranslator {
     fn new<S: Into<Size>>(size: S) -> Self {
-        MouseTranslator {
-            data: MouseTranslationData::new(size)
-        }
+        MouseTranslator { data: MouseTranslationData::new(size) }
     }
 
     fn translate(&self, motion: Motion) -> Motion {
@@ -309,13 +323,13 @@ impl MouseTranslator {
                 let cy = if self.data.y_axis_motion_inverted { sh - y } else { y };
 
                 Motion::MouseCursor(cx, cy)
-            },
+            }
             Motion::MouseScroll(x, y) => {
                 let mx = if self.data.x_axis_scroll_inverted { -1.0f64 } else { 1.0 };
                 let my = if self.data.y_axis_scroll_inverted { -1.0f64 } else { 1.0 };
                 Motion::MouseScroll(x * mx, y * my)
-            },
-            relative => relative
+            }
+            relative => relative,
         }
     }
 }
@@ -415,7 +429,9 @@ impl<A: Action> InputRebind<A> {
 
     /// Convert the `InputRebind` into an `InputTranslator`. Consumes the
     /// `InputRebind`.
-    pub fn into_translator(self) -> InputTranslator<A> { self.into() }
+    pub fn into_translator(self) -> InputTranslator<A> {
+        self.into()
+    }
 }
 
 /// Creates an `InputRebind` with no pairs. In addition, the viewport size is set to (800, 600).
@@ -429,9 +445,10 @@ impl<A: Action> Into<InputTranslator<A>> for InputRebind<A> {
     fn into(self) -> InputTranslator<A> {
         let mut input_translator = InputTranslator::new(self.mouse_data.viewport_size);
         input_translator.mouse_translator.data = self.mouse_data;
-        let key_vec = self.keymap.values()
-                                 .flat_map(|bt| bt.into_iter().filter_map(|x| x))
-                                 .collect_vec();
+        let key_vec = self.keymap
+                          .values()
+                          .flat_map(|bt| bt.into_iter().filter_map(|x| x))
+                          .collect_vec();
 
         input_translator.keymap.reserve(key_vec.len());
         for &k in &key_vec {
@@ -465,10 +482,8 @@ fn to_act_bt_hashmap<I, A>(iter: I) -> HashMap<A, ButtonTuple>
     iter.map(|(b, a)| (a, vec![Some(b)]))
         .sorted_by(|&(a0, _), &(a1, _)| Ord::cmp(&a0, &a1))
         .into_iter()
-        .coalesce(|(a0, b0), (a1, b1)| if a0 == a1 {
-            Ok((a0, b0.into_iter().chain(b1).collect()))
-        } else {
-            Err(((a0, b0), (a1, b1)))
+        .coalesce(|(a0, b0), (a1, b1)| {
+            if a0 == a1 { Ok((a0, b0.into_iter().chain(b1).collect())) } else { Err(((a0, b0), (a1, b1))) }
         })
         .map(|(a, bs)| {
             let buttons = &bs.iter()
@@ -478,9 +493,7 @@ fn to_act_bt_hashmap<I, A>(iter: I) -> HashMap<A, ButtonTuple>
                              .collect_vec();
 
             if buttons.len() >= 3 {
-                (a, ButtonTuple(buttons[0],
-                                buttons[1],
-                                buttons[2]))
+                (a, ButtonTuple(buttons[0], buttons[1], buttons[2]))
             } else {
                 unreachable!();
             }
@@ -509,5 +522,7 @@ mod nhash {
 
     pub type HashMap<K: Hash + Eq, V> = collections::HashMap<K, V>;
 
-    pub fn new_hash_map<K: Hash + Eq, V>() -> HashMap<K, V> { HashMap::new() }
+    pub fn new_hash_map<K: Hash + Eq, V>() -> HashMap<K, V> {
+        HashMap::new()
+    }
 }

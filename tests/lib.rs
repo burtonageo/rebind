@@ -3,15 +3,23 @@
 extern crate rebind;
 extern crate input;
 
-use rebind::{Action, ButtonTuple, InputTranslator, Builder, InputRebind, Translated};
+use rebind::{Action, Builder, ButtonTuple, InputRebind, InputTranslator, Translated};
 use input::Input;
 use input::Button::Keyboard;
 use input::keyboard::Key;
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, Ord, PartialOrd)]
 enum TestAction {
-    Action1, Action2, Action3, Action4, Action5,
-    Action6, Action7, Action8, Action9, Action10
+    Action1,
+    Action2,
+    Action3,
+    Action4,
+    Action5,
+    Action6,
+    Action7,
+    Action8,
+    Action9,
+    Action10,
 }
 
 impl Action for TestAction { }
@@ -54,8 +62,7 @@ fn test_conversion_from_rebind_to_translator() {
     let translator = create_prepopulated_builder().build_translator();
 
     let translator_clone = translator.clone();
-    let converted_translator = Into::<TestTranslator>::into(
-            Into::<TestRebind>::into(translator));
+    let converted_translator = Into::<TestTranslator>::into(Into::<TestRebind>::into(translator));
 
     assert_eq!(translator_clone, converted_translator);
 }
@@ -68,12 +75,15 @@ fn test_add_button_to_translator_using_rebind() {
 
     let translator = create_prepopulated_builder().build_translator();
     let mut rebind = translator.into_rebind();
-    rebind.insert_action_with_buttons(TestAction::Action5, ButtonTuple(Some(Q_KEY), Some(E_KEY), None));
+    rebind.insert_action_with_buttons(TestAction::Action5,
+                                      ButtonTuple(Some(Q_KEY), Some(E_KEY), None));
 
     let translator = rebind.into_translator();
 
-    assert_eq!(translator.translate(&Input::Press(Q_KEY)), Some(Translated::Press(TestAction::Action5)));
-    assert_eq!(translator.translate(&Input::Press(E_KEY)), Some(Translated::Press(TestAction::Action5)));
+    assert_eq!(translator.translate(&Input::Press(Q_KEY)),
+               Some(Translated::Press(TestAction::Action5)));
+    assert_eq!(translator.translate(&Input::Press(E_KEY)),
+               Some(Translated::Press(TestAction::Action5)));
 }
 
 #[test]

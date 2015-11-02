@@ -1,4 +1,4 @@
-use {Action, InputTranslator, InputRebind, MouseTranslationData, to_act_bt_hashmap};
+use {Action, InputRebind, InputTranslator, MouseTranslationData, to_act_bt_hashmap};
 use input::Button;
 use window::Size;
 use std::convert::Into;
@@ -93,10 +93,14 @@ impl<A: Action> Builder<A> {
     }
 
     /// Creates an `InputTranslator` from this builder object.
-    pub fn build_translator(self) -> InputTranslator<A> { self.into() }
+    pub fn build_translator(self) -> InputTranslator<A> {
+        self.into()
+    }
 
     /// Creates an `InputRebind` from this builder object.
-    pub fn build_rebind(self) -> InputRebind<A> { self.into() }
+    pub fn build_rebind(self) -> InputRebind<A> {
+        self.into()
+    }
 }
 
 /// Creates a new `Builder`. The viewport size is set to (800, 600).

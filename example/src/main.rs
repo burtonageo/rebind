@@ -1,7 +1,8 @@
 #![cfg_attr(feature = "nightly", feature(custom_derive, plugin))]
 #![cfg_attr(feature = "nightly", plugin(rebind_plugins))]
 
-#[macro_use] extern crate conrod;
+#[macro_use]
+extern crate conrod;
 extern crate find_folder;
 extern crate glutin_window;
 extern crate graphics;
@@ -10,36 +11,16 @@ extern crate piston;
 extern crate opengl_graphics;
 extern crate viewport;
 
-use conrod::{
-    Background,
-    Color,
-    Colorable,
-    Frameable,
-    Labelable,
-    Positionable,
-    Sizeable,
-    Theme,
-    Toggle,
-    Ui,
-    Widget
-};
+use conrod::{Background, Color, Colorable, Frameable, Labelable, Positionable, Sizeable, Theme, Toggle, Ui, Widget};
 use conrod::color::{black, grayscale, green, red};
 use glutin_window::GlutinWindow;
 use graphics::*;
 use opengl_graphics::{GlGraphics, OpenGL};
 use opengl_graphics::glyph_cache::GlyphCache;
 use piston::event_loop::{EventMap, Events};
-use piston::input::{
-    Event,
-    Input,
-    Motion,
-    RenderArgs,
-    RenderEvent,
-    UpdateArgs,
-    UpdateEvent
-};
+use piston::input::{Event, Input, Motion, RenderArgs, RenderEvent, UpdateArgs, UpdateEvent};
 use piston::window::{Window, WindowSettings};
-use rebind::{Action, InputTranslator, Builder, Translated};
+use rebind::{Action, Builder, InputTranslator, Translated};
 use std::cell::RefCell;
 use std::rc::Rc;
 
@@ -66,26 +47,26 @@ impl App {
                     match action {
                         CharacterAction::Jump => {
                             println!("You jumped! Yay!");
-                        },
+                        }
                         CharacterAction::MoveLeft => {
                             if self.character.current_velocity[0] > (self.character.max_velocity[0] * -1.0) {
                                 self.character.current_velocity[0] -= CHARACTER_WALK_SPEED_INCREMENT;
                             }
-                        },
+                        }
                         CharacterAction::MoveRight => {
                             if self.character.current_velocity[0] < self.character.max_velocity[0] {
                                 self.character.current_velocity[0] += CHARACTER_WALK_SPEED_INCREMENT;
                             }
                         }
                     }
-                },
+                }
                 Translated::Release(_) => {
                     self.character.current_velocity = [0.0, 0.0];
-                },
+                }
                 Translated::Move(Motion::MouseCursor(x, y)) => {
                     self.cursor.position = [x, y];
-                },
-                _ => { }
+                }
+                _ => {}
             }
         }
     }
@@ -103,9 +84,12 @@ impl App {
     }
 
     fn render(&mut self, args: &RenderArgs) {
-        // This demo translates and rebinds in a single screen, forcing a clone of the translator. This
-        // limitation is a result of the necessity of providing a different interface for rebinding. One
-        // way you could avoid a clone every update/render is to structure your application to pass the
+        // This demo translates and rebinds in a single screen, forcing a clone of the
+        // translator. This
+        // limitation is a result of the necessity of providing a different interface for
+        // rebinding. One
+        // way you could avoid a clone every update/render is to structure your application to
+        // pass the
         // translator between separate options and game screens.
         let mut rebind = self.translator.clone().into_rebind();
 
@@ -152,10 +136,8 @@ impl App {
                                            self.character.topleft[1],
                                            self.character.size);
 
-            gl_graphics.draw(args.viewport(), |c, gl| rectangle(self.character.color.to_fsa(),
-                                                                square,
-                                                                c.transform,
-                                                                gl));
+            gl_graphics.draw(args.viewport(),
+                             |c, gl| rectangle(self.character.color.to_fsa(), square, c.transform, gl));
         }
 
         // Draw the cursor dot
@@ -164,10 +146,8 @@ impl App {
                                       self.cursor.position[1],
                                       self.cursor.size);
 
-            gl_graphics.draw(args.viewport(), |c, gl| ellipse(self.cursor.color.to_fsa(),
-                                                              dot,
-                                                              c.transform,
-                                                              gl));
+            gl_graphics.draw(args.viewport(),
+                             |c, gl| ellipse(self.cursor.color.to_fsa(), dot, c.transform, gl));
         }
 
         self.translator = rebind.into();
@@ -216,7 +196,7 @@ impl VirtualCursor {
 enum CharacterAction {
     Jump,
     MoveLeft,
-    MoveRight
+    MoveRight,
 }
 
 #[cfg(not(feature = "nightly"))]
@@ -230,38 +210,36 @@ fn main() {
     const WINDOW_SIZE: (u32, u32) = (800, 600);
 
     let window = WindowSettings::new("rebind-example", WINDOW_SIZE)
-        .exit_on_esc(true)
-        .fullscreen(false)
-        .opengl(OPENGL)
-        .vsync(true)
-        .build()
-        .expect("Could not create main window");
+                     .exit_on_esc(true)
+                     .fullscreen(false)
+                     .opengl(OPENGL)
+                     .vsync(true)
+                     .build()
+                     .expect("Could not create main window");
 
     let gl_graphics = GlGraphics::new(OPENGL);
 
     let translator = Builder::new(WINDOW_SIZE)
-                         .with_mapping(CharacterAction::Jump,      Keyboard(Key::Space))
-                         .with_mapping(CharacterAction::MoveLeft,  Keyboard(Key::Left))
-                         .with_mapping(CharacterAction::MoveLeft,  Keyboard(Key::A))
+                         .with_mapping(CharacterAction::Jump, Keyboard(Key::Space))
+                         .with_mapping(CharacterAction::MoveLeft, Keyboard(Key::Left))
+                         .with_mapping(CharacterAction::MoveLeft, Keyboard(Key::A))
                          .with_mapping(CharacterAction::MoveRight, Keyboard(Key::Right))
                          .with_mapping(CharacterAction::MoveRight, Keyboard(Key::D))
                          .build_translator();
 
     let character = {
-        const INITIAL_CHARACTER_POS: [f64; 2] = [WINDOW_SIZE.0 as f64 / 20.0,
-                                                 WINDOW_SIZE.1 as f64 * 0.85];
+        const INITIAL_CHARACTER_POS: [f64; 2] = [WINDOW_SIZE.0 as f64 / 20.0, WINDOW_SIZE.1 as f64 * 0.85];
         Character::new(red(), INITIAL_CHARACTER_POS, 50.0)
     };
 
     let ui = {
         let glyph_cache = {
             let font_path = find_folder::Search::ParentsThenKids(3, 3)
-                .for_folder("assets")
-                .expect("Could not find assets folder")
-                .join("fonts/NotoSans/NotoSans-Regular.ttf");
+                                .for_folder("assets")
+                                .expect("Could not find assets folder")
+                                .join("fonts/NotoSans/NotoSans-Regular.ttf");
 
-            GlyphCache::new(&font_path)
-                .expect("Could not find font file within assets folder")
+            GlyphCache::new(&font_path).expect("Could not find font file within assets folder")
         };
 
         Ui::new(glyph_cache, Theme::default())
@@ -280,10 +258,16 @@ fn main() {
     for e in app.window.clone().events() {
         app.ui.borrow_mut().handle_event(&e);
         match e {
-            Event::Input(i) => { app.input(&i); },
-            Event::Update(u) => { app.update(&u); },
-            Event::Render(r) => { app.render(&r); },
-            _ => { }
+            Event::Input(i) => {
+                app.input(&i);
+            }
+            Event::Update(u) => {
+                app.update(&u);
+            }
+            Event::Render(r) => {
+                app.render(&r);
+            }
+            _ => {}
         }
     }
 }
