@@ -4,7 +4,8 @@
 //! rebind_plugins
 //! ==============
 //!
-//! A compiler plugin which complements the `rebind` crate by providing the `#[derive(Action)]`
+//! A compiler plugin which complements the `rebind` crate by providing the
+//! `#[derive(Action)]`
 //! annotation.
 //!
 //! Example
@@ -42,6 +43,5 @@ use derive_action::expand_derive_action_annotation;
 #[doc(hidden)]
 pub fn plugin_registrar(registry: &mut Registry) {
     registry.register_syntax_extension(intern("derive_Action"),
-                                       SyntaxExtension::MultiDecorator(
-                                           Box::new(expand_derive_action_annotation)));
+                                       SyntaxExtension::MultiDecorator(Box::new(expand_derive_action_annotation)));
 }

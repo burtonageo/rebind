@@ -10,12 +10,12 @@ pub fn expand_derive_action_annotation(context: &mut ExtCtxt,
                                        meta_item: &MetaItem,
                                        item: &Annotatable,
                                        push: &mut FnMut(Annotatable)) {
-/*
-    match item.node {
-        ast::ItemEnum(def, _) => {
-            // add definitions
-        },
-        _ => {context.span_err(span, "dummy is only permissiable on functions");}
-    }
-*/
+    //
+    // match item.node {
+    // ast::ItemEnum(def, _) => {
+    // add definitions
+    // },
+    // _ => {context.span_err(span, "dummy is only permissiable on functions");}
+    // }
+    //
 }
