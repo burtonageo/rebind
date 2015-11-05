@@ -95,29 +95,25 @@ fn test_add_button_to_translator_using_rebind() {
                Some(Translated::Press(TestAction::Action5)));
 }
 
+const TEST_SIZE: Size = Size { width: 800, height: 600 };
+
 #[test]
 fn test_unmodified_mouse_input_works() {
-    const TEST_SIZE: Size = Size { width: 800, height: 600 };
-
-    let translator = create_prepopulated_builder_with_size(TEST_SIZE).build_translator();
+    let _translator = create_prepopulated_builder_with_size(TEST_SIZE).build_translator();
     unimplemented!();
     // assert_eq!(translator.translate(&Input::))
 }
 
 #[test]
 fn test_mirror_mouse_input_along_x_axis() {
-    const TEST_SIZE: Size = Size { width: 800, height: 600 };
-
-    let translator = create_prepopulated_builder_with_size(TEST_SIZE).build_translator();
+    let _translator = create_prepopulated_builder_with_size(TEST_SIZE).build_translator();
     unimplemented!();
     // assert_eq!(translator.translate(&Input::))
 }
 
 #[test]
 fn test_mirror_mouse_input_along_y_axis() {
-    const TEST_SIZE: Size = Size { width: 800, height: 600 };
-
-    let translator = create_prepopulated_builder_with_size(TEST_SIZE).build_translator();
+    let _translator = create_prepopulated_builder_with_size(TEST_SIZE).build_translator();
     unimplemented!();
     // assert_eq!(translator.translate(&Input::))
 }
