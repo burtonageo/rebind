@@ -1,12 +1,14 @@
-#![allow(dead_code, unused_variables)]
+#![allow(dead_code)]
 
 extern crate rebind;
 extern crate input;
+extern crate window;
 
-use rebind::{Action, Builder, ButtonTuple, InputRebind, InputTranslator, Translated};
 use input::Input;
 use input::Button::Keyboard;
 use input::keyboard::Key;
+use rebind::{Action, Builder, ButtonTuple, InputRebind, InputTranslator, Translated};
+use window::Size;
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, Ord, PartialOrd)]
 enum TestAction {
@@ -28,16 +30,23 @@ type TestBuilder = Builder<TestAction>;
 type TestTranslator = InputTranslator<TestAction>;
 type TestRebind = InputRebind<TestAction>;
 
+fn create_prepopulated_builder_with_size(s: Size) -> TestBuilder {
+    populate_builder(Builder::new(s))
+}
+
 fn create_prepopulated_builder() -> TestBuilder {
-    Builder::default()
-        .with_mapping(TestAction::Action1, Keyboard(Key::Up))
-        .with_mapping(TestAction::Action1, Keyboard(Key::W))
-        .with_mapping(TestAction::Action2, Keyboard(Key::Down))
-        .with_mapping(TestAction::Action2, Keyboard(Key::S))
-        .with_mapping(TestAction::Action3, Keyboard(Key::Left))
-        .with_mapping(TestAction::Action3, Keyboard(Key::A))
-        .with_mapping(TestAction::Action4, Keyboard(Key::Right))
-        .with_mapping(TestAction::Action4, Keyboard(Key::D))
+    populate_builder(Builder::default())
+}
+
+fn populate_builder(builder: TestBuilder) -> TestBuilder {
+    builder.with_mapping(TestAction::Action1, Keyboard(Key::Up))
+           .with_mapping(TestAction::Action1, Keyboard(Key::W))
+           .with_mapping(TestAction::Action2, Keyboard(Key::Down))
+           .with_mapping(TestAction::Action2, Keyboard(Key::S))
+           .with_mapping(TestAction::Action3, Keyboard(Key::Left))
+           .with_mapping(TestAction::Action3, Keyboard(Key::A))
+           .with_mapping(TestAction::Action4, Keyboard(Key::Right))
+           .with_mapping(TestAction::Action4, Keyboard(Key::D))
 }
 
 #[test]
@@ -84,6 +93,33 @@ fn test_add_button_to_translator_using_rebind() {
                Some(Translated::Press(TestAction::Action5)));
     assert_eq!(translator.translate(&Input::Press(E_KEY)),
                Some(Translated::Press(TestAction::Action5)));
+}
+
+#[test]
+fn test_unmodified_mouse_input_works() {
+    const TEST_SIZE: Size = Size { width: 800, height: 600 };
+
+    let translator = create_prepopulated_builder_with_size(TEST_SIZE).build_translator();
+    unimplemented!();
+    // assert_eq!(translator.translate(&Input::))
+}
+
+#[test]
+fn test_mirror_mouse_input_along_x_axis() {
+    const TEST_SIZE: Size = Size { width: 800, height: 600 };
+
+    let translator = create_prepopulated_builder_with_size(TEST_SIZE).build_translator();
+    unimplemented!();
+    // assert_eq!(translator.translate(&Input::))
+}
+
+#[test]
+fn test_mirror_mouse_input_along_y_axis() {
+    const TEST_SIZE: Size = Size { width: 800, height: 600 };
+
+    let translator = create_prepopulated_builder_with_size(TEST_SIZE).build_translator();
+    unimplemented!();
+    // assert_eq!(translator.translate(&Input::))
 }
 
 #[test]
