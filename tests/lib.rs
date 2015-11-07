@@ -99,23 +99,32 @@ const TEST_SIZE: Size = Size { width: 800, height: 600 };
 
 #[test]
 fn test_unmodified_mouse_input_works() {
-    let _translator = create_prepopulated_builder_with_size(TEST_SIZE).build_translator();
-    unimplemented!();
-    // assert_eq!(translator.translate(&Input::))
+    use input::Motion;
+    let translator = create_prepopulated_builder_with_size(TEST_SIZE).build_translator();
+    let mouse_motion = Input::Move(Motion::MouseCursor(45.0, 11.0));
+    assert_eq!(translator.translate(&mouse_motion), Some(Translated::Move(Motion::MouseCursor(45.0, 11.0))));
 }
 
 #[test]
 fn test_mirror_mouse_input_along_x_axis() {
-    let _translator = create_prepopulated_builder_with_size(TEST_SIZE).build_translator();
-    unimplemented!();
-    // assert_eq!(translator.translate(&Input::))
+    use input::Motion;
+    let translator = create_prepopulated_builder_with_size(TEST_SIZE)
+                         .x_motion_inverted(true)
+                         .build_translator();
+    let mouse_motion = Input::Move(Motion::MouseCursor(45.0, 11.0));
+    assert_eq!(translator.translate(&mouse_motion),
+               Some(Translated::Move(Motion::MouseCursor(755.0, 11.0)))); // 800 - 45 = 755
 }
 
 #[test]
 fn test_mirror_mouse_input_along_y_axis() {
-    let _translator = create_prepopulated_builder_with_size(TEST_SIZE).build_translator();
-    unimplemented!();
-    // assert_eq!(translator.translate(&Input::))
+    use input::Motion;
+    let translator = create_prepopulated_builder_with_size(TEST_SIZE)
+                         .y_motion_inverted(true)
+                         .build_translator();
+    let mouse_motion = Input::Move(Motion::MouseCursor(45.0, 11.0));
+    assert_eq!(translator.translate(&mouse_motion),
+               Some(Translated::Move(Motion::MouseCursor(45.0, 589.0)))); // 800 - 45 = 755
 }
 
 #[test]
