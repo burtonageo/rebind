@@ -196,7 +196,7 @@ impl VirtualCursor {
 enum CharacterAction {
     Jump,
     MoveLeft,
-    MoveRight,
+    MoveRight
 }
 
 #[cfg(not(feature = "nightly"))]

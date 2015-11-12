@@ -21,7 +21,7 @@ enum TestAction {
     Action7,
     Action8,
     Action9,
-    Action10,
+    Action10
 }
 
 impl Action for TestAction { }
@@ -102,7 +102,8 @@ fn test_unmodified_mouse_input_works() {
     use input::Motion;
     let translator = create_prepopulated_builder_with_size(TEST_SIZE).build_translator();
     let mouse_motion = Input::Move(Motion::MouseCursor(45.0, 11.0));
-    assert_eq!(translator.translate(&mouse_motion), Some(Translated::Move(Motion::MouseCursor(45.0, 11.0))));
+    assert_eq!(translator.translate(&mouse_motion),
+               Some(Translated::Move(Motion::MouseCursor(45.0, 11.0))));
 }
 
 #[test]

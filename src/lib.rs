@@ -106,7 +106,7 @@ pub enum Translated<A: Action> {
     /// A translated mouse motion. The logical origin of a translated MouseCursor event
     /// is in the top left corner of the window, and the logical scroll is non-natural.
     /// Relative events are unchanged for now.
-    Move(Motion),
+    Move(Motion)
 }
 
 /// A three-element tuple of `Option<Button>`. For simplicity, a maximum number of 3
