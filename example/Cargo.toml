@@ -4,13 +4,13 @@ version = "0.1.0"
 authors = ["George Burton <burtonageo@gmail.com>"]
 
 [dependencies]
-find_folder = "~0.3"
-piston = "~0.13"
-piston2d-graphics = "~0.10"
-piston2d-opengl_graphics = "~0.16"
-pistoncore-glutin_window = "~0.16"
+find_folder = "^0.3"
+piston = "^0.16"
+piston2d-graphics = "^0.11"
+piston2d-opengl_graphics = "^0.19"
+pistoncore-glutin_window = "^0.18"
 piston-viewport = "~0.2"
-conrod = "~0.21"
+conrod = "^0.22"
 
 [dependencies.rebind_plugins]
 path = "../rebind_plugins"
