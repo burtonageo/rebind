@@ -27,5 +27,5 @@ version = "1.0.0"
 optional = true
 
 [dev-dependencies]
-piston = "^0.13"
-pistoncore-glutin_window = "^0.16"
+piston = "^0.16"
+pistoncore-glutin_window = "^0.18"
