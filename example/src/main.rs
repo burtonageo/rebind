@@ -85,12 +85,10 @@ impl App {
 
     fn render(&mut self, args: &RenderArgs) {
         // This demo translates and rebinds in a single screen, forcing a clone of the
-        // translator. This
-        // limitation is a result of the necessity of providing a different interface for
-        // rebinding. One
-        // way you could avoid a clone every update/render is to structure your application to
-        // pass the
-        // translator between separate options and game screens.
+        // translator. This limitation is a result of the necessity of providing a different
+        // interface for rebinding. One way you could avoid a clone every update/render is to
+        // structure your application to pass the translator between separate options and game
+        // screens.
         let mut rebind = self.translator.clone().into_rebind();
 
         let mut gl_graphics = self.graphics.borrow_mut();
