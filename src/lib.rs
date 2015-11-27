@@ -1,7 +1,5 @@
-#![deny(missing_debug_implementations, missing_docs,
-        missing_copy_implementations, trivial_casts,
-        trivial_numeric_casts, unsafe_code,
-        unused_import_braces, unused_qualifications)]
+#![deny(missing_debug_implementations, missing_docs, missing_copy_implementations, trivial_casts,
+        trivial_numeric_casts, unsafe_code, unused_import_braces, unused_qualifications)]
 #![cfg_attr(feature = "fnv", feature(hashmap_hasher))]
 
 //! rebind
