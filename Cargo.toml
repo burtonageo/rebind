@@ -28,4 +28,4 @@ optional = true
 
 [dev-dependencies]
 piston = "^0.16"
-pistoncore-glutin_window = "^0.18"
+pistoncore-glutin_window = "^0.19"

@@ -8,7 +8,7 @@ find_folder = "^0.3"
 piston = "^0.16"
 piston2d-graphics = "^0.11"
 piston2d-opengl_graphics = "^0.19"
-pistoncore-glutin_window = "^0.18"
+pistoncore-glutin_window = "^0.19"
 piston-viewport = "~0.2"
 conrod = "^0.22"
 

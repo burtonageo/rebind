@@ -8,7 +8,7 @@ dependencies = [
  "piston-viewport 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "piston2d-graphics 0.11.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "piston2d-opengl_graphics 0.19.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "pistoncore-glutin_window 0.18.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "pistoncore-glutin_window 0.19.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "rebind 0.1.1",
  "rebind_plugins 0.1.0",
 ]
@@ -251,6 +251,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "gl"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "gl_generator 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "khronos_api 0.0.8 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
 name = "gl_common"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -261,6 +270,16 @@ dependencies = [
 [[package]]
 name = "gl_generator"
 version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "khronos_api 0.0.8 (registry+https://github.com/rust-lang/crates.io-index)",
+ "log 0.3.4 (registry+https://github.com/rust-lang/crates.io-index)",
+ "xml-rs 0.1.26 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "gl_generator"
+version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "khronos_api 0.0.8 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -537,10 +556,10 @@ dependencies = [
 
 [[package]]
 name = "pistoncore-glutin_window"
-version = "0.18.0"
+version = "0.19.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "gl 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "gl 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "glutin 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "pistoncore-input 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "pistoncore-window 0.14.0 (registry+https://github.com/rust-lang/crates.io-index)",
