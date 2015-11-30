@@ -129,24 +129,22 @@ impl App {
         });
 
         // Draw the character
-        {
+        gl_graphics.draw(args.viewport(), |c, gl| {
             let square = rectangle::square(self.character.topleft[0],
                                            self.character.topleft[1],
                                            self.character.size);
 
-            gl_graphics.draw(args.viewport(),
-                             |c, gl| rectangle(self.character.color.to_fsa(), square, c.transform, gl));
-        }
+            rectangle(self.character.color.to_fsa(), square, c.transform, gl)
+        });
 
         // Draw the cursor dot
-        {
+        gl_graphics.draw(args.viewport(), |c, gl| {
             let dot = ellipse::circle(self.cursor.position[0],
                                       self.cursor.position[1],
                                       self.cursor.size);
 
-            gl_graphics.draw(args.viewport(),
-                             |c, gl| ellipse(self.cursor.color.to_fsa(), dot, c.transform, gl));
-        }
+            ellipse(self.cursor.color.to_fsa(), dot, c.transform, gl)
+        });
 
         self.translator = rebind.into();
     }
@@ -189,8 +187,7 @@ impl VirtualCursor {
 }
 
 #[cfg_attr(feature = "nightly", derive(Action))]
-#[cfg_attr(not(feature = "nightly"),
-           derive(Copy, Clone, Eq, Hash, Ord, PartialEq, PartialOrd))]
+#[cfg_attr(not(feature = "nightly"), derive(Copy, Clone, Eq, Hash, Ord, PartialEq, PartialOrd))]
 enum CharacterAction {
     Jump,
     MoveLeft,

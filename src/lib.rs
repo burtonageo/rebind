@@ -327,7 +327,7 @@ impl MouseTranslator {
                 let my = if self.data.y_axis_scroll_inverted { -1.0f64 } else { 1.0 };
                 Motion::MouseScroll(x * mx, y * my)
             }
-            relative => relative,
+            relative => relative
         }
     }
 }
