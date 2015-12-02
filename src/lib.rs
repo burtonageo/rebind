@@ -37,7 +37,7 @@
 //! fn main() {
 //!     let window: GlutinWindow = WindowSettings::new("rebind-example", (800, 600))
 //!         .build()
-//!         .unwrap_or_else(|e| panic!("Could not create window: {}", e));
+//!         .expect("Could not create window");
 //!
 //!     let translator = Builder::<MyAction>::new((800, 600))
 //!         .with_mapping(MyAction::Action1, Keyboard(Key::D1))
