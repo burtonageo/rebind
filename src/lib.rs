@@ -1,6 +1,5 @@
 #![deny(missing_debug_implementations, missing_docs, missing_copy_implementations, trivial_casts,
         trivial_numeric_casts, unsafe_code, unused_import_braces, unused_qualifications)]
-#![cfg_attr(feature = "fnv", feature(hashmap_hasher))]
 
 //! rebind
 //! ======
@@ -78,10 +77,11 @@ use input::{Button, Input, Motion};
 use itertools::Itertools;
 use std::cmp::{Eq, Ord, PartialEq};
 use std::collections::HashMap;
+use std::collections::hash_map::RandomState;
 use std::convert::Into;
 use std::default::Default;
 use std::fmt::{Debug, Formatter, Result};
-use std::hash::Hash;
+use std::hash::{Hash, BuildHasher};
 use viewport::Viewport;
 use window::Size;
 
@@ -202,16 +202,16 @@ impl ExactSizeIterator for ButtonTupleIter {
 
 /// An object which translates piston::input::Input events into input_map::Translated<A> events
 #[derive(Clone, Debug, PartialEq)]
-pub struct InputTranslator<A: Action> {
-    keymap: nhash::HashMap<Button, A>,
+pub struct InputTranslator<A: Action, S: BuildHasher = RandomState> {
+    keymap: HashMap<Button, A, S>,
     mouse_translator: MouseTranslator
 }
 
-impl<A: Action> InputTranslator<A> {
+impl<A: Action, S: BuildHasher + Default> InputTranslator<A, S> {
     /// Creates an empty InputTranslator.
-    pub fn new<S: Into<Size>>(size: S) -> Self {
+    pub fn new<Sz: Into<Size>>(size: Sz) -> Self {
         InputTranslator {
-            keymap: nhash::new_hash_map(),
+            keymap: HashMap::<_, _, S>::default(),
             mouse_translator: MouseTranslator::new(size)
         }
     }
@@ -246,7 +246,7 @@ impl<A: Action> InputTranslator<A> {
 
     /// Convert the `InputTranslator` into an `InputRebind`. Consumes the
     /// `InputTranslator`.
-    pub fn into_rebind(self) -> InputRebind<A> {
+    pub fn into_rebind(self) -> InputRebind<A, S> {
         self.into()
     }
 }
@@ -262,7 +262,7 @@ struct MouseTranslationData {
 }
 
 impl MouseTranslationData {
-    fn new<S: Into<Size>>(size: S) -> Self {
+    fn new<Sz: Into<Size>>(size: Sz) -> Self {
         MouseTranslationData {
             x_axis_motion_inverted: false,
             y_axis_motion_inverted: false,
@@ -305,7 +305,7 @@ struct MouseTranslator {
 }
 
 impl MouseTranslator {
-    fn new<S: Into<Size>>(size: S) -> Self {
+    fn new<Sz: Into<Size>>(size: Sz) -> Self {
         MouseTranslator { data: MouseTranslationData::new(size) }
     }
 
@@ -335,16 +335,16 @@ impl MouseTranslator {
 /// An interface for rebinding keys to actions. This is freely convertable to and
 /// from an InputTranslator.
 #[derive(Clone, Debug, PartialEq)]
-pub struct InputRebind<A: Action> {
-    keymap: HashMap<A, ButtonTuple>,
+pub struct InputRebind<A: Action, S: BuildHasher = RandomState> {
+    keymap: HashMap<A, ButtonTuple, S>,
     mouse_data: MouseTranslationData
 }
 
-impl<A: Action> InputRebind<A> {
+impl<A: Action, S: BuildHasher + Default> InputRebind<A, S> {
     /// Creates a new InputRebind with no stored Action/ButtonTuple pairs.
-    pub fn new<S: Into<Size>>(size: S) -> Self {
+    pub fn new<Sz: Into<Size>>(size: Sz) -> Self {
         InputRebind {
-            keymap: HashMap::new(),
+            keymap: HashMap::<_, _, S>::default(),
             mouse_data: MouseTranslationData::new(size)
         }
     }
@@ -427,20 +427,13 @@ impl<A: Action> InputRebind<A> {
 
     /// Convert the `InputRebind` into an `InputTranslator`. Consumes the
     /// `InputRebind`.
-    pub fn into_translator(self) -> InputTranslator<A> {
+    pub fn into_translator(self) -> InputTranslator<A, S> {
         self.into()
     }
 }
 
-/// Creates an `InputRebind` with no pairs. In addition, the viewport size is set to (800, 600).
-impl<A: Action> Default for InputRebind<A> {
-    fn default() -> Self {
-        InputRebind::new((800, 600))
-    }
-}
-
-impl<A: Action> Into<InputTranslator<A>> for InputRebind<A> {
-    fn into(self) -> InputTranslator<A> {
+impl<A: Action, S: BuildHasher + Default> Into<InputTranslator<A, S>> for InputRebind<A, S> {
+    fn into(self) -> InputTranslator<A, S> {
         let mut input_translator = InputTranslator::new(self.mouse_data.viewport_size);
         input_translator.mouse_translator.data = self.mouse_data;
         let key_vec = self.keymap
@@ -461,8 +454,8 @@ impl<A: Action> Into<InputTranslator<A>> for InputRebind<A> {
     }
 }
 
-impl<A: Action> Into<InputRebind<A>> for InputTranslator<A> {
-    fn into(self) -> InputRebind<A> {
+impl<A: Action, S: BuildHasher + Default> Into<InputRebind<A, S>> for InputTranslator<A, S> {
+    fn into(self) -> InputRebind<A, S> {
         let mut input_rebind = InputRebind::new(self.mouse_translator.data.viewport_size);
 
         input_rebind.mouse_data = self.mouse_translator.data;
@@ -474,9 +467,10 @@ impl<A: Action> Into<InputRebind<A>> for InputTranslator<A> {
 
 /// Utility function to convert an iterator of (Button, Action) to a
 /// `HashMap<Action, ButtonTuple>`.
-fn to_act_bt_hashmap<I, A>(iter: I) -> HashMap<A, ButtonTuple>
+fn to_act_bt_hashmap<I, A, S>(iter: I) -> HashMap<A, ButtonTuple, S>
     where I: Iterator<Item = (Button, A)>,
-          A: Action {
+          A: Action,
+          S: BuildHasher + Default {
     iter.map(|(b, a)| (a, vec![Some(b)]))
         .sorted_by(|&(a0, _), &(a1, _)| Ord::cmp(&a0, &a1))
         .into_iter()
@@ -497,30 +491,4 @@ fn to_act_bt_hashmap<I, A>(iter: I) -> HashMap<A, ButtonTuple>
             }
         })
         .collect()
-}
-
-#[cfg(feature = "fnv")]
-mod nhash {
-    use fnv::FnvHasher;
-    use std::collections;
-    use std::collections::hash_state::DefaultState;
-    use std::hash::Hash;
-
-    pub type HashMap<K: Hash + Eq, V> = collections::HashMap<K, V, DefaultState<FnvHasher>>;
-
-    pub fn new_hash_map<K: Hash + Eq, V>() -> HashMap<K, V> {
-        HashMap::with_hash_state(Default::default())
-    }
-}
-
-#[cfg(not(feature = "fnv"))]
-mod nhash {
-    use std::collections;
-    use std::hash::Hash;
-
-    pub type HashMap<K: Hash + Eq, V> = collections::HashMap<K, V>;
-
-    pub fn new_hash_map<K: Hash + Eq, V>() -> HashMap<K, V> {
-        HashMap::new()
-    }
 }

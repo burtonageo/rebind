@@ -2,21 +2,26 @@ use {Action, InputRebind, InputTranslator, MouseTranslationData, to_act_bt_hashm
 use input::Button;
 use window::Size;
 use std::convert::Into;
+use std::collections::hash_map::RandomState;
+use std::hash::BuildHasher;
 use std::default::Default;
+use std::marker::PhantomData;
 
 /// Convenience object for constructing an InputMap.
 #[derive(Debug)]
-pub struct Builder<A: Action> {
+pub struct Builder<A: Action, S: BuildHasher = RandomState> {
     input_remappings: Vec<(Button, A)>,
-    mouse_data: MouseTranslationData
+    mouse_data: MouseTranslationData,
+    _hasher: PhantomData<S>
 }
 
-impl<A: Action> Builder<A> {
+impl<A: Action, S: BuildHasher + Default> Builder<A, S> {
     /// Creates a new `Builder` with the specified viewport size.
-    pub fn new<S: Into<Size>>(size: S) -> Self {
+    pub fn new<Sz: Into<Size>>(size: Sz) -> Self {
         Builder {
             input_remappings: vec![],
-            mouse_data: MouseTranslationData::new(size)
+            mouse_data: MouseTranslationData::new(size),
+            _hasher: PhantomData
         }
     }
 
@@ -93,25 +98,25 @@ impl<A: Action> Builder<A> {
     }
 
     /// Creates an `InputTranslator` from this builder object.
-    pub fn build_translator(self) -> InputTranslator<A> {
+    pub fn build_translator(self) -> InputTranslator<A, S> {
         self.into()
     }
 
     /// Creates an `InputRebind` from this builder object.
-    pub fn build_rebind(self) -> InputRebind<A> {
+    pub fn build_rebind(self) -> InputRebind<A, S> {
         self.into()
     }
 }
 
-/// Creates a new `Builder`. The viewport size is set to (800, 600).
-impl<A: Action> Default for Builder<A> {
+impl<A: Action, S: BuildHasher + Default> Default for Builder<A, S> {
     fn default() -> Self {
         Self::new((800, 600))
     }
 }
 
-impl<A: Action> Into<InputTranslator<A>> for Builder<A> {
-    fn into(self) -> InputTranslator<A> {
+
+impl<A: Action, S: BuildHasher + Default> Into<InputTranslator<A, S>> for Builder<A, S> {
+    fn into(self) -> InputTranslator<A, S> {
         let mut translator = InputTranslator::new(self.mouse_data.viewport_size);
 
         translator.mouse_translator.data = self.mouse_data;
@@ -121,8 +126,8 @@ impl<A: Action> Into<InputTranslator<A>> for Builder<A> {
     }
 }
 
-impl<A: Action> Into<InputRebind<A>> for Builder<A> {
-    fn into(self) -> InputRebind<A> {
+impl<A: Action, S: BuildHasher + Default> Into<InputRebind<A, S>> for Builder<A, S> {
+    fn into(self) -> InputRebind<A, S> {
         let mut rebind = InputRebind::new(self.mouse_data.viewport_size);
 
         rebind.mouse_data = self.mouse_data;
