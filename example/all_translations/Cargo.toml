@@ -13,11 +13,11 @@ piston-viewport = "~0.2"
 conrod = "^0.22"
 
 [dependencies.rebind_plugins]
-path = "../rebind_plugins"
+path = "../../rebind_plugins"
 optional = true
 
 [dependencies.rebind]
-path = ".."
+path = "../.."
 
 [features]
 default = []
