@@ -235,8 +235,8 @@ impl<A: Action, S: BuildHasher + Default> InputTranslator<A, S> {
     }
 
     /// Re-set the mouse bounds size used for calculating mouse events
-    pub fn set_size(&mut self, size: Size) {
-        self.mouse_translator.data.viewport_size = size
+    pub fn set_size<Sz: Into<Size>>(&mut self, size: Sz) {
+        self.mouse_translator.data.viewport_size = size.into()
     }
 
     /// Re-set the mouse bounds size from a viewport
