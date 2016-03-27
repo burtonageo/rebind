@@ -4,34 +4,26 @@
 #[macro_use]
 extern crate conrod;
 extern crate find_folder;
-extern crate glutin_window;
 extern crate graphics;
 extern crate rebind;
 extern crate piston;
-extern crate opengl_graphics;
+extern crate piston_window;
 extern crate viewport;
 
-use conrod::{Background, Color, Colorable, Frameable, Labelable, Positionable, Sizeable, Theme, Toggle, Ui, Widget};
-use conrod::color::{black, grayscale, green, red};
-use glutin_window::GlutinWindow;
-use graphics::*;
-use opengl_graphics::{GlGraphics, OpenGL};
-use opengl_graphics::glyph_cache::GlyphCache;
-use piston::event_loop::{EventMap, Events};
+use conrod::{Canvas, Color, Colorable, Frameable, Labelable, Positionable, Sizeable, Theme, Toggle, Widget};
+use conrod::color::{BLACK, grayscale, GREEN, RED};
 use piston::input::{Event, Input, Motion, RenderArgs, RenderEvent, UpdateArgs, UpdateEvent};
-use piston::window::{Window, WindowSettings};
+use piston::window::Window;
+use piston_window::{EventLoop, Glyphs, PistonWindow, WindowSettings};
 use rebind::{Action, Builder, InputTranslator, Translated};
 use std::cell::RefCell;
 use std::rc::Rc;
 
-type RcWindow = Rc<RefCell<GlutinWindow>>;
-type RcGraphics = Rc<RefCell<GlGraphics>>;
-type RcUi = Rc<RefCell<Ui<GlyphCache<'static>>>>;
+type Backend = (<piston_window::G2d<'static> as conrod::Graphics>::Texture, Glyphs);
+type Ui = conrod::Ui<Backend>;
 
 struct App {
-    window: RcWindow,
-    graphics: RcGraphics,
-    ui: RcUi,
+    ui: Ui,
     translator: InputTranslator<CharacterAction>,
     character: Character,
     cursor: VirtualCursor,
@@ -71,82 +63,79 @@ impl App {
         }
     }
 
-    fn update(&mut self, args: &UpdateArgs) {
+    fn update(&mut self, window: &PistonWindow, args: &UpdateArgs) {
         // We need to pass the window to update (and set the size here) because using
         // the update event from the window events queue is currently broken.
-        self.translator.set_size(self.window.borrow().size());
+        let size = window.size();
+        self.translator.set_size((size.width, size.height));
 
         // Update the character's velocity
         let ctl = self.character.topleft;
         let v = self.character.current_velocity;
 
         self.character.topleft = [ctl[0] + (v[0] * args.dt), ctl[1] + (v[1] * args.dt)];
-    }
 
-    fn render(&mut self, args: &RenderArgs) {
+        // Update the Ui
+        //
         // This demo translates and rebinds in a single screen, forcing a clone of the
         // translator. This limitation is a result of the necessity of providing a different
         // interface for rebinding. One way you could avoid a clone every update/render is to
         // structure your application to pass the translator between separate options and game
         // screens.
         let mut rebind = self.translator.clone().into_rebind();
-
-        let mut gl_graphics = self.graphics.borrow_mut();
-        let ui = &mut *self.ui.borrow_mut();
-
-        widget_ids! {
-            X_INVERT_TOGGLE,
-            Y_INVERT_TOGGLE
-        }
-
-        // Draw the ui
-        gl_graphics.draw(args.viewport(), |c, gl| {
-            Background::new().color(self.bg_color).set(ui);
+        let bg_col = self.bg_color;
+        self.ui.set_widgets(|mut ui| {
+            widget_ids! {
+                CANVAS,
+                X_INVERT_TOGGLE,
+                Y_INVERT_TOGGLE
+            }
+            Canvas::new().color(bg_col).set(CANVAS, &mut ui);
 
             Toggle::new(rebind.get_x_motion_inverted())
-                .xy(-350.0, 270.0)
-                .dimensions(80.0, 40.0)
+                .top_left_with_margins_on(CANVAS, 0.0, 20.0)
+                .w_h(80.0, 40.0)
                 .color(grayscale(0.4))
                 .frame(1.0)
                 .label("Invert X")
-                .label_color(self.bg_color.plain_contrast())
+                .label_color(bg_col.plain_contrast())
                 .label_font_size(16)
                 .react(|b| rebind.set_x_motion_inverted(b))
-                .set(X_INVERT_TOGGLE, ui);
-
+                .set(X_INVERT_TOGGLE, &mut ui);
+            
             Toggle::new(rebind.get_y_motion_inverted())
-                .xy(-350.0, 218.0)
-                .dimensions(80.0, 40.0)
+                .top_left_with_margins_on(CANVAS, 0.0, 20.0)
+                .w_h(80.0, 40.0)
                 .color(grayscale(0.4))
                 .frame(1.0)
                 .label("Invert Y")
-                .label_color(self.bg_color.plain_contrast())
+                .label_color(bg_col.plain_contrast())
                 .label_font_size(16)
                 .react(|b| rebind.set_y_motion_inverted(b))
-                .set(Y_INVERT_TOGGLE, ui);
-
-            ui.draw(c, gl);
+                .set(Y_INVERT_TOGGLE, &mut ui);
         });
+        self.translator = rebind.into();
+    }
 
-        // Draw the character
-        gl_graphics.draw(args.viewport(), |c, gl| {
+    fn render(&mut self, window: &PistonWindow, args: &RenderArgs) {
+        window.draw_2d(|c, gl| {
+            use graphics::*;
+
+            // Draw the ui
+            self.ui.draw(c, gl);
+/*
+            // Draw the character
             let square = rectangle::square(self.character.topleft[0],
                                            self.character.topleft[1],
                                            self.character.size);
+            rectangle(self.character.color.to_fsa(), square, c.transform, gl);
 
-            rectangle(self.character.color.to_fsa(), square, c.transform, gl)
-        });
-
-        // Draw the cursor dot
-        gl_graphics.draw(args.viewport(), |c, gl| {
+            // Draw the cursor dot
             let dot = ellipse::circle(self.cursor.position[0],
                                       self.cursor.position[1],
                                       self.cursor.size);
-
-            ellipse(self.cursor.color.to_fsa(), dot, c.transform, gl)
+            ellipse(self.cursor.color.to_fsa(), dot, c.transform, gl)*/
         });
-
-        self.translator = rebind.into();
     }
 }
 
@@ -180,7 +169,7 @@ impl VirtualCursor {
     fn new() -> Self {
         VirtualCursor {
             position: [0.0, 0.0],
-            color: green(),
+            color: GREEN,
             size: 5.0
         }
     }
@@ -201,18 +190,14 @@ fn main() {
     use piston::input::keyboard::Key;
     use piston::input::Button::Keyboard;
 
-    const OPENGL: OpenGL = OpenGL::V3_2;
     const WINDOW_SIZE: (u32, u32) = (800, 600);
 
     let window = WindowSettings::new("rebind-example", WINDOW_SIZE)
                      .exit_on_esc(true)
                      .fullscreen(false)
-                     .opengl(OPENGL)
                      .vsync(true)
-                     .build()
+                     .build::<PistonWindow>()
                      .expect("Could not create main window");
-
-    let gl_graphics = GlGraphics::new(OPENGL);
 
     let translator = Builder::new(WINDOW_SIZE)
                          .with_mapping(CharacterAction::Jump, Keyboard(Key::Space))
@@ -224,7 +209,7 @@ fn main() {
 
     let character = {
         const INITIAL_CHARACTER_POS: [f64; 2] = [WINDOW_SIZE.0 as f64 / 20.0, WINDOW_SIZE.1 as f64 * 0.85];
-        Character::new(red(), INITIAL_CHARACTER_POS, 50.0)
+        Character::new(RED, INITIAL_CHARACTER_POS, 50.0)
     };
 
     let ui = {
@@ -234,35 +219,27 @@ fn main() {
                                 .expect("Could not find assets folder")
                                 .join("fonts/NotoSans/NotoSans-Regular.ttf");
 
-            GlyphCache::new(&font_path).expect("Could not find font file within assets folder")
+            Glyphs::new(&font_path, window.factory.borrow().clone())
+                .expect("Could not find font file within assets folder")
         };
 
         Ui::new(glyph_cache, Theme::default())
     };
 
     let mut app = App {
-        window: Rc::new(RefCell::new(window)),
-        graphics: Rc::new(RefCell::new(gl_graphics)),
-        ui: Rc::new(RefCell::new(ui)),
+        ui: ui,
         translator: translator,
         character: character,
         cursor: VirtualCursor::new(),
-        bg_color: black()
+        bg_color: BLACK
     };
 
-    for e in app.window.clone().events() {
-        app.ui.borrow_mut().handle_event(&e);
-        match e {
-            Event::Input(i) => {
-                app.input(&i);
-            }
-            Event::Update(u) => {
-                app.update(&u);
-            }
-            Event::Render(r) => {
-                app.render(&r);
-            }
-            _ => {}
+    for e in window {
+        if let Some(ref event) = e.event {
+            app.ui.handle_event(event);
+            // e.input(|i| app.input(&i));
+            e.update(|u| app.update(&u));
+            e.render(|r| app.render(&r));
         }
     }
 }
