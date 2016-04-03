@@ -17,8 +17,8 @@ default = []
 
 [dependencies]
 itertools = "^0.4"
-pistoncore-input = "^0.8"
-pistoncore-window = "^0.14"
+pistoncore-input = "^0.9"
+pistoncore-window = "^0.16"
 piston-viewport = "^0.2"
 rustc-serialize = "^0.3"
 
